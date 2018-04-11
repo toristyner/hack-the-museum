@@ -14,7 +14,7 @@ Use the museum's hackathon resources and gather crowd-contributed data to create
 ### Production
 * npm run build
 * firebase deploy
-[Production Firebase Site] (https://hackthemuseum-fd3d4.firebaseapp.com/)
+* [Production Firebase Site] (https://hackthemuseum-fd3d4.firebaseapp.com/)
 
 ## Built With
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
