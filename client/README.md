@@ -3,18 +3,20 @@
 Use the museum's hackathon resources and gather crowd-contributed data to create a game of guide that leads visitors to discover objects in an entertaining and engaging way.  Your solution should grow with repeated use by employing techniques such as machine learning, recommendation systems, and/or crowd-sourcing.
 
 ## Getting Started
-cd client/ 
-npm install
+* git clone https://github.com/toristyner/HackTheMuseum.git HackTheMuseum
+* cd HackTheMuseum/client/ 
+* npm install
 
 ## Deployment
-Development: localhost:3000
-- npm run start
+### Development (localhost:3000)
+* npm run start
 
-Production: https://hackthemuseum-fd3d4.firebaseapp.com/
-- firebase deploy
+### Production (https://hackthemuseum-fd3d4.firebaseapp.com/)
+* npm run build
+* firebase deploy
 
 ## Built With
-
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 ## Versioning
 
@@ -33,8 +35,5 @@ See also the list of [contributors](https://github.com/your/project/contributors
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
-
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 
