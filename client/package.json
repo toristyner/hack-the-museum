@@ -9,6 +9,12 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "react-scripts": "1.1.4"
@@ -17,7 +23,6 @@
     "babel-cli": "^6.26.0",
     "babel-preset-airbnb": "^2.4.0",
     "babel-preset-react": "^6.24.1",
-    "eslint-config-airbnb-standard": "^1.6.6",
     "jest-cli": "^22.4.3"
   }
 }
