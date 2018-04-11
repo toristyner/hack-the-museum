@@ -1,4 +1,4 @@
-# Hack The Museum 2018
+# Hack The Museum 2018: PWA
 
 Use the museum's hackathon resources and gather crowd-contributed data to create a game of guide that leads visitors to discover objects in an entertaining and engaging way.  Your solution should grow with repeated use by employing techniques such as machine learning, recommendation systems, and/or crowd-sourcing.
 
@@ -8,12 +8,13 @@ Use the museum's hackathon resources and gather crowd-contributed data to create
 * npm install
 
 ## Deployment
-### Development (localhost:3000)
+### Development
 * npm run start
 
-### Production (https://hackthemuseum-fd3d4.firebaseapp.com/)
+### Production
 * npm run build
 * firebase deploy
+[Production Firebase Site] (https://hackthemuseum-fd3d4.firebaseapp.com/)
 
 ## Built With
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
