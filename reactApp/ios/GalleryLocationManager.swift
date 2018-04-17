@@ -47,16 +47,10 @@ public class GalleryLocationManager : NSObject  {
     
     var currentLocation : Location? {
         get {
-            if self.locationSensingMethod == Constants.locationSensing.method.beacon {
-                if let closestBeacon = BeaconStore.sharedInstance.closestBeacon {
-                    return LocationStore.sharedInstance.locationForBeacon(beacon: closestBeacon)
-                } else {
-                    return nil
-                }
-            } else
             if self.locationSensingMethod == Constants.locationSensing.method.apple {
                 if self.lastLocation != nil {
-                    return LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
+                    var loc = LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
+                    return loc
                 }
             }
             return nil
@@ -77,6 +71,7 @@ public class GalleryLocationManager : NSObject  {
         self.locationManager.startUpdatingHeading()
     }
   
+    // example of swift func with callbak
     @objc func addEvent(_ name: String, location: String, date: NSNumber, callback: (NSArray) -> () ) -> Void {
       // Date is ready to use!
       NSLog("%@ %@ %@", name, location, date)
@@ -101,7 +96,6 @@ public class GalleryLocationManager : NSObject  {
     }
 
     @objc internal func checkForLocationUpdates() {
-        print("HIT")
         // if we don't have a current location, we can skip right out
         guard let currentLocation = self.currentLocation else {
             return

@@ -29,6 +29,5 @@
 @end
 
 @interface RCT_EXTERN_MODULE(BackendService, NSObject)
-  RCT_EXTERN_METHOD(test:(NSString *) name)
   RCT_EXTERN_METHOD(registerDevice)
 @end

@@ -26,6 +26,7 @@ type Props = {};
 export default class App extends Component<Props> {
   componentDidMount = () => {
 
+    BackendService.registerDevice()
     GalleryLocationManager.requestPermissions()
     // Swift callback example
     // GalleryLocationManager.addEvent("One", "Two", 3, (res) => {

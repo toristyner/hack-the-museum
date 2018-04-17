@@ -67,7 +67,7 @@ public class LocationStore {
     }
     
     public func locationForCLLocation(location: CLLocation, ignoreFloors : Bool = false) -> Location? {
-        
+        print("I AM GETTING HERE")
         if let floor = Constants.floors.enumFromCLFloor(floor: location.floor) {
             // we have floor information
             //print("we found floor info: \(floor)")
