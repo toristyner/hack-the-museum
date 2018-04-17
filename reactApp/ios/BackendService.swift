@@ -10,12 +10,13 @@ import Foundation
 import UserNotifications
 import UIKit
 
-public enum BackendServiceError: Error {
+@objc enum BackendServiceError: Int,Error {
     case insufficientPermissions
     case notRegisteredForRemoteNotifications
     case backendConfigurationMissing
 }
 
+@objc(BackendService)
 public class BackendService : NSObject {
     
     public static var shared = BackendService()
@@ -36,7 +37,11 @@ public class BackendService : NSObject {
             return token
         }
     }
-    
+  
+  @objc func test(_ name: String) {
+    print(name)
+  }
+  
   @available(iOS 10.0, *)
   public func requestPermissions(completion: @escaping () -> ()) {
         let center = UNUserNotificationCenter.current()
@@ -99,15 +104,19 @@ public class BackendService : NSObject {
         })
     }
     
-    public func registerDevice() throws {
-        
-        if Constants.backend.apiKey != nil && Constants.backend.host != nil && Constants.backend.registerEndpoint != nil {
-        } else { throw BackendServiceError.backendConfigurationMissing }
-        
+    @objc func registerDevice() {
+      
+      Constants.backend.host = "https://hackathon.philamuseum.org";
+      Constants.backend.apiKey = "4gde81EEcwNBEXHqSjlr1XhcmkwusRmSGnWicAyX4YS3ML47EfYQwEyzyY38";
+      
+//        if Constants.backend.apiKey != nil && Constants.backend.host != nil && Constants.backend.registerEndpoint != nil {
+//        } else { throw BackendServiceError.backendConfigurationMissing }
+
         if !self.sufficientNotificationPermissions {
-            throw BackendServiceError.insufficientPermissions
+          print("NOTIFICATION PERMISSIONS INSUFFICIENT")
+//            throw BackendServiceError.insufficientPermissions
         }
-        
+      
         if self.deviceToken != nil {
             
             let data = [
@@ -118,8 +127,6 @@ public class BackendService : NSObject {
                 "api_token" : Constants.backend.apiKey!
             ]
             var throwError : BackendServiceError?
-            
-            
             
             do {
                 let jsonData = try JSONSerialization.data(withJSONObject: data)
@@ -139,15 +146,18 @@ public class BackendService : NSObject {
                     }
                 })
             } catch {
-                throw BackendServiceError.notRegisteredForRemoteNotifications
+              print(BackendServiceError.notRegisteredForRemoteNotifications)
+//                throw BackendServiceError.notRegisteredForRemoteNotifications
             }
             
             if throwError != nil {
-                throw throwError!
+//                throw throwError!
+              print("ERROR HERE")
             }
             
         } else {
-            throw BackendServiceError.notRegisteredForRemoteNotifications
+          print(BackendServiceError.notRegisteredForRemoteNotifications)
+//            throw BackendServiceError.notRegisteredForRemoteNotifications
         }
     }
     

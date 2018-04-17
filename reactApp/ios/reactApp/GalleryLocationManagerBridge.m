@@ -13,6 +13,9 @@
 @interface RCT_EXTERN_MODULE(GalleryLocationManager, NSObject)
   RCT_EXTERN_METHOD(requestPermissions)
   RCT_EXTERN_METHOD(startLocationRanging)
-  RCT_EXTERN_METHOD(test:(NSString *) name)
+@end
 
+@interface RCT_EXTERN_MODULE(BackendService, NSObject)
+  RCT_EXTERN_METHOD(test:(NSString *) name)
+  RCT_EXTERN_METHOD(registerDevice)
 @end
