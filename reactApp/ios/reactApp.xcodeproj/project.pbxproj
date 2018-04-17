@@ -35,6 +35,8 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* reactAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* reactAppTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		562DED4720857E2700ACB7A8 /* QueueControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562DED2020857E2600ACB7A8 /* QueueControllerDelegate.swift */; };
+		562DED4820857E2700ACB7A8 /* QueueController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562DED4620857E2600ACB7A8 /* QueueController.swift */; };
 		564FC5FC2083F42B00E919F6 /* GalleryLocationManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 564FC5FB2083F42B00E919F6 /* GalleryLocationManagerBridge.m */; };
 		564FC6622083F5FA00E919F6 /* LocationAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564FC6512083F5F900E919F6 /* LocationAsset.swift */; };
 		564FC6632083F5FA00E919F6 /* BeaconStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564FC6522083F5F900E919F6 /* BeaconStore.swift */; };
@@ -357,6 +359,8 @@
 		2D02E47B1E0B4A5D006451C7 /* reactApp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "reactApp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* reactApp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "reactApp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		562DED2020857E2600ACB7A8 /* QueueControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueControllerDelegate.swift; sourceTree = "<group>"; };
+		562DED4620857E2600ACB7A8 /* QueueController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueController.swift; sourceTree = "<group>"; };
 		564FC5FB2083F42B00E919F6 /* GalleryLocationManagerBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GalleryLocationManagerBridge.m; path = reactApp/GalleryLocationManagerBridge.m; sourceTree = "<group>"; };
 		564FC6502083F5F800E919F6 /* reactApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "reactApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		564FC6512083F5F900E919F6 /* LocationAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAsset.swift; sourceTree = "<group>"; };
@@ -519,6 +523,8 @@
 		13B07FAE1A68108700A75B9A /* reactApp */ = {
 			isa = PBXGroup;
 			children = (
+				562DED4620857E2600ACB7A8 /* QueueController.swift */,
+				562DED2020857E2600ACB7A8 /* QueueControllerDelegate.swift */,
 				564FC65C2083F5FA00E919F6 /* BackendService.swift */,
 				564FC6532083F5F900E919F6 /* Beacon.swift */,
 				564FC6562083F5F900E919F6 /* BeaconAsset.swift */,
@@ -749,6 +755,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = R6769Y3V59;
 						LastSwiftMigration = 0930;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -1175,6 +1182,7 @@
 			files = (
 				564FC6672083F5FA00E919F6 /* BeaconAsset.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				562DED4720857E2700ACB7A8 /* QueueControllerDelegate.swift in Sources */,
 				564FC5FC2083F42B00E919F6 /* GalleryLocationManagerBridge.m in Sources */,
 				564FC66A2083F5FA00E919F6 /* GalleryLocationManager.swift in Sources */,
 				564FC66D2083F5FA00E919F6 /* BackendService.swift in Sources */,
@@ -1183,6 +1191,7 @@
 				564FC66E2083F5FA00E919F6 /* Constants.swift in Sources */,
 				564FC66B2083F5FA00E919F6 /* Location.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				562DED4820857E2700ACB7A8 /* QueueController.swift in Sources */,
 				564FC66F2083F5FA00E919F6 /* JSONDecodable.swift in Sources */,
 				564FC6692083F5FA00E919F6 /* GalleryLocationManagerDelegate.swift in Sources */,
 				564FC6622083F5FA00E919F6 /* LocationAsset.swift in Sources */,
@@ -1287,7 +1296,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = R6769Y3V59;
 				INFOPLIST_FILE = reactApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1308,7 +1319,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R6769Y3V59;
 				INFOPLIST_FILE = reactApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",

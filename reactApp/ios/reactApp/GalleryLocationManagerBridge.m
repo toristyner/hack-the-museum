@@ -10,6 +10,6 @@
 #import <React/RCTBridgeModule.h>
 
 @interface RCT_EXTERN_MODULE(GalleryLocationManager, NSObject)
-//  RCT_EXTERN_METHOD(startLocationRanging:(NSString *)method )
+  RCT_EXTERN_METHOD(startLocationRanging:(NSString *)method )
 
 @end

@@ -25,6 +25,7 @@ type Props = {};
 export default class App extends Component<Props> {
   componentDidMount = () => {
     console.log(GalleryLocationManager)
+    GalleryLocationManager.startLocationRanging('apple')
   }
   render() {
     return (
