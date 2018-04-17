@@ -11,8 +11,8 @@
 #import "mobileFramework.h"
 
 @interface RCT_EXTERN_MODULE(GalleryLocationManager, NSObject)
-
-  RCT_EXTERN_METHOD(startLocationRanging:(NSString *)method )
+  RCT_EXTERN_METHOD(requestPermissions)
+  RCT_EXTERN_METHOD(startLocationRanging)
   RCT_EXTERN_METHOD(test:(NSString *) name)
 
 @end

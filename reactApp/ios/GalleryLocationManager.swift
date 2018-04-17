@@ -18,22 +18,12 @@ public enum GalleryLocationManagerError: Error {
 @objc(GalleryLocationManager)
 public class GalleryLocationManager : NSObject  {
     
-    private var locationManager : CLLocationManager!
+    private var locationManager = CLLocationManager()
     private var locationUpdateTimer : Timer?
     
     public var beaconRegion: CLBeaconRegion?
     
     public var delegate : GalleryLocationManagerDelegate?
-  
-    override public init() {
-      print("I AM TOTES GETTING HERE")
-    }
-  
-    public init(locationManager: CLLocationManager) {
-        super.init()
-        self.locationManager = locationManager
-        self.locationManager.delegate = self
-    }
   
     internal var locationSensingMethod : String?
     
@@ -77,40 +67,22 @@ public class GalleryLocationManager : NSObject  {
         print(name)
     }
   
-    @objc public func startLocationRanging(_ method: String) throws {
-        print("LOCATION RANGE 0")
-        if method == Constants.locationSensing.method.beacon {
-            if beaconRegion != nil {
-                if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.authorizedWhenInUse) {
-                    throw GalleryLocationManagerError.insufficientPermissions
-                } else {
-                    // let's finally start
-                    locationManager.startRangingBeacons(in: beaconRegion!)
-                    self.locationUpdateTimer?.invalidate()
-                    self.locationUpdateTimer = Timer.scheduledTimer(timeInterval: Constants.locationSensing.locationUpdateInterval, target: self, selector: #selector(checkForLocationUpdates), userInfo: nil, repeats: true)
-                    self.locationSensingMethod = method
-                }
-            } else {
-                throw GalleryLocationManagerError.missingRegion
-            }
-        }
-
-        if method == Constants.locationSensing.method.apple {
-          print("STARTING LOCATION RANGING FOR APPLE")
-            if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.authorizedWhenInUse) {
-                throw GalleryLocationManagerError.insufficientPermissions
-            } else {
-                // let's finally start
-                locationManager.startUpdatingLocation()
-                self.locationUpdateTimer?.invalidate()
-                self.locationUpdateTimer = Timer.scheduledTimer(timeInterval: Constants.locationSensing.locationUpdateInterval, target: self, selector: #selector(checkForLocationUpdates), userInfo: nil, repeats: true)
-                self.locationSensingMethod = method
-            }
-
+    @objc public func startLocationRanging() {
+      print("STARTING LOCATION RANGING FOR APPLE")
+        if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.authorizedWhenInUse) {
+            print("PERMISSIONS NO GOOD")
+//            throw GalleryLocationManagerError.insufficientPermissions
+        } else {
+            // let's finally start
+            locationManager.startUpdatingLocation()
+            self.locationUpdateTimer?.invalidate()
+            self.locationUpdateTimer = Timer.scheduledTimer(timeInterval: Constants.locationSensing.locationUpdateInterval, target: self, selector: #selector(checkForLocationUpdates), userInfo: nil, repeats: true)
+            self.locationSensingMethod = "apple"
         }
     }
     
-    public func requestPermissions() {
+    @objc public func requestPermissions() {
+        print(locationManager)
         locationManager.requestWhenInUseAuthorization()
     }
     
