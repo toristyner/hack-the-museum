@@ -6,6 +6,7 @@
 //  Copyright © 2017 Philadelphia Museum of Art. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import CoreLocation
 
@@ -23,13 +24,17 @@ public class GalleryLocationManager : NSObject  {
     public var beaconRegion: CLBeaconRegion?
     
     public var delegate : GalleryLocationManagerDelegate?
-
-//    public init(locationManager: CLLocationManager) {
-//        super.init()
-//        self.locationManager = locationManager
-//        self.locationManager.delegate = self
-//    }
-    
+  
+    override public init() {
+      print("I AM TOTES GETTING HERE")
+    }
+  
+    public init(locationManager: CLLocationManager) {
+        super.init()
+        self.locationManager = locationManager
+        self.locationManager.delegate = self
+    }
+  
     internal var locationSensingMethod : String?
     
     internal var previousLocation : Location?
@@ -67,9 +72,13 @@ public class GalleryLocationManager : NSObject  {
         self.locationManager.headingFilter = headingFilter
         self.locationManager.startUpdatingHeading()
     }
-    
-   
-    @objc public func startLocationRanging(with method: String) throws {
+  
+  @objc func test(_ name: String) {
+        print(name)
+    }
+  
+    @objc public func startLocationRanging(_ method: String) throws {
+        print("LOCATION RANGE 0")
         if method == Constants.locationSensing.method.beacon {
             if beaconRegion != nil {
                 if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.authorizedWhenInUse) {
@@ -85,8 +94,9 @@ public class GalleryLocationManager : NSObject  {
                 throw GalleryLocationManagerError.missingRegion
             }
         }
-        
+
         if method == Constants.locationSensing.method.apple {
+          print("STARTING LOCATION RANGING FOR APPLE")
             if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.authorizedWhenInUse) {
                 throw GalleryLocationManagerError.insufficientPermissions
             } else {

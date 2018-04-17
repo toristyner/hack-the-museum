@@ -361,6 +361,7 @@
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		562DED2020857E2600ACB7A8 /* QueueControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueControllerDelegate.swift; sourceTree = "<group>"; };
 		562DED4620857E2600ACB7A8 /* QueueController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueController.swift; sourceTree = "<group>"; };
+		562DED4A2085865700ACB7A8 /* mobileFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mobileFramework.h; sourceTree = "<group>"; };
 		564FC5FB2083F42B00E919F6 /* GalleryLocationManagerBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GalleryLocationManagerBridge.m; path = reactApp/GalleryLocationManagerBridge.m; sourceTree = "<group>"; };
 		564FC6502083F5F800E919F6 /* reactApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "reactApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		564FC6512083F5F900E919F6 /* LocationAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAsset.swift; sourceTree = "<group>"; };
@@ -523,6 +524,7 @@
 		13B07FAE1A68108700A75B9A /* reactApp */ = {
 			isa = PBXGroup;
 			children = (
+				562DED4A2085865700ACB7A8 /* mobileFramework.h */,
 				562DED4620857E2600ACB7A8 /* QueueController.swift */,
 				562DED2020857E2600ACB7A8 /* QueueControllerDelegate.swift */,
 				564FC65C2083F5FA00E919F6 /* BackendService.swift */,
