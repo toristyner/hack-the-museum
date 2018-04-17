@@ -9,6 +9,7 @@ import {
   Platform,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View
 } from 'react-native';
 import {NativeModules} from 'react-native';
@@ -25,10 +26,11 @@ type Props = {};
 export default class App extends Component<Props> {
   componentDidMount = () => {
 
-    // console.log(BackendService)
-    // BackendService.registerDevice()
     GalleryLocationManager.requestPermissions()
-    GalleryLocationManager.startLocationRanging()
+    // Swift callback example
+    // GalleryLocationManager.addEvent("One", "Two", 3, (res) => {
+    //   console.log("RESPONSE FROM SWIFT", res)
+    // });
   }
   render() {
     return (
@@ -36,12 +38,12 @@ export default class App extends Component<Props> {
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+          <TouchableOpacity
+            onPress={() => GalleryLocationManager.startLocationRanging()}
+            style={styles.button}
+          >
+            <Text style={styles.text}>Start Location Ranging in Swift</Text>
+          </TouchableOpacity>
       </View>
     );
   }
@@ -54,14 +56,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
+  button: {
+    backgroundColor: '#b042f4',
+    margin: 10
+  },
+  text: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+    color: 'white'
   },
 });

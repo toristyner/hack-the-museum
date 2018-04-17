@@ -25,16 +25,18 @@ public class GalleryLocationManager : NSObject  {
     override public init() {
       print("IN THIS CONSTRUCTOR")
       super.init()
+      self.locationSensingMethod = "apple"
       self.locationManager = CLLocationManager()
       self.locationManager.delegate = self
     }
   
-//    public init(locationManager: CLLocationManager) {
-//      super.init()
-//      self.locationManager = locationManager
-//      self.locationManager.delegate = self
-//    }
+    public init(locationManager: CLLocationManager) {
+      super.init()
+      self.locationManager = locationManager
+      self.locationManager.delegate = self
+    }
   
+    var bridge: RCTBridge!
     public var beaconRegion: CLBeaconRegion?
   
     internal var locationSensingMethod : String?
@@ -75,42 +77,48 @@ public class GalleryLocationManager : NSObject  {
         self.locationManager.startUpdatingHeading()
     }
   
+    @objc func addEvent(_ name: String, location: String, date: NSNumber, callback: (NSArray) -> () ) -> Void {
+      // Date is ready to use!
+      NSLog("%@ %@ %@", name, location, date)
+      callback([["name": "113"]])
+    }
+  
     @objc public func startLocationRanging() {
-      print("STARTING LOCATION RANGING FOR APPLE")
-        if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.authorizedWhenInUse) {
-            print("PERMISSIONS NO GOOD")
+      if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.authorizedWhenInUse) {
+          print("PERMISSIONS NO GOOD")
 //            throw GalleryLocationManagerError.insufficientPermissions
-        } else {
-            // let's finally start
-            print("LETS START RANGING")
-            locationManager.startUpdatingLocation()
-            self.locationUpdateTimer?.invalidate()
-            self.locationUpdateTimer = Timer.scheduledTimer(timeInterval: Constants.locationSensing.locationUpdateInterval, target: self, selector: #selector(checkForLocationUpdates), userInfo: nil, repeats: true)
-            self.locationSensingMethod = "apple"
-        }
+      } else {
+          //let's finally start
+          locationManager.startUpdatingLocation()
+          self.locationUpdateTimer?.invalidate()
+          self.locationUpdateTimer = Timer.scheduledTimer(timeInterval: Constants.locationSensing.locationUpdateInterval, target: self, selector: #selector(checkForLocationUpdates), userInfo: nil, repeats: true)
+          self.locationSensingMethod = "apple"
+      }
     }
     
     @objc public func requestPermissions() {
         locationManager.requestWhenInUseAuthorization()
     }
-    
+
     @objc internal func checkForLocationUpdates() {
-        print("CHECKING FOR LOCATION UPDATES")
-//        // if we don't have a current location, we can skip right out
-//        guard let currentLocation = self.currentLocation else {
-//            return
-//        }
-//        
-//        if self.previousLocation == currentLocation {
-//            // previous and current location are identical, which means we haven't moved
-//            // so we don't need to trigger a location update
-//        } else {
-//            // we have to trigger an update since it seems like we moved
-//            self.delegate?.locationManager(locationManager: self, didEnterKnownLocation: currentLocation)
-//            
-//            // and we also have to set the previous location to the current location
-//            self.previousLocation = currentLocation
-//        }
+        print("HIT")
+        // if we don't have a current location, we can skip right out
+        guard let currentLocation = self.currentLocation else {
+            return
+        }
+        
+        if self.previousLocation == currentLocation {
+            print("PREVIOUS EQUALS CURRENT", currentLocation)
+            // previous and current location are identical, which means we haven't moved
+            // so we don't need to trigger a location update
+        } else {
+            // we have to trigger an update since it seems like we moved
+            print("WE MOVED")
+            self.delegate?.locationManager(locationManager: self, didEnterKnownLocation: currentLocation)
+          
+            // and we also have to set the previous location to the current location
+            self.previousLocation = currentLocation
+        }
     }
   
     internal func beaconRanged(major: Int, minor: Int, UUID: UUID) {

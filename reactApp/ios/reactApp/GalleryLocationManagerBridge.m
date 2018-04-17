@@ -10,9 +10,22 @@
 #import <React/RCTBridgeModule.h>
 #import "mobileFramework.h"
 
+
+
 @interface RCT_EXTERN_MODULE(GalleryLocationManager, NSObject)
+  - (dispatch_queue_t)methodQueue
+  {
+    return dispatch_get_main_queue();
+  }
+
+  + (BOOL)requiresMainQueueSetup
+  {
+    return YES;
+  }
+
   RCT_EXTERN_METHOD(requestPermissions)
   RCT_EXTERN_METHOD(startLocationRanging)
+  RCT_EXTERN_METHOD(addEvent:(NSString *)name location:(NSString *)location date:(nonnull NSNumber *)date callback: (RCTResponseSenderBlock)callback);
 @end
 
 @interface RCT_EXTERN_MODULE(BackendService, NSObject)
