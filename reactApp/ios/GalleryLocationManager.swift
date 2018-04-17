@@ -24,11 +24,11 @@ public class GalleryLocationManager : NSObject  {
     
     public var delegate : GalleryLocationManagerDelegate?
 
-    public init(locationManager: CLLocationManager) {
-        super.init()
-        self.locationManager = locationManager
-        self.locationManager.delegate = self
-    }
+//    public init(locationManager: CLLocationManager) {
+//        super.init()
+//        self.locationManager = locationManager
+//        self.locationManager.delegate = self
+//    }
     
     internal var locationSensingMethod : String?
     

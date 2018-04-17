@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 import {NativeModules} from 'react-native';
-// var { GalleryLocationManager } = NativeModules
+var { GalleryLocationManager } = NativeModules
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -24,7 +24,7 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
   componentDidMount = () => {
-    // console.log(GalleryLocationManager)
+    console.log(GalleryLocationManager)
   }
   render() {
     return (
