@@ -16,8 +16,8 @@ public enum GalleryLocationManagerError: Error {
 }
 
 @objc(GalleryLocationManager)
-public class GalleryLocationManager : NSObject  {
-    
+public class GalleryLocationManager : RCTEventEmitter  {
+  
     private var locationManager : CLLocationManager!
     private var locationUpdateTimer : Timer?
     public var delegate : GalleryLocationManagerDelegate?
@@ -36,7 +36,11 @@ public class GalleryLocationManager : NSObject  {
       self.locationManager.delegate = self
     }
   
-    var bridge: RCTBridge!
+    // Returns an array of your named events
+  override public func supportedEvents() -> [String]! {
+      return ["GalleryLocationChanged"]
+    }
+  
     public var beaconRegion: CLBeaconRegion?
   
     internal var locationSensingMethod : String?
@@ -49,7 +53,10 @@ public class GalleryLocationManager : NSObject  {
         get {
             if self.locationSensingMethod == Constants.locationSensing.method.apple {
                 if self.lastLocation != nil {
-                    return LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
+                    // for testing
+                    let testLocation = CLLocation(latitude: 39.965186632142064, longitude: -75.1815766902897)
+                    return LocationStore.sharedInstance.locationForCLLocation(location: testLocation)
+//                    return LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
                 }
             }
             return nil
@@ -64,7 +71,7 @@ public class GalleryLocationManager : NSObject  {
             return locationManager.desiredAccuracy
         }
     }
-    
+  
     public func startUpdatingHeading(with headingFilter: Double) {
         self.locationManager.headingFilter = headingFilter
         self.locationManager.startUpdatingHeading()
@@ -93,6 +100,10 @@ public class GalleryLocationManager : NSObject  {
     @objc public func requestPermissions() {
         locationManager.requestWhenInUseAuthorization()
     }
+  
+    @objc func sendEventToReactNative(name: String) {
+      self.sendEvent(withName: "GalleryLocationChanged", body: name)
+    }
 
     @objc internal func checkForLocationUpdates() {
         // if we don't have a current location, we can skip right out
@@ -101,12 +112,12 @@ public class GalleryLocationManager : NSObject  {
         }
         
         if self.previousLocation == currentLocation {
-            print("PREVIOUS EQUALS CURRENT", currentLocation)
             // previous and current location are identical, which means we haven't moved
             // so we don't need to trigger a location update
         } else {
+            print("We Moved:", currentLocation.name)
+            self.sendEventToReactNative(name: currentLocation.name)
             // we have to trigger an update since it seems like we moved
-            print("WE MOVED")
             self.delegate?.locationManager(locationManager: self, didEnterKnownLocation: currentLocation)
           
             // and we also have to set the previous location to the current location

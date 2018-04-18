@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import {NativeModules} from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 var { GalleryLocationManager, BackendService } = NativeModules
 
 const instructions = Platform.select({
@@ -27,8 +27,9 @@ const galleryLocationsLoading = 'Gallery Locations loading'
 const locationRangingEnabled = 'Location ranging is enabled'
 const locationRangingStart = 'Start Location Ranging in Swift'
 
-type Props = {};
 
+type Props = {};
+var testEventName = 'test';
 export default class App extends Component<Props> {
   
   state = {
@@ -39,6 +40,14 @@ export default class App extends Component<Props> {
   componentDidMount = () => {
 
     GalleryLocationManager.requestPermissions()
+    const myModuleEvt = new NativeEventEmitter(GalleryLocationManager)
+    var subscription = myModuleEvt.addListener(
+      'GalleryLocationChanged',
+      (response) => {
+        console.log("GalleryLocationChanged")
+        console.log(JSON.stringify(response))
+      }
+    );
     BackendService.retrieveGeolocationData(res => {
       this.setState({ galleryLocationsRetrieved: true })
     })
@@ -54,7 +63,7 @@ export default class App extends Component<Props> {
 
   render() {
     // CLLocationCoordinate2D(latitude: 40.759211000000001, longitude: -73.984638000000004)
-// CLLocationCoordinate2D(latitude: 40.759211000000001, longitude: -73.984638000000004)
+    // CLLocationCoordinate2D(latitude: 40.759211000000001, longitude: -73.984638000000004)
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>

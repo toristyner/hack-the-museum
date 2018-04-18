@@ -81,7 +81,6 @@ public class LocationStore {
         }
         else if ignoreFloors {
             // we don't have (valid) floor information and we want to ignore floors
-            print(location.coordinate)
             for storedLocation in self.locations {
                 if storedLocation.coordinates != nil { // hack a static floor in here for testing purposes
                     if location.coordinate.contained(by: storedLocation.coordinates!) {
