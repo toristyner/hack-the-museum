@@ -38,23 +38,29 @@ public class BackendService : NSObject {
         }
     }
   
-  @objc func test(_ name: String) {
-    print(name)
-  }
-  
   @available(iOS 10.0, *)
-  public func requestPermissions(completion: @escaping () -> ()) {
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options:[.alert]) { (granted, error) in
-            print("BackendService: Notification authorization: \(granted)")
-            // Enable or disable features based on authorization.
-            if granted {
-                self.sufficientNotificationPermissions = true
-            }
-            completion()
-        }
+//  @objc func requestPermissions(completion: @escaping () -> ()) {
+//        let center = UNUserNotificationCenter.current()
+//        center.requestAuthorization(options:[.alert]) { (granted, error) in
+//            print("BackendService: Notification authorization: \(granted)")
+//            // Enable or disable features based on authorization.
+//            if granted {
+//                self.sufficientNotificationPermissions = true
+//            }
+//            completion()
+//        }
+//    }
+  
+  @objc func requestPermissions() {
+    let center = UNUserNotificationCenter.current()
+    center.requestAuthorization(options:[.alert]) { (granted, error) in
+      print("BackendService: Notification authorization: \(granted)")
+      // Enable or disable features based on authorization.
+      if granted {
+          self.sufficientNotificationPermissions = true
+      }
     }
-    
+  }
     public func registerForRemoteNotifications() throws {
         if self.sufficientNotificationPermissions {
             UIApplication.shared.registerForRemoteNotifications()
@@ -109,8 +115,11 @@ public class BackendService : NSObject {
       Constants.backend.host = "https://hackathon.philamuseum.org";
       Constants.backend.apiKey = "4gde81EEcwNBEXHqSjlr1XhcmkwusRmSGnWicAyX4YS3ML47EfYQwEyzyY38";
       
-//        if Constants.backend.apiKey != nil && Constants.backend.host != nil && Constants.backend.registerEndpoint != nil {
-//        } else { throw BackendServiceError.backendConfigurationMissing }
+        if Constants.backend.apiKey != nil && Constants.backend.host != nil && Constants.backend.registerEndpoint != nil {
+        } else {
+          print("ERROR: ", BackendServiceError.backendConfigurationMissing)
+//          throw BackendServiceError.backendConfigurationMissing
+        }
 
         if !self.sufficientNotificationPermissions {
           print("NOTIFICATION PERMISSIONS INSUFFICIENT")
@@ -152,10 +161,11 @@ public class BackendService : NSObject {
             
             if throwError != nil {
 //                throw throwError!
-              print("ERROR HERE")
+              print("ERROR HERE", throwError)
             }
             
         } else {
+          print("ERROR HERE")
           print(BackendServiceError.notRegisteredForRemoteNotifications)
 //            throw BackendServiceError.notRegisteredForRemoteNotifications
         }

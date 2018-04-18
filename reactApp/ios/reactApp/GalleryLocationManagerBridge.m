@@ -29,5 +29,16 @@
 @end
 
 @interface RCT_EXTERN_MODULE(BackendService, NSObject)
+  - (dispatch_queue_t)methodQueue
+  {
+    return dispatch_get_main_queue();
+  }
+
+  + (BOOL)requiresMainQueueSetup
+  {
+    return YES;
+  }
+
+  RCT_EXTERN_METHOD(requestPermissions)
   RCT_EXTERN_METHOD(registerDevice)
 @end

@@ -24,15 +24,24 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  
   componentDidMount = () => {
 
-    BackendService.registerDevice()
+    // BackendService.registerDevice()
     GalleryLocationManager.requestPermissions()
+    BackendService.requestPermissions()
+  
     // Swift callback example
     // GalleryLocationManager.addEvent("One", "Two", 3, (res) => {
     //   console.log("RESPONSE FROM SWIFT", res)
     // });
   }
+
+  startLocationRanging = () => {
+    BackendService.registerDevice()
+    GalleryLocationManager.startLocationRanging()
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -40,7 +49,7 @@ export default class App extends Component<Props> {
           Welcome to React Native!
         </Text>
           <TouchableOpacity
-            onPress={() => GalleryLocationManager.startLocationRanging()}
+            onPress={() => this.startLocationRanging()}
             style={styles.button}
           >
             <Text style={styles.text}>Start Location Ranging in Swift</Text>
