@@ -6,21 +6,17 @@
 
 import React, { Component } from 'react';
 import {
+  NativeModules,
+  NativeEventEmitter,
   Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
-import { NativeModules, NativeEventEmitter } from 'react-native';
-var { GalleryLocationManager, BackendService } = NativeModules
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+// Exposed swift classes to react native 
+const { GalleryLocationManager, BackendService } = NativeModules
 
 const galleryLocationsRetrieved = 'Gallery Locations have been retrieved'
 const galleryLocationsLoading = 'Gallery Locations loading'
@@ -34,6 +30,7 @@ export default class App extends Component<Props> {
   
   state = {
     galleryLocationsRetrieved: false,
+    galleriesVisited: [],
     locationRangingEnabled: false,
   }
 
@@ -41,13 +38,7 @@ export default class App extends Component<Props> {
 
     GalleryLocationManager.requestPermissions()
     const myModuleEvt = new NativeEventEmitter(GalleryLocationManager)
-    var subscription = myModuleEvt.addListener(
-      'GalleryLocationChanged',
-      (response) => {
-        console.log("GalleryLocationChanged")
-        console.log(JSON.stringify(response))
-      }
-    );
+    const galleryChangeSubscription = myModuleEvt.addListener('GalleryLocationChanged', this.handleGalleryLocationChange);
     BackendService.retrieveGeolocationData(res => {
       this.setState({ galleryLocationsRetrieved: true })
     })
@@ -58,12 +49,16 @@ export default class App extends Component<Props> {
     this.setState({locationRangingEnabled: true })
   }
 
+  handleGalleryLocationChange = galleryName => {
+    const galleriesVisited = [...this.state.galleriesVisited]
+    galleriesVisited.push(galleryName)
+    this.setState({ galleriesVisited })
+  }
+
   getBackendStatus = () => this.state.galleryLocationsRetrieved ? galleryLocationsRetrieved : galleryLocationsLoading
   getButtonText = () => this.state.locationRangingEnabled ? locationRangingEnabled : locationRangingStart
 
   render() {
-    // CLLocationCoordinate2D(latitude: 40.759211000000001, longitude: -73.984638000000004)
-    // CLLocationCoordinate2D(latitude: 40.759211000000001, longitude: -73.984638000000004)
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -77,6 +72,10 @@ export default class App extends Component<Props> {
           <Text style={styles.text}>{this.getButtonText()}</Text>
         </TouchableOpacity>
         <Text>{this.getBackendStatus()}</Text>
+        <Text>Galleries Visited:</Text>
+        {
+          this.state.galleriesVisited.map( gallery => <Text key={gallery}>{gallery}</Text>)
+        }
       </View>
     );
   }
