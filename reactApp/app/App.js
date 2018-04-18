@@ -3,16 +3,22 @@ import {
   NativeModules,
   View,
 } from 'react-native'
-import { GalleryLocationFinder } from './screens/'
-// Exposed swift classes to react native
-import { GalleryLocationService } from './utils'
+import { createStore, applyMiddleware, compose } from 'redux'
+import { Provider } from 'react-redux'
+import reducer from './reducers/index'
+import sagas from './sagas'
+import * as actions from './actionTypes'
 
+import { GalleryLocationFinder } from './screens/'
+import { GalleryLocationService } from './utils'
 
 class App extends Component {
   
-  state = {
-    galleryLocationsRetrieved: false,
-    locationRangingEnabled: false,
+  constructor(props) {
+    super(props)
+    if (props.store === undefined) {
+      this.appStore = createStore(reducer)
+    }
   }
 
   componentDidMount = () => this.initNativeServices()
@@ -20,20 +26,20 @@ class App extends Component {
   initNativeServices = () => {
     // We need to know the users location
     GalleryLocationService.requestLocationPermissions()
-
     // Load the galleries into the native app store
     GalleryLocationService.loadGeoLocationData(res => {
-      this.setState({ galleryLocationsRetrieved: res.didFetchLocations})
+      this.appStore.dispatch({ type: actions.SET_GALLERY_LOCATIONS_RETRIEVED, payload: res.didFetchLocations })
     })
   }
 
   render() {
-    return (<View style={styles.container}>
-      <GalleryLocationFinder
-        locationRangingEnabled={this.state.locationRangingEnabled}
-        galleryLocationsRetrieved={this.state.galleryLocationsRetrieved}
-      />
-    </View>)
+    const store = this.props.store !== undefined ? this.props.store : this.appStore
+    console.log(store)
+    return (<Provider store={store}>
+      <View style={styles.container}>
+        <GalleryLocationFinder />
+      </View>
+    </Provider>)
   }
 }
 

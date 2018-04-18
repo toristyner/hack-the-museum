@@ -9,6 +9,8 @@ import {
   View,
 } from 'react-native'
 import { GalleryLocationService } from '../utils'
+import { connect } from 'react-redux'
+import * as actions from '../actionTypes'
 import PropTypes from 'prop-types'
 
 
@@ -47,10 +49,10 @@ class GalleryLocationFinder extends Component {
   }
 
   getBackendStatus = () =>
-    this.state.galleryLocationsRetrieved ? galleryLocationsRetrieved : galleryLocationsLoading
+    this.props.galleryLocationsRetrieved ? galleryLocationsRetrieved : galleryLocationsLoading
 
   getButtonText = () =>
-    this.state.locationRangingEnabled ? locationRangingEnabled : locationRangingStart
+    this.props.locationRangingEnabled ? locationRangingEnabled : locationRangingStart
 
   render() {
     return (
@@ -97,4 +99,11 @@ const styles = {
   },
 }
 
-export default GalleryLocationFinder
+export const mapStateToProps = (state) => ({
+  galleryLocationsRetrieved: state.galleryInfo.galleryLocationsRetrieved,
+  locationRangingEnabled: state.galleryInfo.locationRangingEnabled
+})
+
+export const mapDispatchToProps = dispatch => ({})
+
+export default connect(mapStateToProps, mapDispatchToProps)(GalleryLocationFinder)
