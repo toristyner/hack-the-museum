@@ -39,28 +39,28 @@ public class BackendService : NSObject {
     }
   
   @available(iOS 10.0, *)
-//  @objc func requestPermissions(completion: @escaping () -> ()) {
-//        let center = UNUserNotificationCenter.current()
-//        center.requestAuthorization(options:[.alert]) { (granted, error) in
-//            print("BackendService: Notification authorization: \(granted)")
-//            // Enable or disable features based on authorization.
-//            if granted {
-//                self.sufficientNotificationPermissions = true
-//            }
-//            completion()
-//        }
-//    }
-  
-  @objc func requestPermissions() {
-    let center = UNUserNotificationCenter.current()
-    center.requestAuthorization(options:[.alert]) { (granted, error) in
-      print("BackendService: Notification authorization: \(granted)")
-      // Enable or disable features based on authorization.
-      if granted {
-          self.sufficientNotificationPermissions = true
-      }
+  @objc func requestPermissions(completion: @escaping () -> ()) {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options:[.alert]) { (granted, error) in
+            print("BackendService: Notification authorization: \(granted)")
+            // Enable or disable features based on authorization.
+            if granted {
+                self.sufficientNotificationPermissions = true
+            }
+            completion()
+        }
     }
-  }
+  
+//  @objc func requestPermissions() {
+//    let center = UNUserNotificationCenter.current()
+//    center.requestAuthorization(options:[.alert]) { (granted, error) in
+//      print("BackendService: Notification authorization: \(granted)")
+//      // Enable or disable features based on authorization.
+//      if granted {
+//          self.sufficientNotificationPermissions = true
+//      }
+//    }
+//  }
     public func registerForRemoteNotifications() throws {
         if self.sufficientNotificationPermissions {
             UIApplication.shared.registerForRemoteNotifications()
@@ -69,11 +69,16 @@ public class BackendService : NSObject {
         }
     }
     
-    public func retrieveGeolocationData(completion: @escaping () -> Void) throws {
-        
-        if Constants.backend.apiKey != nil && Constants.backend.host != nil {
-        } else { throw BackendServiceError.backendConfigurationMissing }
-        
+    @objc public func retrieveGeolocationData(_ callback: @escaping RCTResponseSenderBlock) -> Void {
+      
+        Constants.backend.host = "https://hackathon.philamuseum.org";
+        Constants.backend.apiKey = "4gde81EEcwNBEXHqSjlr1XhcmkwusRmSGnWicAyX4YS3ML47EfYQwEyzyY38";
+//        if Constants.backend.apiKey != nil && Constants.backend.host != nil {
+//        } else {
+////          throw BackendServiceError.backendConfigurationMissing
+//          print("ERROR NO CONFIG")
+//        }
+      
         let locationsUrl = URL(string: "\(Constants.backend.host!)/api/v0/collection/locations?api_token=\(Constants.backend.apiKey!)")
         
         CacheService.sharedInstance.requestData(url: locationsUrl!, forceUncached: true, completion: { localPath, data in
@@ -82,7 +87,6 @@ public class BackendService : NSObject {
                     try FeatureStore.sharedInstance.load(fromData: data!, type: .location, completion: {
                         if let asset = FeatureStore.sharedInstance.getAsset(for: .location) as? LocationAsset {
                             LocationStore.sharedInstance.load(fromAsset: asset)
-                            
                             let geoJSONUrl = URL(string: "\(Constants.backend.host!)/api/v0/collection/geojson?api_token=\(Constants.backend.apiKey!)")
                             
                             CacheService.sharedInstance.requestData(url: geoJSONUrl!, forceUncached: true, completion: { localPath, data in
@@ -91,7 +95,7 @@ public class BackendService : NSObject {
                                         try FeatureStore.sharedInstance.load(fromData: data!, type: .geojson, completion: {
                                             if let asset = FeatureStore.sharedInstance.getAsset(for: .geojson) as? GeoJSONAsset {
                                                 LocationStore.sharedInstance.load(fromAsset: asset)
-                                                completion()
+                                              callback([["didFetchLocations": true]])
                                             } else {
                                                 print("Error retrieving GeoJSON asset from FeatureStore")
                                             }
@@ -111,7 +115,7 @@ public class BackendService : NSObject {
     }
     
     @objc func registerDevice() {
-      
+      print("BACKEND SERVICE REGISTER")
       Constants.backend.host = "https://hackathon.philamuseum.org";
       Constants.backend.apiKey = "4gde81EEcwNBEXHqSjlr1XhcmkwusRmSGnWicAyX4YS3ML47EfYQwEyzyY38";
       

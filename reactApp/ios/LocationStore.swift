@@ -66,11 +66,10 @@ public class LocationStore {
         return location
     }
     
-    public func locationForCLLocation(location: CLLocation, ignoreFloors : Bool = false) -> Location? {
-        print("I AM GETTING HERE")
+    public func locationForCLLocation(location: CLLocation, ignoreFloors : Bool = true) -> Location? {
         if let floor = Constants.floors.enumFromCLFloor(floor: location.floor) {
             // we have floor information
-            //print("we found floor info: \(floor)")
+//            print("we found floor info: \(floor)")
             for storedLocation in self.locations {
                 // we're on the same floor and we actually have coordinates
                 if storedLocation.floor == floor && storedLocation.coordinates != nil {
@@ -82,6 +81,7 @@ public class LocationStore {
         }
         else if ignoreFloors {
             // we don't have (valid) floor information and we want to ignore floors
+            print(location.coordinate)
             for storedLocation in self.locations {
                 if storedLocation.coordinates != nil { // hack a static floor in here for testing purposes
                     if location.coordinate.contained(by: storedLocation.coordinates!) {
@@ -117,9 +117,7 @@ public class LocationStore {
             }
         }
     }
-    
-    
-    
+  
     // http://stackoverflow.com/questions/27880650/swift-extract-regex-matches
     private func matches(for regex: String, in text: String) -> [String] {
         

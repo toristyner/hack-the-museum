@@ -49,8 +49,7 @@ public class GalleryLocationManager : NSObject  {
         get {
             if self.locationSensingMethod == Constants.locationSensing.method.apple {
                 if self.lastLocation != nil {
-                    var loc = LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
-                    return loc
+                    return LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
                 }
             }
             return nil

@@ -7,10 +7,9 @@
 //
 
 // GalleryLocationManagerBridge
-#import <React/RCTBridgeModule.h>
 #import "mobileFramework.h"
-
-
+#import <React/RCTBridgeModule.h>
+#import <React/RCTLog.h>
 
 @interface RCT_EXTERN_MODULE(GalleryLocationManager, NSObject)
   - (dispatch_queue_t)methodQueue
@@ -26,6 +25,7 @@
   RCT_EXTERN_METHOD(requestPermissions)
   RCT_EXTERN_METHOD(startLocationRanging)
   RCT_EXTERN_METHOD(addEvent:(NSString *)name location:(NSString *)location date:(nonnull NSNumber *)date callback: (RCTResponseSenderBlock)callback);
+
 @end
 
 @interface RCT_EXTERN_MODULE(BackendService, NSObject)
@@ -39,6 +39,7 @@
     return YES;
   }
 
-  RCT_EXTERN_METHOD(requestPermissions)
-  RCT_EXTERN_METHOD(registerDevice)
+  RCT_EXTERN_METHOD(retrieveGeolocationData:(RCTResponseSenderBlock)callback)
+
 @end
+

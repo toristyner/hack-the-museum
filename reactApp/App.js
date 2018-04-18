@@ -22,44 +22,57 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+const galleryLocationsRetrieved = 'Gallery Locations have been retrieved'
+const galleryLocationsLoading = 'Gallery Locations loading'
+const locationRangingEnabled = 'Location ranging is enabled'
+const locationRangingStart = 'Start Location Ranging in Swift'
+
 type Props = {};
+
 export default class App extends Component<Props> {
   
+  state = {
+    galleryLocationsRetrieved: false,
+    locationRangingEnabled: false,
+  }
+
   componentDidMount = () => {
 
-    // BackendService.registerDevice()
     GalleryLocationManager.requestPermissions()
-    BackendService.requestPermissions()
-  
-    // Swift callback example
-    // GalleryLocationManager.addEvent("One", "Two", 3, (res) => {
-    //   console.log("RESPONSE FROM SWIFT", res)
-    // });
+    BackendService.retrieveGeolocationData(res => {
+      this.setState({ galleryLocationsRetrieved: true })
+    })
   }
 
   startLocationRanging = () => {
-    BackendService.registerDevice()
     GalleryLocationManager.startLocationRanging()
+    this.setState({locationRangingEnabled: true })
   }
 
+  getBackendStatus = () => this.state.galleryLocationsRetrieved ? galleryLocationsRetrieved : galleryLocationsLoading
+  getButtonText = () => this.state.locationRangingEnabled ? locationRangingEnabled : locationRangingStart
+
   render() {
+    
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
-          <TouchableOpacity
-            onPress={() => this.startLocationRanging()}
-            style={styles.button}
-          >
-            <Text style={styles.text}>Start Location Ranging in Swift</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          disabled={this.state.locationRangingEnabled}
+          onPress={this.startLocationRanging}
+          style={this.state.locationRangingEnabled ? { ...styles.button,  ...styles.disabled } : { ...styles.button }}
+        >
+          <Text style={styles.text}>{this.getButtonText()}</Text>
+        </TouchableOpacity>
+        <Text>{this.getBackendStatus()}</Text>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -70,10 +83,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#b042f4',
     margin: 10
   },
+  disabled: {
+    backgroundColor: 'grey'
+  },
   text: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
     color: 'white'
   },
-});
+};
