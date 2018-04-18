@@ -1,10 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   NativeModules,
   NativeEventEmitter,
@@ -12,10 +6,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from 'react-native';
+  View,
+} from 'react-native'
 
-// Exposed swift classes to react native 
+// Exposed swift classes to react native
 const { GalleryLocationManager, BackendService } = NativeModules
 
 const galleryLocationsRetrieved = 'Gallery Locations have been retrieved'
@@ -23,10 +17,9 @@ const galleryLocationsLoading = 'Gallery Locations loading'
 const locationRangingEnabled = 'Location ranging is enabled'
 const locationRangingStart = 'Start Location Ranging in Swift'
 
-type Props = {};
-var testEventName = 'test';
+type Props = {}
+var testEventName = 'test'
 export default class App extends Component<Props> {
-  
   state = {
     galleryLocationsRetrieved: false,
     galleriesVisited: [],
@@ -34,14 +27,17 @@ export default class App extends Component<Props> {
   }
 
   componentDidMount = () => {
-    // We need to know the users location 
+    // We need to know the users location
     GalleryLocationManager.requestPermissions()
 
     // Native swift will emit an event when a new gallery has been identified based on
     // the users location, subscribe to this event
     const galleryChangeEvent = new NativeEventEmitter(GalleryLocationManager)
-    const galleryChangeSubscription = galleryChangeEvent.addListener('GalleryLocationChanged', this.handleGalleryLocationChange);
-    
+    const galleryChangeSubscription = galleryChangeEvent.addListener(
+      'GalleryLocationChanged',
+      this.handleGalleryLocationChange
+    )
+
     // Native swift is keeping a store of all gallery locations to compare the users location to
     BackendService.retrieveGeolocationData(res => {
       this.setState({ galleryLocationsRetrieved: true })
@@ -51,7 +47,7 @@ export default class App extends Component<Props> {
   // Tell the native swift to start tracking changes in the users location
   startLocationRanging = () => {
     GalleryLocationManager.startLocationRanging()
-    this.setState({locationRangingEnabled: true })
+    this.setState({ locationRangingEnabled: true })
   }
 
   // Handle the change event emitted by swift
@@ -61,29 +57,32 @@ export default class App extends Component<Props> {
     this.setState({ galleriesVisited })
   }
 
-  getBackendStatus = () => this.state.galleryLocationsRetrieved ? galleryLocationsRetrieved : galleryLocationsLoading
-  getButtonText = () => this.state.locationRangingEnabled ? locationRangingEnabled : locationRangingStart
+  getBackendStatus = () =>
+    this.state.galleryLocationsRetrieved ? galleryLocationsRetrieved : galleryLocationsLoading
+
+  getButtonText = () =>
+    this.state.locationRangingEnabled ? locationRangingEnabled : locationRangingStart
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
+        <Text style={styles.welcome}>Welcome to React Native!</Text>
         <TouchableOpacity
           disabled={this.state.locationRangingEnabled}
           onPress={this.startLocationRanging}
-          style={this.state.locationRangingEnabled ? { ...styles.button,  ...styles.disabled } : { ...styles.button }}
+          style={
+            this.state.locationRangingEnabled
+              ? { ...styles.button, ...styles.disabled }
+              : { ...styles.button }
+          }
         >
           <Text style={styles.text}>{this.getButtonText()}</Text>
         </TouchableOpacity>
         <Text>{this.getBackendStatus()}</Text>
         <Text>Galleries Visited:</Text>
-        {
-          this.state.galleriesVisited.map( gallery => <Text key={gallery}>{gallery}</Text>)
-        }
+        {this.state.galleriesVisited.map(gallery => <Text key={gallery}>{gallery}</Text>)}
       </View>
-    );
+    )
   }
 }
 
@@ -96,15 +95,15 @@ const styles = {
   },
   button: {
     backgroundColor: '#b042f4',
-    margin: 10
+    margin: 10,
   },
   disabled: {
-    backgroundColor: 'grey'
+    backgroundColor: 'grey',
   },
   text: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-    color: 'white'
+    color: 'white',
   },
-};
+}
