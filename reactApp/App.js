@@ -53,7 +53,8 @@ export default class App extends Component<Props> {
   getButtonText = () => this.state.locationRangingEnabled ? locationRangingEnabled : locationRangingStart
 
   render() {
-    
+    // CLLocationCoordinate2D(latitude: 40.759211000000001, longitude: -73.984638000000004)
+// CLLocationCoordinate2D(latitude: 40.759211000000001, longitude: -73.984638000000004)
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>

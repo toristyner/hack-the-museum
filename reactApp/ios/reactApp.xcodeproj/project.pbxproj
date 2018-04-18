@@ -378,6 +378,7 @@
 		562DED4620857E2600ACB7A8 /* QueueController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueController.swift; sourceTree = "<group>"; };
 		562DED4A2085865700ACB7A8 /* mobileFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mobileFramework.h; sourceTree = "<group>"; };
 		564729832086BF0B00CDAF5A /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		564729B220878C2100CDAF5A /* reactApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = reactApp.entitlements; path = reactApp/reactApp.entitlements; sourceTree = "<group>"; };
 		564FC5FB2083F42B00E919F6 /* GalleryLocationManagerBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GalleryLocationManagerBridge.m; path = reactApp/GalleryLocationManagerBridge.m; sourceTree = "<group>"; };
 		564FC6502083F5F800E919F6 /* reactApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "reactApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		564FC6512083F5F900E919F6 /* LocationAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAsset.swift; sourceTree = "<group>"; };
@@ -541,6 +542,7 @@
 		13B07FAE1A68108700A75B9A /* reactApp */ = {
 			isa = PBXGroup;
 			children = (
+				564729B220878C2100CDAF5A /* reactApp.entitlements */,
 				562DED4A2085865700ACB7A8 /* mobileFramework.h */,
 				562DED4620857E2600ACB7A8 /* QueueController.swift */,
 				562DED2020857E2600ACB7A8 /* QueueControllerDelegate.swift */,
@@ -786,6 +788,14 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = R6769Y3V59;
 						LastSwiftMigration = 0930;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
