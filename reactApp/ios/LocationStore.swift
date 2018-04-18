@@ -50,22 +50,6 @@ public class LocationStore {
         }
     }
     
-    public func locationForBeacon(beacon: Beacon) -> Location? {
-        guard let alias = beacon.alias else { return nil }
-        var cleanedAlias = alias
-        
-        let aliasMatches = matches(for: "[_][A-Z]{1}", in: alias)
-        if aliasMatches.count > 0 {
-            
-            for replacement in Constants.beacons.validAliasReplacements {
-                cleanedAlias = cleanedAlias.replacingOccurrences(of: replacement, with: "") as String
-            }
-        }
-        
-        let location = findLocationByNameOrUnitId(name: cleanedAlias)
-        return location
-    }
-    
     public func locationForCLLocation(location: CLLocation, ignoreFloors : Bool = true) -> Location? {
         if let floor = Constants.floors.enumFromCLFloor(floor: location.floor) {
             // we have floor information

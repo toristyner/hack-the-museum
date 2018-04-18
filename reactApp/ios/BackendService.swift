@@ -69,7 +69,7 @@ public class BackendService : NSObject {
         }
     }
     
-    @objc public func retrieveGeolocationData(_ callback: @escaping RCTResponseSenderBlock) -> Void {
+    @objc public func retrieveGeolocationData(_ completion: @escaping RCTResponseSenderBlock) -> Void {
       
         Constants.backend.host = "https://hackathon.philamuseum.org";
         Constants.backend.apiKey = "4gde81EEcwNBEXHqSjlr1XhcmkwusRmSGnWicAyX4YS3ML47EfYQwEyzyY38";
@@ -95,9 +95,9 @@ public class BackendService : NSObject {
                                         try FeatureStore.sharedInstance.load(fromData: data!, type: .geojson, completion: {
                                             if let asset = FeatureStore.sharedInstance.getAsset(for: .geojson) as? GeoJSONAsset {
                                                 LocationStore.sharedInstance.load(fromAsset: asset)
-                                              callback([["didFetchLocations": true]])
+                                              completion([["didFetchLocations": true]])
                                             } else {
-                                                print("Error retrieving GeoJSON asset from FeatureStore")
+                                              print("Error retrieving GeoJSON asset from FeatureStore")
                                             }
                                         })
                                     } catch {

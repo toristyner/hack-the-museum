@@ -37,11 +37,9 @@ public class GalleryLocationManager : RCTEventEmitter  {
     }
   
     // Returns an array of your named events
-  override public func supportedEvents() -> [String]! {
+    override public func supportedEvents() -> [String]! {
       return ["GalleryLocationChanged"]
     }
-  
-    public var beaconRegion: CLBeaconRegion?
   
     internal var locationSensingMethod : String?
     
@@ -54,9 +52,9 @@ public class GalleryLocationManager : RCTEventEmitter  {
             if self.locationSensingMethod == Constants.locationSensing.method.apple {
                 if self.lastLocation != nil {
                     // for testing
-//                    let testLocation = CLLocation(latitude: 39.965186632142064, longitude: -75.1815766902897)
-//                    return LocationStore.sharedInstance.locationForCLLocation(location: testLocation)
-                    return LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
+                    let testLocation = CLLocation(latitude: 39.965186632142064, longitude: -75.1815766902897)
+                    return LocationStore.sharedInstance.locationForCLLocation(location: testLocation)
+//                    return LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
                 }
             }
             return nil
@@ -77,12 +75,12 @@ public class GalleryLocationManager : RCTEventEmitter  {
         self.locationManager.startUpdatingHeading()
     }
   
-    // example of swift func with callbak
-    @objc func addEvent(_ name: String, location: String, date: NSNumber, callback: (NSArray) -> () ) -> Void {
-      // Date is ready to use!
-      NSLog("%@ %@ %@", name, location, date)
-      callback([["name": "113"]])
-    }
+//    // example of swift func with callbak
+//    @objc func addEvent(_ name: String, location: String, date: NSNumber, callback: (NSArray) -> () ) -> Void {
+//      // Date is ready to use!
+//      NSLog("%@ %@ %@", name, location, date)
+//      callback([["name": "113"]])
+//    }
   
     @objc public func startLocationRanging() {
       if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.authorizedWhenInUse) {
@@ -125,13 +123,6 @@ public class GalleryLocationManager : RCTEventEmitter  {
         }
     }
   
-    internal func beaconRanged(major: Int, minor: Int, UUID: UUID) {
-        let store = BeaconStore.sharedInstance
-    
-        store.markInRange(major: major, minor: minor, UUID: UUID)
-        
-    }
-    
 }
 
 extension GalleryLocationManager: CLLocationManagerDelegate {
@@ -151,17 +142,5 @@ extension GalleryLocationManager: CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         self.delegate?.locationManager(locationManager: self, didUpdateHeading: newHeading)
     }
-    
-    public func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
-        
-        let beacons = beacons.filter{ $0.proximity != CLProximity.unknown }
-        
-        if let closestBeacon = beacons.first {
-            // we really only look for beacons within our defined UUID
-            if closestBeacon.proximityUUID == Constants.beacons.defaultUUID {
-                beaconRanged(major: closestBeacon.major.intValue, minor: closestBeacon.minor.intValue, UUID: region.proximityUUID)
-            }
-        }
-        
-    }
+  
 }

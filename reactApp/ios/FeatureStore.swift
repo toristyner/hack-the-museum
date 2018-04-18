@@ -48,9 +48,7 @@ public class FeatureStore {
             
             var asset : Any?
             
-            if type == .beacon {
-                asset = BeaconAsset(JSON: JSON) as Any
-            } else if type == .location {
+            if type == .location {
                 asset = LocationAsset(JSON: JSON) as Any
             } else if type == .edge {
                 asset = EdgeAsset(JSON: JSON) as Any
@@ -75,9 +73,7 @@ public class FeatureStore {
             
             var asset : Any?
             
-            if type == .beacon {
-                asset = BeaconAsset(JSON: JSON) as Any
-            } else if type == .location {
+            if type == .location {
                 asset = LocationAsset(JSON: JSON) as Any
             } else if type == .edge {
                 asset = EdgeAsset(JSON: JSON) as Any
@@ -98,9 +94,6 @@ public class FeatureStore {
     public func getAsset(for type: FeatureStoreType) -> Any? {
         
         for asset in self.assets {
-            if let a = asset as? BeaconAsset, type == .beacon {
-                return a
-            }
             if let a = asset as? LocationAsset, type == .location {
                 return a
             }

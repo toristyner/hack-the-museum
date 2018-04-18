@@ -8,45 +8,34 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import { GalleryLocationService } from '../utils'
+import PropTypes from 'prop-types'
 
-// Exposed swift classes to react native
-const { GalleryLocationManager, BackendService } = NativeModules
 
 const galleryLocationsRetrieved = 'Gallery Locations have been retrieved'
 const galleryLocationsLoading = 'Gallery Locations loading'
 const locationRangingEnabled = 'Location ranging is enabled'
 const locationRangingStart = 'Start Location Ranging in Swift'
 
-type Props = {}
-var testEventName = 'test'
-export default class App extends Component<Props> {
+
+class GalleryLocationFinder extends Component {
+  
+  static propTypes = {
+    galleryLocationsRetrieved: PropTypes.bool,
+    locationRangingEnabled: PropTypes.bool
+  }
+
   state = {
-    galleryLocationsRetrieved: false,
     galleriesVisited: [],
-    locationRangingEnabled: false,
   }
 
   componentDidMount = () => {
-    // We need to know the users location
-    GalleryLocationManager.requestPermissions()
-
-    // Native swift will emit an event when a new gallery has been identified based on
-    // the users location, subscribe to this event
-    const galleryChangeEvent = new NativeEventEmitter(GalleryLocationManager)
-    const galleryChangeSubscription = galleryChangeEvent.addListener(
-      'GalleryLocationChanged',
-      this.handleGalleryLocationChange
-    )
-
-    // Native swift is keeping a store of all gallery locations to compare the users location to
-    BackendService.retrieveGeolocationData(res => {
-      this.setState({ galleryLocationsRetrieved: true })
-    })
+    GalleryLocationService.listenToGalleryLocationChange(this.handleGalleryLocationChange)
   }
 
   // Tell the native swift to start tracking changes in the users location
   startLocationRanging = () => {
-    GalleryLocationManager.startLocationRanging()
+    GalleryLocationService.startLocationRanging()
     this.setState({ locationRangingEnabled: true })
   }
 
@@ -107,3 +96,5 @@ const styles = {
     color: 'white',
   },
 }
+
+export default GalleryLocationFinder

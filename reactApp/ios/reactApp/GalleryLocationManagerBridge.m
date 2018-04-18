@@ -26,13 +26,21 @@
 
   RCT_EXTERN_METHOD(requestPermissions)
   RCT_EXTERN_METHOD(startLocationRanging)
-  RCT_EXTERN_METHOD(addEvent:(NSString *)name location:(NSString *)location date:(nonnull NSNumber *)date callback: (RCTResponseSenderBlock)callback);
+//  RCT_EXTERN_METHOD(addEvent:(NSString *)name location:(NSString *)location date:(nonnull NSNumber *)date callback: (RCTResponseSenderBlock)callback);
   RCT_EXTERN_METHOD(supportedEvents)
 
 @end
 
 @interface RCT_EXTERN_MODULE(ReactNativeEventEmitter, RCTEventEmitter)
+  - (dispatch_queue_t)methodQueue
+  {
+    return dispatch_get_main_queue();
+  }
 
+  + (BOOL)requiresMainQueueSetup
+  {
+    return YES;
+  }
   RCT_EXTERN_METHOD(supportedEvents)
 
 @end
