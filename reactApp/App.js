@@ -23,7 +23,6 @@ const galleryLocationsLoading = 'Gallery Locations loading'
 const locationRangingEnabled = 'Location ranging is enabled'
 const locationRangingStart = 'Start Location Ranging in Swift'
 
-
 type Props = {};
 var testEventName = 'test';
 export default class App extends Component<Props> {
@@ -35,20 +34,27 @@ export default class App extends Component<Props> {
   }
 
   componentDidMount = () => {
-
+    // We need to know the users location 
     GalleryLocationManager.requestPermissions()
-    const myModuleEvt = new NativeEventEmitter(GalleryLocationManager)
-    const galleryChangeSubscription = myModuleEvt.addListener('GalleryLocationChanged', this.handleGalleryLocationChange);
+
+    // Native swift will emit an event when a new gallery has been identified based on
+    // the users location, subscribe to this event
+    const galleryChangeEvent = new NativeEventEmitter(GalleryLocationManager)
+    const galleryChangeSubscription = galleryChangeEvent.addListener('GalleryLocationChanged', this.handleGalleryLocationChange);
+    
+    // Native swift is keeping a store of all gallery locations to compare the users location to
     BackendService.retrieveGeolocationData(res => {
       this.setState({ galleryLocationsRetrieved: true })
     })
   }
 
+  // Tell the native swift to start tracking changes in the users location
   startLocationRanging = () => {
     GalleryLocationManager.startLocationRanging()
     this.setState({locationRangingEnabled: true })
   }
 
+  // Handle the change event emitted by swift
   handleGalleryLocationChange = galleryName => {
     const galleriesVisited = [...this.state.galleriesVisited]
     galleriesVisited.push(galleryName)
