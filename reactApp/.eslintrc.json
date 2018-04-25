@@ -3,6 +3,7 @@
     "browser": true,
     "es6": true
   },
+  "parser": "babel-eslint",
   "extends": "airbnb",
   "parserOptions": {
     "ecmaFeatures": {
@@ -11,7 +12,7 @@
     },
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["react", "babel"],
   "rules": {
     "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
