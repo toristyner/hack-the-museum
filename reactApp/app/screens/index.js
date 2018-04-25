@@ -1,3 +1,7 @@
-import GalleryLocationFinder from './GalleryLocationFinder'
+import Detail from './Detail'
+import Home from './Home'
 
-export { GalleryLocationFinder }
+export {
+  Detail,
+  Home,
+}

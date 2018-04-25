@@ -52,7 +52,7 @@ public class GalleryLocationManager : RCTEventEmitter  {
             if self.locationSensingMethod == Constants.locationSensing.method.apple {
                 if self.lastLocation != nil {
                     // for testing
-                    let testLocation = CLLocation(latitude: 39.965186632142064, longitude: -75.1815766902897)
+                    let testLocation = CLLocation(latitude: 39.964792733, longitude: -75.181071223)
                     return LocationStore.sharedInstance.locationForCLLocation(location: testLocation)
 //                    return LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
                 }

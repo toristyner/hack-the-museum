@@ -1,54 +1,62 @@
 import React, { Component } from 'react'
-import {
-  NativeModules,
-  View,
-} from 'react-native'
+import { NativeModules, View } from 'react-native'
 import { createStore, applyMiddleware, compose } from 'redux'
+import createSagaMiddleware from 'redux-saga'
+import { createLogger } from 'redux-logger'
 import { Provider } from 'react-redux'
+import { persistStore, persistCombineReducers } from 'redux-persist'
+import { PersistGate } from 'redux-persist/es/integration/react'
+import { NativeRouter, Route, Link } from 'react-router-native'
+import { withRouter } from 'react-router-dom'
 import reducer from './reducers/index'
 import sagas from './sagas'
 import * as actions from './actionTypes'
 
-import { GalleryLocationFinder } from './screens/'
+import { Home, Detail } from './screens/'
 import { GalleryLocationService } from './utils'
 
 class App extends Component {
-  
   constructor(props) {
     super(props)
+
     if (props.store === undefined) {
-      this.appStore = createStore(reducer)
+      const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__ })
+      const sagaMiddleware = createSagaMiddleware()
+      const middleware = [loggerMiddleware, sagaMiddleware]
+
+      this.appStore = createStore(reducer, applyMiddleware(...middleware))
+      // create the persistor
+      this.persistor = persistStore(this.appStore, {})
+      this.persistor.purge(() => console.log('purged'))
+      sagaMiddleware.run(sagas)
     }
   }
 
   componentDidMount = () => this.initNativeServices()
 
-  initNativeServices = () => {
-    // We need to know the users location
-    GalleryLocationService.requestLocationPermissions()
-    // Load the galleries into the native app store
-    GalleryLocationService.loadGeoLocationData(res => {
-      this.appStore.dispatch({ type: actions.SET_GALLERY_LOCATIONS_RETRIEVED, payload: res.didFetchLocations })
-    })
-  }
+  initNativeServices = () => this.appStore.dispatch({ type: actions.INIT_GALLERY_SERVICES })
 
   render() {
     const store = this.props.store !== undefined ? this.props.store : this.appStore
-    console.log(store)
-    return (<Provider store={store}>
-      <View style={styles.container}>
-        <GalleryLocationFinder />
-      </View>
-    </Provider>)
+    return (
+      <Provider store={store}>
+        <PersistGate persistor={this.persistor}>
+          <NativeRouter>
+            <View style={styles.container}>
+              <Route exact path="/" render={props => <Home {...props} />} />
+              <Route exact path="/detail" component={Detail} />
+            </View>
+          </NativeRouter>
+        </PersistGate>
+      </Provider>
+    )
   }
 }
 
 const styles = {
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    marginTop: 30
   },
   button: {
     backgroundColor: '#b042f4',
