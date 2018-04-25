@@ -1,0 +1,6 @@
+{
+    "eslint.options": {
+        "configFile": "./reactApp/.eslintrc.json"
+    }, 
+    "prettier.eslintIntegration": true
+}

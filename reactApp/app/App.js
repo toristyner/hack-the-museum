@@ -56,7 +56,7 @@ class App extends Component {
 const styles = {
   container: {
     flex: 1,
-    marginTop: 30
+    marginTop: 30,
   },
   button: {
     backgroundColor: '#b042f4',
