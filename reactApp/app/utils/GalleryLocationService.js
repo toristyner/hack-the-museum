@@ -13,9 +13,15 @@ const GalleryLocationService = {
 
   // Load the galleries into the native app store
   // Used for comparison with users location
-  loadGeoLocationData: (handleGeolocationData) => {
-    BackendService.retrieveGeolocationData(handleGeolocationData)
-  },
+  loadGeoLocationData: () => new Promise((resolve, reject) => {
+    try {
+      BackendService.retrieveGeolocationData((response) => {
+        resolve(response && response.didFetchLocations)
+      })
+    } catch (e) {
+      resolve(false)
+    }
+  }),
 
   // Tell the native swift to start tracking changes in the users location
   startLocationRanging: () => GalleryLocationManager.startLocationRanging(),
