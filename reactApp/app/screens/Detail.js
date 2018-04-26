@@ -2,21 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withLoader, GalleryTile } from '../components/'
 import { GalleryLocationService } from '../utils'
-import {
-  Image,
-  FlatList,
-  Text,
-  View,
-  ScrollView,
-  StyleSheet,
-} from 'react-native'
+import { Image, FlatList, Text, View, ScrollView, StyleSheet } from 'react-native'
 import { styles } from '../styles'
 import * as actions from '../actionTypes'
 
 class Detail extends Component {
-  static propTypes = {
-
-  }
+  static propTypes = {}
 
   constructor() {
     super()
@@ -27,9 +18,9 @@ class Detail extends Component {
     }
   }
 
-  componentWillMount = () => { }
+  componentWillMount = () => {}
 
-  componentWillReceiveProps = (nextProps) => { }
+  componentWillReceiveProps = (nextProps) => {}
 
   render() {
     const {
@@ -53,8 +44,7 @@ export const mapStateToProps = ({ galleryInfo }) => ({
   detail: galleryInfo.detail,
 })
 
-export const mapDispatchToProps = dispatch => ({
-})
+export const mapDispatchToProps = dispatch => ({})
 
 const myStyles = StyleSheet.create({
   container: {

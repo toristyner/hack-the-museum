@@ -2,21 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withLoader, GalleryTile } from '../components/'
 import { GalleryLocationService } from '../utils'
-import {
-  Image,
-  FlatList,
-  Text,
-  View,
-  ScrollView,
-  StyleSheet,
-} from 'react-native'
+import { Image, FlatList, Text, View, ScrollView, StyleSheet } from 'react-native'
 import { styles } from '../styles'
 import * as actions from '../actionTypes'
 
 class Home extends Component {
-  static propTypes = {
-
-  }
+  static propTypes = {}
 
   constructor() {
     super()
@@ -46,15 +37,22 @@ class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>{`${this.state.galleryData.Gallery.length ? this.state.galleryData.Gallery : 'No Gallery Found'}`}</Text>
+        <Text style={styles.title}>{`${
+          this.state.galleryData.Gallery.length
+            ? this.state.galleryData.Gallery
+            : 'No Gallery Found'
+        }`}
+        </Text>
         <FlatList
           contentContainerStyle={myStyles.list}
           data={this.state.galleryData.Objects}
           keyExtractor={(item, index) => `art${item.ObjectID}`}
-          renderItem={({ item }) => (<GalleryTile
-            onPress={() => this.goToArtDetail(item)}
-            photoUrl={item.Thumbnail}
-          />)}
+          renderItem={({ item }) => (
+            <GalleryTile
+              onPress={() => this.goToArtDetail(item)}
+              photoUrl={item.Thumbnail}
+            />
+          )}
         />
       </View>
     )
@@ -70,18 +68,20 @@ export const mapStateToProps = ({ galleryInfo }) => ({
 })
 
 export const mapDispatchToProps = dispatch => ({
-  handleGalleryLocationChange: galleryId => dispatch({
-    type: actions.GALLERY_LOCATION_CHANGED,
-    payload: {
-      galleryId,
-    },
-  }),
-  selectArt: art => dispatch({
-    type: actions.LOAD_ART_DETAIL,
-    payload: {
-      ...art,
-    },
-  }),
+  handleGalleryLocationChange: galleryId =>
+    dispatch({
+      type: actions.GALLERY_LOCATION_CHANGED,
+      payload: {
+        galleryId,
+      },
+    }),
+  selectArt: art =>
+    dispatch({
+      type: actions.LOAD_ART_DETAIL,
+      payload: {
+        ...art,
+      },
+    }),
 })
 
 const myStyles = StyleSheet.create({
