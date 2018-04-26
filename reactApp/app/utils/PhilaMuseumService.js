@@ -10,7 +10,6 @@ export const getGalleryItems = (galleryId) => {
     })
 }
 
-
 export const getItemDetail = (galleryId, artId) => {
   const url = `${baseUrl}${galleryId}/artwork/${artId}`
   return fetch(url)

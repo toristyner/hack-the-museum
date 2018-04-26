@@ -8,23 +8,22 @@ import {
   Text,
   View,
   ScrollView,
-  StyleSheet
+  StyleSheet,
 } from 'react-native'
 import { styles } from '../styles'
 import * as actions from '../actionTypes'
 
 class Home extends Component {
-
   static propTypes = {
 
   }
 
-  constructor(){
+  constructor() {
     super()
     this.state = {
       galleryData: {
-        Gallery: ''
-      }
+        Gallery: '',
+      },
     }
   }
 
@@ -34,8 +33,8 @@ class Home extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const { data, currentGallery } = nextProps
-    if(currentGallery && data && data[currentGallery]) {
-      this.setState({ galleryData: data[currentGallery]})
+    if (currentGallery && data && data[currentGallery]) {
+      this.setState({ galleryData: data[currentGallery] })
     }
   }
 
@@ -51,18 +50,18 @@ class Home extends Component {
         <FlatList
           contentContainerStyle={myStyles.list}
           data={this.state.galleryData.Objects}
-          keyExtractor={(item, index) => `art${item.ObjectID}` }
-          renderItem={({item}) => <GalleryTile
+          keyExtractor={(item, index) => `art${item.ObjectID}`}
+          renderItem={({ item }) => (<GalleryTile
             onPress={() => this.goToArtDetail(item)}
             photoUrl={item.Thumbnail}
-            />}
+          />)}
         />
       </View>
     )
   }
 }
 
-export const mapStateToProps = ({galleryInfo}) => ({
+export const mapStateToProps = ({ galleryInfo }) => ({
   currentGallery: galleryInfo.currentGalleryId,
   data: galleryInfo.data,
   galleriesVisited: galleryInfo.history,
@@ -71,26 +70,26 @@ export const mapStateToProps = ({galleryInfo}) => ({
 })
 
 export const mapDispatchToProps = dispatch => ({
-  handleGalleryLocationChange: (galleryId) => dispatch({
+  handleGalleryLocationChange: galleryId => dispatch({
     type: actions.GALLERY_LOCATION_CHANGED,
     payload: {
-      galleryId
-    }
+      galleryId,
+    },
   }),
-  selectArt: (art) => dispatch({
+  selectArt: art => dispatch({
     type: actions.LOAD_ART_DETAIL,
     payload: {
-      ...art
-    }
-  })
+      ...art,
+    },
+  }),
 })
 
 const myStyles = StyleSheet.create({
   list: {
     justifyContent: 'center',
     flexDirection: 'row',
-    flexWrap: 'wrap'
-  }
+    flexWrap: 'wrap',
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLoader(Home))

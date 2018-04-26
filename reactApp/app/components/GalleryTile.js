@@ -26,14 +26,14 @@ const Tile = props => (
     onPress={props.onPress}
     style={myStyle.container}
   >
-    {
-      props.photoUrl
-        ? <Image
-          style={{ height: baseDim, width: baseDim }}
-          source={{ uri: props.photoUrl }}
-        />
-        : <ActivityIndicator active />
-    }
+    {props.photoUrl ? (
+      <Image
+        style={{ height: baseDim, width: baseDim }}
+        source={{ uri: props.photoUrl }}
+      />
+    ) : (
+      <ActivityIndicator active />
+    )}
   </TouchableOpacity>
 )
 Tile.propTypes = {

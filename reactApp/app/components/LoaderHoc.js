@@ -26,9 +26,7 @@ const Loader = (props) => {
   return (
     <View style={style}>
       <ActivityIndicator active />
-      <Text style={myStyle.loaderText}>
-        {`${props.message}...`}
-      </Text>
+      <Text style={myStyle.loaderText}>{`${props.message}...`}</Text>
     </View>
   )
 }
@@ -52,6 +50,5 @@ const LoaderHOC = WrappedComponent => props => (
     <WrappedComponent {...props} />
   </View>
 )
-
 
 export default LoaderHOC

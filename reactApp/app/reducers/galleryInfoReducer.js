@@ -67,4 +67,3 @@ export default function galleryInfo(state = initialState, action) {
     return state
   }
 }
-

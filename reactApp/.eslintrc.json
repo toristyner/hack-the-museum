@@ -12,12 +12,13 @@
     },
     "sourceType": "module"
   },
-  "plugins": ["react", "babel"],
+  "plugins": ["react"],
   "rules": {
     "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
+    "react/jsx-max-props-per-line": [1, { "maximum": 1 }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
   }
 }

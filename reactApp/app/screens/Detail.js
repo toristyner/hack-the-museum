@@ -8,37 +8,38 @@ import {
   Text,
   View,
   ScrollView,
-  StyleSheet
+  StyleSheet,
 } from 'react-native'
 import { styles } from '../styles'
 import * as actions from '../actionTypes'
 
 class Detail extends Component {
-
   static propTypes = {
 
   }
 
-  constructor(){
+  constructor() {
     super()
     this.state = {
       galleryData: {
-        Gallery: ''
-      }
+        Gallery: '',
+      },
     }
   }
 
-  componentWillMount = () => {}
+  componentWillMount = () => { }
 
-  componentWillReceiveProps = (nextProps) => {}
+  componentWillReceiveProps = (nextProps) => { }
 
   render() {
-    const { Title, Artist, GalleryLabel, photoUrl } = this.props.detail
+    const {
+      Title, Artist, GalleryLabel, photoUrl,
+    } = this.props.detail
     return (
       <ScrollView contentContainerStyle={myStyles.container}>
         <Text style={myStyles.title}>{Title}</Text>
-        <Image 
-          style={{width: '70%', height: '70%'}}
+        <Image
+          style={{ width: '70%', height: '70%' }}
           source={{ uri: photoUrl }}
         />
         <Text style={myStyles.title}>{Artist}</Text>
@@ -48,8 +49,8 @@ class Detail extends Component {
   }
 }
 
-export const mapStateToProps = ({galleryInfo}) => ({
-  detail: galleryInfo.detail
+export const mapStateToProps = ({ galleryInfo }) => ({
+  detail: galleryInfo.detail,
 })
 
 export const mapDispatchToProps = dispatch => ({
@@ -63,11 +64,11 @@ const myStyles = StyleSheet.create({
   },
   title: {
     ...styles.title,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   text: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLoader(Detail))
