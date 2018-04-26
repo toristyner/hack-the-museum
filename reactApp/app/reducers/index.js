@@ -1,4 +1,3 @@
-
 // import { combineReducers } from 'redux'
 import { AsyncStorage } from 'react-native'
 import { persistCombineReducers } from 'redux-persist'
@@ -10,7 +9,6 @@ const persistorConfig = {
   blacklist: [],
   storage: AsyncStorage, // default
 }
-
 
 export default persistCombineReducers(persistorConfig, {
   galleryInfo,

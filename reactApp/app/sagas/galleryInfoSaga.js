@@ -50,7 +50,6 @@ function* requestGalleryItems() {
   yield put({ type: actions.STOP_LOADER })
 }
 
-
 function* galleryInfoSaga() {
   yield takeLatest(actions.INIT_GALLERY_SERVICES, initGalleryServices)
   yield takeLatest(actions.GALLERY_LOCATION_CHANGED, handleGalleryLocationChange)
