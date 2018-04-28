@@ -1,0 +1,39 @@
+{
+  "name": "hack-the-museum-server",
+  "version": "1.0.0",
+  "description": "Use the museum's hackathon resources and gather crowd-contributed data to create a game of guide that leads visitors to discover objects in an entertaining and engaging way.  Your solution should grow with repeated use by employing techniques such as machine learning, recommendation systems, and/or crowd-sourcing.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "npx nodemon src/index.js --exec 'babel-node --presets es2015,stage-2'",
+    "build": "babel src -d dist --presets es2015,stage-2 && cp .env dist/src",
+    "serve": "forever start dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toristyner/hack-the-museum.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/toristyner/hack-the-museum/issues"
+  },
+  "homepage": "https://github.com/toristyner/hack-the-museum#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "strcmp": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "forever": "^0.15.3",
+    "nodemon": "^1.17.3",
+    "prettier": "^1.12.0"
+  }
+}
