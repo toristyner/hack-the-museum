@@ -1,12 +1,22 @@
 import axios from 'axios'
 import spotifyAPI from './api'
+import spotifyCache from '../services/cache'
 
 export default {
   detail
 }
 
-function detail(id) {
-  return spotifyAPI.request({
-    url: `/artists/${id}`
-  })
+async function detail(id) {
+  let artist = await spotifyCache.getJson(id)
+  if (!artist) {
+    artist = await spotifyAPI.request({
+      url: `/artists/${id}`
+    })
+
+    if (artist) {
+      spotifyCache.setJson(id, artist)
+    }
+  }
+
+  return artist || {}
 }

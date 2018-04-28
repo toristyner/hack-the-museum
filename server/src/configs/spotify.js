@@ -3,6 +3,7 @@ export default {
   authUrl: 'https://accounts.spotify.com/authorize',
   tokenUrl: 'https://accounts.spotify.com/api/token',
   userUrl: 'https://api.spotify.com/v1/me',
+  cacheNamespace: 'spotify',
   auth: {
     id: process.env.SPOTIFY_CLIENT_ID,
     secret: process.env.SPOTIFY_SECRET_KEY,

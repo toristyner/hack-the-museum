@@ -4,7 +4,7 @@ import authService from './auth'
 
 const { apiUrl, auth } = spotifyConfig
 const { refresh } = auth
-const MAX_RETRIES = 1
+const MAX_RETRIES = 2
 
 class API {
   constructor() {

@@ -6,7 +6,9 @@
   "scripts": {
     "start": "npx nodemon src/index.js --exec 'babel-node --presets es2015,stage-2'",
     "build": "babel src -d dist --presets es2015,stage-2 && cp .env dist/src",
-    "serve": "forever start dist/index.js",
+    "serve": "npx nodemon start dist/index.js",
+    "docker:prod": "docker build -f docker/prod/Dockerfile -t htm-api . && docker-compose -f docker-compose.yml up -d",
+    "docker:dev": "docker build -f docker/dev/Dockerfile -t htm-api . && docker-compose -f docker-compose.yml up",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,9 +24,11 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
+    "bull": "^3.4.0",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "ioredis": "^3.2.2",
     "strcmp": "^1.0.0"
   },
   "devDependencies": {
