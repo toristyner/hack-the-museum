@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
+import { Image, Text, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { withLoader, GalleryTile } from '../components/'
-import { GalleryLocationService } from '../utils'
-import { Image, FlatList, Text, View, ScrollView, StyleSheet } from 'react-native'
+import { withLoader } from '../components/'
 import { styles } from '../styles'
 import * as actions from '../actionTypes'
 
@@ -11,20 +10,15 @@ class Detail extends Component {
 
   constructor() {
     super()
-    this.state = {
-      galleryData: {
-        Gallery: '',
-      },
-    }
+    this.state = {}
   }
-
-  componentWillMount = () => {}
-
-  componentWillReceiveProps = (nextProps) => {}
 
   render() {
     const {
-      Title, Artist, GalleryLabel, photoUrl,
+      Title,
+      Artist,
+      GalleryLabel,
+      photoUrl,
     } = this.props.detail
     return (
       <ScrollView contentContainerStyle={myStyles.container}>
@@ -50,7 +44,7 @@ const myStyles = StyleSheet.create({
   container: {
     ...styles.container,
     margin: 5,
-    marginTop: 40,
+    marginTop: 10,
   },
   title: {
     ...styles.title,

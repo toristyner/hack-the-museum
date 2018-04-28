@@ -1,19 +1,17 @@
 import React, { Component } from 'react'
-import { NativeModules, View } from 'react-native'
-import { createStore, applyMiddleware, compose } from 'redux'
+import { View } from 'react-native'
+import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { createLogger } from 'redux-logger'
 import { Provider } from 'react-redux'
-import { persistStore, persistCombineReducers } from 'redux-persist'
+import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/es/integration/react'
-import { NativeRouter, Route, Link } from 'react-router-native'
-import { withRouter } from 'react-router-dom'
+import { NativeRouter, Route } from 'react-router-native'
 import reducer from './reducers/index'
 import sagas from './sagas'
 import * as actions from './actionTypes'
-
 import { Home, Detail } from './screens/'
-import { GalleryLocationService } from './utils'
+import { styles } from './styles'
 
 class App extends Component {
   constructor(props) {
@@ -42,7 +40,7 @@ class App extends Component {
       <Provider store={store}>
         <PersistGate persistor={this.persistor}>
           <NativeRouter>
-            <View style={styles.container}>
+            <View style={{ flex: 1, paddingTop: 30 }}>
               <Route
                 exact
                 path="/"
@@ -59,26 +57,6 @@ class App extends Component {
       </Provider>
     )
   }
-}
-
-const styles = {
-  container: {
-    flex: 1,
-    marginTop: 30,
-  },
-  button: {
-    backgroundColor: '#b042f4',
-    margin: 10,
-  },
-  disabled: {
-    backgroundColor: 'grey',
-  },
-  text: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    color: 'white',
-  },
 }
 
 export default App

@@ -10,15 +10,14 @@ const initialState = {
 
 export default function galleryInfo(state = initialState, action) {
   switch (action.type) {
-  case actions.LOAD_ART_DETAIL: {
+  case actions.REQUEST_ART_DETAIL: {
     return {
-      detail: {
-        ...action.payload,
-        photoUrl: action.payload.Image,
-      },
+      ...state,
+      detail: {},
+      isLoading: true,
     }
   }
-  case actions.RECEIVE_GALLERY_ART: {
+  case actions.RECEIVE_ART_LIST: {
     return {
       ...state,
       data: {
@@ -30,13 +29,24 @@ export default function galleryInfo(state = initialState, action) {
       isLoading: false,
     }
   }
+  case actions.RECEIVE_ART_DETAIL: {
+    return {
+      ...state,
+      detail: {
+        id: action.payload.id,
+        photoUrl: action.payload.data.Image,
+        ...action.payload.data,
+      },
+      isLoading: false,
+    }
+  }
   case actions.GALLERY_LOCATION_CHANGED: {
     return {
       ...state,
       history: [action.payload.galleryId, ...state.history],
     }
   }
-  case actions.UPDATE_CURRENT_GALLERY:
+  case actions.UPDATE_ART_LIST:
     return {
       ...state,
       currentGalleryId: action.payload.galleryId,

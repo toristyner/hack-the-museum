@@ -1,6 +1,6 @@
 const baseUrl = 'http://167.99.5.121:3000/api/museum/locations/'
 
-export const getGalleryItems = (galleryId) => {
+export const getArtList = (galleryId) => {
   console.log('Get Gallery Items')
   const url = `${baseUrl}${galleryId}`
   return fetch(url)
@@ -10,8 +10,9 @@ export const getGalleryItems = (galleryId) => {
     })
 }
 
-export const getItemDetail = (galleryId, artId) => {
+export const getArtDetail = (galleryId, artId) => {
   const url = `${baseUrl}${galleryId}/artwork/${artId}`
+  console.log(url)
   return fetch(url)
     .then(response => response.json())
     .catch((err) => {
@@ -19,7 +20,17 @@ export const getItemDetail = (galleryId, artId) => {
     })
 }
 
+export const getPopularGenres = () => {
+  const url = `${baseUrl}/genres`
+  return fetch(url)
+    .then(response => response.json())
+    .catch((err) => {
+      console.log('getPopularGenres', err)
+    })
+}
+
+
 export default {
-  getGalleryItems,
-  getItemDetail,
+  getArtList,
+  getArtDetail,
 }

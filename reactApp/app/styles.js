@@ -18,4 +18,11 @@ export const styles = {
     fontSize: 16,
     paddingBottom: 5,
   },
+  button: {
+    backgroundColor: '#b042f4',
+    margin: 10,
+  },
+  disabled: {
+    backgroundColor: 'grey',
+  },
 }
