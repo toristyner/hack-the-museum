@@ -81,7 +81,7 @@ class RedisClient {
   }
 
   getKey(key) {
-    return `${this.namespace}:${key.toLowerCase()}`
+    return `${this.namespace}:${key.toString().toLowerCase()}`
   }
 }
 

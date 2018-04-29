@@ -1,6 +1,7 @@
 import queue from '../../../shared/queue'
 import artworkJob from './artwork'
 import museumApi from '../services/api'
+import cache from '../services/cache'
 
 const bufferTime = 500
 
@@ -13,14 +14,16 @@ async function job(job, done) {
   try {
     setTimeout(() => {
       museumApi.getLocation(locationId).then(({ ObjectIDs: objects = [] }) => {
-        const ids = objects.map(id => ({
+        const objectIds = objects.map(id => ({
           locationId,
           objectId: id
         }))
 
-        artworkJob.addArtwork(ids)
+        cache.set(locationId, objects.join())
 
-        done(null)
+        artworkJob.addArtwork(objectIds)
+
+        done()
       })
     }, bufferTime)
   } catch (error) {

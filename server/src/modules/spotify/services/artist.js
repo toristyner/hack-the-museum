@@ -8,6 +8,7 @@ export default {
 
 async function detail(id) {
   let artist = await spotifyCache.getJson(id)
+
   if (!artist) {
     artist = await spotifyAPI.request({
       url: `/artists/${id}`
