@@ -2,4 +2,4 @@ node_modules/
 react-app/
 mobileFramework/
 mobileFrameworkDemo/
-
+.DS_Store
