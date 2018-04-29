@@ -1,47 +1,29 @@
 import express from 'express'
 import cache from '../services/cache'
+import artworkService from '../services/artwork'
 
 const router = express.Router()
 
 router.get('/locations/:id', loctionDetail)
-router.get('/locations/:id/artwork/:artworkId', loctionArtworkDetail)
 
 async function loctionDetail(req, res) {
   const { id } = req.params
 
   try {
-    const locationItems = await cache.hmget(id)
+    const locationItems = await cache.get(id)
 
     if (!locationItems) {
       return res.status(404).send()
     }
 
-    const objects = Object.values(locationItems)
+    const objects = await artworkService.getByIds(locationItems.split(','))
+
     const { Gallery, GalleryShort } = objects[0].Location
 
     const data = {
       Gallery,
       GalleryShort,
-      Objects: objects.map(obj => ({
-        ...obj,
-        Location: null
-      }))
-    }
-
-    return res.status(200).json(data)
-  } catch (error) {
-    return res.status(500).json(error)
-  }
-}
-
-async function loctionArtworkDetail(req, res) {
-  const { id, artworkId } = req.params
-
-  try {
-    const data = await cache.hmget(id, artworkId)
-
-    if (!data) {
-      return res.status(404).send()
+      Objects: objects.map(artworkService.formatList)
     }
 
     return res.status(200).json(data)
