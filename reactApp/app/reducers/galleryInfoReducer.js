@@ -49,7 +49,7 @@ export default function galleryInfo(state = initialState, action) {
   case actions.UPDATE_ART_LIST:
     return {
       ...state,
-      currentGalleryId: action.payload.galleryId,
+      currentGalleryId: action.payload.galleryId.toString(),
       isLoading: true,
       loadingMessage: `Loading data for Gallery ${action.payload.galleryId}`,
     }

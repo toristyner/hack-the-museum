@@ -9,7 +9,7 @@ import * as actions from '../actionTypes'
 
 class Home extends Component {
   static propTypes = {
-    currentGallery: PropTypes.number,
+    currentGallery: PropTypes.string,
     data: PropTypes.object,
     handleGalleryLocationChange: PropTypes.func.isRequired,
     selectArt: PropTypes.func.isRequired,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Image, Text, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { withLoader } from '../components/'
+import { ArtImage, GenreSlider, SongList, withLoader } from '../components/'
 import { styles } from '../styles'
 import * as actions from '../actionTypes'
 
@@ -19,16 +19,20 @@ class Detail extends Component {
       Artist,
       GalleryLabel,
       photoUrl,
+      Dated,
+      Style
     } = this.props.detail
     return (
       <ScrollView contentContainerStyle={myStyles.container}>
-        <Text style={myStyles.title}>{Title}</Text>
-        <Image
-          style={{ width: '70%', height: '70%' }}
-          source={{ uri: photoUrl }}
+        <ArtImage 
+          photoUrl={photoUrl}
+          title={Title}
+          artist={Artist}
+          style={Style}
+          year={Dated}
         />
-        <Text style={myStyles.title}>{Artist}</Text>
-        <Text style={myStyles.text}>{GalleryLabel}</Text>
+        <GenreSlider />
+        <SongList />
       </ScrollView>
     )
   }
@@ -42,9 +46,7 @@ export const mapDispatchToProps = dispatch => ({})
 
 const myStyles = StyleSheet.create({
   container: {
-    ...styles.container,
-    margin: 5,
-    marginTop: 10,
+    flex: 1,
   },
   title: {
     ...styles.title,

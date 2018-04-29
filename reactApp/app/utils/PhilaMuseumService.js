@@ -12,7 +12,6 @@ export const getArtList = (galleryId) => {
 
 export const getArtDetail = (galleryId, artId) => {
   const url = `${baseUrl}${galleryId}/artwork/${artId}`
-  console.log(url)
   return fetch(url)
     .then(response => response.json())
     .catch((err) => {

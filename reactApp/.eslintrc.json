@@ -16,6 +16,7 @@
   "rules": {
     "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
+    "no-use-before-define": ["error", "never"],
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
     "react/jsx-max-props-per-line": [1, { "maximum": 1 }],

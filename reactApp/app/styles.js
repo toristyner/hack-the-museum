@@ -6,7 +6,16 @@ export const styles = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
+  },
+  bold: {
+    fontWeight: 'bold',
+    fontSize: 18
+  },
+  boldItalic: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
   },
   title: {
     textAlign: 'center',
