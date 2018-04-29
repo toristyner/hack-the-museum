@@ -10,12 +10,13 @@ services:
       - "3000:3000"
     links:
       - redis
+      - mongo
   redis:
     image: redis
     command: redis-server --appendonly yes
     container_name: "htm-redis"
     volumes:
-      - ./data:/data
+      - ./data:/data/redis
     ports:
       - "6379:6379"
     command: [
@@ -25,3 +26,13 @@ services:
         --requirepass ${REDIS_PASSWORD}
       '
     ]
+  mongo:
+    image: mongo:3.0-wheezy
+    container_name: "htm-db"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "${MONGO_PORT}:${MONGO_PORT}"

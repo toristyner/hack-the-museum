@@ -5,7 +5,7 @@ import cache from '../services/cache'
 const addArtwork = queue('Add Artwork')
 addArtwork.process(job)
 
-const bufferTime = 1000
+const bufferTime = 500
 
 async function job(job, done) {
   const { locationId, objectId } = job.data
@@ -22,7 +22,7 @@ async function job(job, done) {
       const artwork = await museumApi.getArtwork(objectId)
 
       if (artwork) {
-        cache.hmset(locationId, objectId, artwork)
+        cache.setJson(objectId, artwork)
       }
 
       done(null)

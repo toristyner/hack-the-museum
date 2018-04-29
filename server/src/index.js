@@ -4,11 +4,13 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 
 /* Configs */
-
 import appConfig from './configs/app'
 
 /* Routes */
 import moduleRoutes from './modules'
+
+/* DB */
+import db from './db'
 
 const app = express()
 
@@ -27,5 +29,6 @@ moduleRoutes.forEach(ctrl => {
 })
 
 app.listen(appConfig.port, function() {
+  db.connect()
   console.log(`App listening on port ${appConfig.port}`)
 })
