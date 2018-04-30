@@ -1,4 +1,5 @@
 import { Genre } from '../../../db/models'
+import genreService from '../services/genre'
 
 class GenreModel {
   constructor() {
@@ -7,12 +8,8 @@ class GenreModel {
 
   getTop() {
     return new Promise(resolve => {
-      this.genre.find({}).then(data => {
-        const genres = data
-          .sort((a, b) => b.popularity - a.popularity)
-          .map(({ name, popularity }) => ({ name, popularity }))
-
-        resolve(genres)
+      this.genre.find({}).then(genres => {
+        resolve(genreService.sortMap(genres))
       })
     })
   }

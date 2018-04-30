@@ -31,7 +31,8 @@ const songSchema = mongoose.Schema({
   name: String,
   uri: String,
   artist: artistSchema,
-  images: [imageSchema]
+  images: [imageSchema],
+  popularity: { type: Number, default: 1 }
 })
 
 const artworkSchema = mongoose.Schema({

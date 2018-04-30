@@ -6,6 +6,7 @@ const router = express.Router()
 
 router.get('/artwork/:id', artworkDetail)
 router.post('/artwork/:id/song', addSongToArtwork)
+router.post('/artwork/:id/song/like', artworkLikeSong)
 router.post('/artwork/recommendations/genres', getArtworkForGenres)
 
 async function artworkDetail(req, res) {
@@ -38,6 +39,23 @@ async function addSongToArtwork(req, res) {
 
   try {
     const artist = await artworkService.addSong(id, song)
+
+    return res.status(200).json(artist)
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+}
+
+async function artworkLikeSong(req, res) {
+  const song = req.body
+  const { id } = req.params
+
+  if (!song) {
+    return res.status(400).send()
+  }
+
+  try {
+    const artist = await artworkService.likeSong(id, song)
 
     return res.status(200).json(artist)
   } catch (error) {
