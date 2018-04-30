@@ -18,6 +18,11 @@ export const styles = {
     fontWeight: 'bold',
     fontStyle: 'italic',
   },
+  grid: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   title: {
     textAlign: 'center',
     fontSize: 18,

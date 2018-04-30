@@ -42,7 +42,7 @@ export const getReccommendations = (genres) => {
 }
 
 export const getPopularGenres = () => {
-  const url = `${baseUrl}/genres`
+  const url = `${baseUrl}api/spotify/genres`
   return fetch(url)
     .then(response => response.json())
     .catch((err) => {
@@ -53,4 +53,5 @@ export const getPopularGenres = () => {
 export default {
   getArtList,
   getArtDetail,
+  getPopularGenres
 }

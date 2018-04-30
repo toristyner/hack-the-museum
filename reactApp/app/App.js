@@ -10,7 +10,7 @@ import { NativeRouter, Route } from 'react-router-native'
 import reducer from './reducers/index'
 import sagas from './sagas'
 import * as actions from './actionTypes'
-import { Home, Detail } from './screens/'
+import { Home, Detail, Profile } from './screens/'
 import { styles } from './styles'
 
 class App extends Component {
@@ -48,8 +48,13 @@ class App extends Component {
                 />
                 <Route
                   exact
-                  path="/"
+                  path="/detail"
                   component={props => <Detail history={props.history} />}
+                />
+                <Route
+                  exact
+                  path="/"
+                  component={props => <Profile />}
                 />
             </View>
           </NativeRouter>

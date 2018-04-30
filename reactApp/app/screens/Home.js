@@ -50,7 +50,7 @@ class Home extends Component {
         }`}
         </Text>
         <FlatList
-          contentContainerStyle={myStyles.list}
+          contentContainerStyle={styles.grid}
           data={this.state.galleryData.Objects}
           keyExtractor={item => `art${item.ObjectID}`}
           renderItem={({ item }) => (
@@ -86,14 +86,6 @@ export const mapDispatchToProps = dispatch => ({
       type: actions.REQUEST_ART_DETAIL,
       payload: { id },
     }),
-})
-
-const myStyles = StyleSheet.create({
-  list: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLoader(Home))

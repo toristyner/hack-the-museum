@@ -1,10 +1,8 @@
 import React from 'react'
-import { Image, FlatList, Text, View, Dimensions } from 'react-native'
+import { Image, FlatList, Text, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { styles } from '../styles'
 import { SongListItem, IconButton } from '.';
-
-const { width, height } = Dimensions.get('window')
 
 const SongList = props => (
   <View style={myStyle.container}>
