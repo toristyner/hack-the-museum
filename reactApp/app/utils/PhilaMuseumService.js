@@ -4,22 +4,25 @@ export const getArtList = (galleryId) => {
   console.log('Get Gallery Items')
   const url = `${baseUrl}api/museum/locations/${galleryId}`
   return fetch(url)
-    .then(response => {
-      console.log(response)
+  .then(response => {
+    if(response.status === 200) {
       return response.json()
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    } else {
+      throw response;
+    }
+  })
 }
 
 export const getArtDetail = (galleryId, artId) => {
-  // const url = `${baseUrl}api/museum/artwork/${artId}`
-  const url = 'http://167.99.5.121:3000/api/museum/artwork/42394'
+  const url = `${baseUrl}api/museum/artwork/${artId}`
+  // const url = 'http://167.99.5.121:3000/api/museum/artwork/42394'
   return fetch(url)
-    .then(response => response.json())
-    .catch((err) => {
-      console.log(err)
+    .then(response => {
+      if(response.status === 200) {
+        return response.json()
+      } else {
+        throw response
+      }
     })
 }
 

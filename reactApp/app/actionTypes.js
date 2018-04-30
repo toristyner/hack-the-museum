@@ -5,7 +5,8 @@ export const REQUEST_ART_DETAIL = 'REQUEST_ART_DETAIL'
 export const RECEIVE_ART_DETAIL = 'RECEIVE_ART_DETAIL'
 export const RECEIVE_ART_LIST = 'RECEIVE_ART_LIST'
 export const STOP_LOADER = 'STOP_LOADER'
-export const UPDATE_ART_LIST = 'UPDATE_ART_LIST'
+export const REQUEST_ART_LIST = 'REQUEST_ART_LIST'
+export const API_ERROR = 'API_ERROR'
 
 // Song List
 export const ADD_SONG = 'ADD_SONG'
