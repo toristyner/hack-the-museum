@@ -7,13 +7,21 @@ class ArtworkService {
   getSavedById(id) {
     return new Promise(async resolve => {
       const artwork = await artworkModel.findById(id)
-      const { genres = [] } = artwork
+      const genreNames = Object.keys(artwork.genres)
 
-      if (genres.length) {
-        artwork.genres = genres.map(({ name }) => ({
-          name,
-          popularity: 1 // TODO: Should be dynaimic
-        }))
+      if (genreNames.length) {
+        artwork.genres = genreNames
+          .reduce(
+            (genreList, name) => [
+              ...genreList,
+              {
+                name,
+                popularity: artwork.genres[name]
+              }
+            ],
+            []
+          )
+          .sort((a, b) => b.popularity - a.popularity)
       }
 
       resolve(artwork)

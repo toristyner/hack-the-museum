@@ -23,7 +23,7 @@ const artistSchema = mongoose.Schema({
 const genreSchema = mongoose.Schema({
   name: String,
   artworkIds: [String],
-  popularity: Number
+  popularity: { type: Number, default: 1 }
 })
 
 const songSchema = mongoose.Schema({
@@ -37,7 +37,7 @@ const songSchema = mongoose.Schema({
 const artworkSchema = mongoose.Schema({
   id: String,
   songs: [songSchema],
-  genres: [genreSchema]
+  genres: mongoose.Schema.Types.Mixed
 })
 
 export const Artwork = () => mongoose.model(models.artwork, artworkSchema)

@@ -5,7 +5,7 @@ import cache from '../services/cache'
 const addArtwork = queue('Add Artwork')
 addArtwork.process(job)
 
-const bufferTime = 500
+const bufferTime = 1500
 
 async function job(job, done) {
   const { locationId, objectId } = job.data

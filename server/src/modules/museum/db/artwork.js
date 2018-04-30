@@ -8,7 +8,7 @@ class ArtworkModel {
   findById(id) {
     return new Promise(resolve => {
       this.artwork.findOne({ id }).then(data => {
-        const { songs, genres, id } = data || {}
+        const { songs = [], genres = {}, id } = data || {}
         resolve({ songs, genres, id })
       })
     })
@@ -16,14 +16,22 @@ class ArtworkModel {
 
   async add({ id, song, genres }) {
     return new Promise(resolve => {
+      const genreIncrements = genres.reduce(
+        (incs, genre) => ({
+          ...incs,
+          ['genres.' + genre.name]: 1
+        }),
+        {}
+      )
+
       this.artwork.findOneAndUpdate(
         { id },
         {
           id,
           $addToSet: {
-            genres: genres,
             songs: song
-          }
+          },
+          $inc: genreIncrements
         },
         { upsert: true, new: true },
         (err, data) => {

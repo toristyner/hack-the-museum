@@ -7,9 +7,12 @@ class GenreModel {
 
   getTop() {
     return new Promise(resolve => {
-      this.genre.find({}).then(genres => {
-        // TODO: make popularity dynamic
-        resolve(genres.map(({ name }) => ({ name, popularity: 1 })))
+      this.genre.find({}).then(data => {
+        const genres = data
+          .sort((a, b) => b.popularity - a.popularity)
+          .map(({ name, popularity }) => ({ name, popularity }))
+
+        resolve(genres)
       })
     })
   }
@@ -18,7 +21,11 @@ class GenreModel {
     return new Promise(resolve => {
       this.genre.findOneAndUpdate(
         { name },
-        { name, $addToSet: { artworkIds: artworkId } },
+        {
+          name,
+          $addToSet: { artworkIds: artworkId },
+          $inc: { popularity: 1 }
+        },
         { upsert: true, new: true },
         (err, data) => {
           resolve(data)
