@@ -1,12 +1,27 @@
 export const darkGray = '#3f3f3f'
 export const lightGray = '#ccc'
+export const white = '#fff'
 
 export const styles = {
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
+  },
+  bold: {
+    fontWeight: 'bold',
+    fontSize: 16
+  },
+  boldItalic: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+  },
+  grid: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   title: {
     textAlign: 'center',
@@ -18,4 +33,16 @@ export const styles = {
     fontSize: 16,
     paddingBottom: 5,
   },
+  button: {
+    backgroundColor: '#b042f4',
+    margin: 10,
+  },
+  disabled: {
+    backgroundColor: 'grey',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }
 }

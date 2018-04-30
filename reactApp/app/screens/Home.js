@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { FlatList, Text, View, StyleSheet } from 'react-native'
+import PropTypes from 'prop-types'
 import { withLoader, GalleryTile } from '../components/'
 import { GalleryLocationService } from '../utils'
-import { Image, FlatList, Text, View, ScrollView, StyleSheet } from 'react-native'
 import { styles } from '../styles'
 import * as actions from '../actionTypes'
 
 class Home extends Component {
-  static propTypes = {}
+  static propTypes = {
+    currentGallery: PropTypes.string,
+    data: PropTypes.object,
+    handleGalleryLocationChange: PropTypes.func.isRequired,
+    selectArt: PropTypes.func.isRequired,
+  }
 
   constructor() {
     super()
@@ -29,8 +35,8 @@ class Home extends Component {
     }
   }
 
-  goToArtDetail = (item) => {
-    this.props.selectArt(item)
+  goToArtDetail = (id) => {
+    this.props.selectArt(id)
     this.props.history.push('detail')
   }
 
@@ -38,18 +44,18 @@ class Home extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{`${
-          this.state.galleryData.Gallery.length
+          this.state.galleryData.Gallery && this.state.galleryData.Gallery.length
             ? this.state.galleryData.Gallery
             : 'No Gallery Found'
         }`}
         </Text>
         <FlatList
-          contentContainerStyle={myStyles.list}
+          contentContainerStyle={styles.grid}
           data={this.state.galleryData.Objects}
-          keyExtractor={(item, index) => `art${item.ObjectID}`}
+          keyExtractor={item => `art${item.ObjectID}`}
           renderItem={({ item }) => (
             <GalleryTile
-              onPress={() => this.goToArtDetail(item)}
+              onPress={() => this.goToArtDetail(item.ObjectID)}
               photoUrl={item.Thumbnail}
             />
           )}
@@ -75,21 +81,11 @@ export const mapDispatchToProps = dispatch => ({
         galleryId,
       },
     }),
-  selectArt: art =>
+  selectArt: id =>
     dispatch({
-      type: actions.LOAD_ART_DETAIL,
-      payload: {
-        ...art,
-      },
+      type: actions.REQUEST_ART_DETAIL,
+      payload: { id },
     }),
-})
-
-const myStyles = StyleSheet.create({
-  list: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLoader(Home))

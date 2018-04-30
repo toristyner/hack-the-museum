@@ -2,6 +2,7 @@
 import { AsyncStorage } from 'react-native'
 import { persistCombineReducers } from 'redux-persist'
 import galleryInfo from './galleryInfoReducer'
+import musicProfile from './profileReducer'
 
 // Config for the state persistor
 const persistorConfig = {
@@ -12,4 +13,6 @@ const persistorConfig = {
 
 export default persistCombineReducers(persistorConfig, {
   galleryInfo,
+  musicProfile
 })
+
