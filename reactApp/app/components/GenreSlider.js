@@ -1,30 +1,31 @@
 import React from 'react'
 import { Image, ScrollView, Text, View, Dimensions } from 'react-native'
 import PropTypes from 'prop-types'
+import { GenreTile } from './'
 import { styles } from '../styles'
+import { getGenreColor } from '../utils/ColorPicker';
 
 const { width, height } = Dimensions.get('window')
 
 const GenreSlider = props => (
   <View style={myStyle.container}>
-    <Text style={styles.bold}>{`Top Genres`}</Text>
-    <ScrollView
-      contentContainerStyle={myStyle.container}
-      horizontal
-    >
+    <Text style={styles.bold}>{`Genres`}</Text>
+    <ScrollView horizontal>
       <View style={myStyle.scroller}>
       {
-        [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map((m,i) => <View
+        props.genres.map((g,i) => (
+          <GenreTile
             key={`g${i}`}
-            style={ { width: 100, height: 100, borderWidth: 1, margin: 5}}
-          />)
+            name={g.name}
+            onPress={() => props.onPressGenre(g)}
+            color={getGenreColor()}
+          />
+        ))
       }
       </View>
     </ScrollView>
-    <Text style={myStyle.seeMore}>{`See More`}</Text>
   </View>
 )
-
 
 const myStyle = {
   container: {
@@ -32,11 +33,6 @@ const myStyle = {
   },
   scroller: {
     flexDirection: 'row'
-  },
-  seeMore: {
-    textAlign: 'right',
-    paddingRight: 10,
-    ...styles.bold
   }
 }
 

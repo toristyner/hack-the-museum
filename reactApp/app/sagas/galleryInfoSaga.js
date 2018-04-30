@@ -41,6 +41,7 @@ function* requestArtList() {
   const galleryData = yield select(state => state.galleryInfo.data)
   if (galleryData[galleryId] === undefined) {
     const response = yield call(PhilaMuseumService.getArtList, galleryId)
+    console.log(response)
     yield put({
       type: actions.RECEIVE_ART_LIST,
       payload: { ...response, id: galleryId } || [],

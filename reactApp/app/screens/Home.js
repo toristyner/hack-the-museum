@@ -44,7 +44,7 @@ class Home extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{`${
-          this.state.galleryData.Gallery.length
+          this.state.galleryData.Gallery && this.state.galleryData.Gallery.length
             ? this.state.galleryData.Gallery
             : 'No Gallery Found'
         }`}

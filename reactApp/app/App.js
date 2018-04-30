@@ -41,16 +41,16 @@ class App extends Component {
         <PersistGate persistor={this.persistor}>
           <NativeRouter>
             <View style={{ flex: 1, paddingTop: 30 }}>
-              <Route
-                exact
-                path="/home"
-                render={props => <Home {...props} />}
-              />
-              <Route
-                exact
-                path="/"
-                component={Detail}
-              />
+                <Route
+                  exact
+                  path="/home"
+                  render={props => <Home history={props.history} />}
+                />
+                <Route
+                  exact
+                  path="/"
+                  component={props => <Detail history={props.history} />}
+                />
             </View>
           </NativeRouter>
         </PersistGate>

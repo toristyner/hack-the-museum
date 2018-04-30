@@ -1,10 +1,10 @@
 import React from 'react'
 import { Image, Text, View, Dimensions } from 'react-native'
 import PropTypes from 'prop-types'
-import { lightGray } from '../styles'
+import { styles } from '../styles'
 
 const { width, height } = Dimensions.get('window')
-const imageHeight = height / 2.5
+const imageHeight = height / 3
 
 const ArtImage = props => (
   <View
@@ -17,7 +17,7 @@ const ArtImage = props => (
       />
     </View>
     <View style={myStyle.overlayContainer}>
-      <Text style={myStyle.boldItalic}>{`${props.title}`}</Text>
+      <Text style={styles.boldItalic}>{`${props.title}`}</Text>
       <Text style={myStyle.date}>{`${props.style}, ${props.year}`}</Text>
     </View>
   </View>
@@ -30,7 +30,7 @@ const myStyle = {
     height: imageHeight,
   },
   imageContainer: {
-    flex: 3,
+    flex: 4,
     alignItems: 'center'
   },
   overlayContainer: {

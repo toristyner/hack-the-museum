@@ -6,3 +6,7 @@ export const RECEIVE_ART_DETAIL = 'RECEIVE_ART_DETAIL'
 export const RECEIVE_ART_LIST = 'RECEIVE_ART_LIST'
 export const STOP_LOADER = 'STOP_LOADER'
 export const UPDATE_ART_LIST = 'UPDATE_ART_LIST'
+
+export const ADD_SONG = 'ADD_SONG'
+export const PLAY_SONG = 'PLAY_SONG'
+export const LIKE_SONG = 'LIKE_SONG'

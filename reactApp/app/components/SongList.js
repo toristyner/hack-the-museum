@@ -2,24 +2,29 @@ import React from 'react'
 import { Image, FlatList, Text, View, Dimensions } from 'react-native'
 import PropTypes from 'prop-types'
 import { styles } from '../styles'
-import { SongListItem } from '.';
+import { SongListItem, IconButton } from '.';
 
 const { width, height } = Dimensions.get('window')
 
-const songs = [{
-  id: 0
-}]
-
 const SongList = props => (
   <View style={myStyle.container}>
-    <Text style={myStyle.title}>{`Top Songs`}</Text>
+    <View style={myStyle.row}>
+      <Text style={myStyle.title}>{`Songs`}</Text>
+      <IconButton
+          name='ios-add'
+          size={28}
+          onPress={props.addSong}
+        />
+    </View>
     <FlatList
-      data={songs}
+      data={props.songs}
       keyExtractor={item => `song${item.id}`}
       renderItem={({ item }) => (
         <SongListItem 
-          title={'Song Title'}
-          subtitle={'Artist / Band Name'}
+          name={item.name}
+          artist={item.artist.name}
+          onLike={props.likeSong}
+          onPlay={props.playSong}
         />
       )}
     />
@@ -29,17 +34,20 @@ const SongList = props => (
 
 const myStyle = {
   container: {
-    padding: 10,
-    height: 200
+    paddingLeft: 10,
+    paddingRight: 10
   },
   title: {
     ...styles.bold,
-    marginBottom: 10
+  },
+  row: {
+    ...styles.row,
+    padding: 5
   },
   scroller: {
     flexDirection: 'column',
     margin: 10
-  }
+  },
 }
 
 SongList.propTypes = {

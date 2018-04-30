@@ -1,5 +1,6 @@
 export const darkGray = '#3f3f3f'
 export const lightGray = '#ccc'
+export const white = '#fff'
 
 export const styles = {
   container: {
@@ -10,7 +11,7 @@ export const styles = {
   },
   bold: {
     fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 16
   },
   boldItalic: {
     fontSize: 16,
@@ -34,4 +35,9 @@ export const styles = {
   disabled: {
     backgroundColor: 'grey',
   },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }
 }

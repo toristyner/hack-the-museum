@@ -1,20 +1,38 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
-import { styles } from '../styles'
+import { styles, lightGray, white } from '../styles'
+import { IconButton } from '.';
 
 const SongListItem = props => (
-  <View style={myStyle.container}>
-    <View
+  <View
+    style={myStyle.container}
+  >
+    <TouchableOpacity
       style={myStyle.playButton}
-    />
+      onPress={props.onPlay}
+    >
+      <Icon
+        color={white}
+        name="ios-play"
+        size={44}
+      />
+    </TouchableOpacity>
     <View style={myStyle.details}>
-      <Text style={styles.bold}>{props.title}</Text>
-      <Text style={styles.boldItalic}>{props.subtitle}</Text>
+      <Text style={styles.boldItalic}>{props.name}</Text>
+      <Text style={styles.bold}>{props.artist}</Text>
     </View>
     <View
       style={myStyle.rightIcon}
-    />
+    >
+      <IconButton
+        onPress={props.onLike}
+        color={lightGray}
+        name="md-thumbs-up"
+        size={30}
+      />
+    </View>
   </View>
 )
 
@@ -23,22 +41,33 @@ const myStyle = {
   container: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: 70,
-    borderWidth: 1,
+    backgroundColor: white,
+    height: 45,
+    margin: 10,
+    shadowOffset:{  width: 2,  height: 2,  },
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
   },
   details: {
-    alignItems: 'flex-start'
+    flex: 1,
+    paddingLeft: 10,
+    justifyContent: 'center'
   },
   playButton: {
-    width: 70,
-    height: 70,
-    borderRightWidth: 1
+    width: 45,
+    height: 45,
+    backgroundColor: lightGray,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   rightIcon: {
-    width: 70,
-    height: 70,
-    borderLeftWidth: 1
+    width: 45,
+    height: 45,
+    backgroundColor: white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderLeftWidth: 1,
+    borderColor: lightGray
   }
 }
 
