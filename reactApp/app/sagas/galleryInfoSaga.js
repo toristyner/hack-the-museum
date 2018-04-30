@@ -40,11 +40,18 @@ function* requestGalleryItems() {
   const galleryId = yield select(state => state.galleryInfo.currentGalleryId)
   const galleryData = yield select(state => state.galleryInfo.data)
   if (galleryData[galleryId] === undefined) {
-    const response = yield call(PhilaMuseumService.getGalleryItems, galleryId)
-    yield put({
-      type: actions.RECEIVE_GALLERY_ART,
-      payload: { ...response, id: galleryId } || [],
-    })
+    try {
+      const response = yield call(PhilaMuseumService.getGalleryItems, galleryId)
+      yield put({
+        type: actions.RECEIVE_GALLERY_ART,
+        payload: { ...response.json(), id: galleryId } || [],
+      })
+    } catch (err) {
+      yield put({
+        type: actions.API_ERROR,
+        payload: { ...err },
+      })
+    }
   }
 
   yield put({ type: actions.STOP_LOADER })

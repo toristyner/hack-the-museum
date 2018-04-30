@@ -4,20 +4,26 @@ import PropTypes from 'prop-types'
 import { lightGray } from '../styles'
 
 const { width } = Dimensions.get('window')
-const baseDim = (width - 20) / 2
+const baseDim = (width - 50) / 3
 const myStyle = {
   container: {
-    flex: 1,
     width: baseDim,
     height: baseDim,
-    backgroundColor: lightGray,
     margin: 2,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 2,
+    shadowOpacity: 0.5,
   },
   image: {
-    width: baseDim,
-    height: baseDim,
+    width: 114,
+    height: 114,
   },
 }
 
@@ -32,7 +38,11 @@ const Tile = props => (
         source={{ uri: props.photoUrl }}
       />
     ) : (
-      <ActivityIndicator active />
+      <ActivityIndicator
+        style={{
+        }}
+        active
+      />
     )}
   </TouchableOpacity>
 )
