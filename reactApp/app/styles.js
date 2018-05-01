@@ -2,6 +2,8 @@ export const darkGray = '#3f3f3f'
 export const lightGray = '#ccc'
 export const white = '#fff'
 
+export const numOfGalleryTilesPerRow = 3;
+
 export const styles = {
   container: {
     flex: 1,

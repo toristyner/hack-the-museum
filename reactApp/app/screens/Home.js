@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { FlatList, Text, View, StyleSheet } from 'react-native'
 import PropTypes from 'prop-types'
 import { withLoader, GalleryTile } from '../components/'
-import { GalleryLocationService } from '../utils'
-import { styles } from '../styles'
+import { GalleryLocationService, PhilaMuseumService } from '../utils'
+import { styles, numOfGalleryTilesPerRow } from '../styles'
 import * as actions from '../actionTypes'
 
 class Home extends Component {
@@ -24,8 +24,23 @@ class Home extends Component {
     }
   }
 
+  static renderGalleryTile({ item }) {
+    return (<GalleryTile
+        onPress={() => this.goToArtDetail(item.ObjectID)}
+        photoUrl={item.Thumbnail}
+      />
+    )
+  }
+
+  static galleryItemKeyExtractor(item) {
+    return `art${item.ObjectID}`
+  }
+
   componentWillMount = () => {
-    GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
+    // GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
+
+    // Just try it with a random gallery:
+    this.props.handleGalleryLocationChange(111)
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -37,12 +52,14 @@ class Home extends Component {
 
   goToArtDetail = (id) => {
     this.props.selectArt(id)
-    this.props.history.push('detail')
+    this.props.navigation.navigate('Detail')
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style ={{
+        paddingHorizontal: 10
+      }}>
         <Text style={styles.title}>{`${
           this.state.galleryData.Gallery && this.state.galleryData.Gallery.length
             ? this.state.galleryData.Gallery
@@ -50,15 +67,15 @@ class Home extends Component {
         }`}
         </Text>
         <FlatList
-          contentContainerStyle={styles.grid}
+          horizontal={false}
+          numColumns={numOfGalleryTilesPerRow}
+          columnWrapperStyle={{
+            justifyContent: 'space-between',
+            marginTop: 20
+          }}
           data={this.state.galleryData.Objects}
-          keyExtractor={item => `art${item.ObjectID}`}
-          renderItem={({ item }) => (
-            <GalleryTile
-              onPress={() => this.goToArtDetail(item.ObjectID)}
-              photoUrl={item.Thumbnail}
-            />
-          )}
+          keyExtractor={Home.galleryItemKeyExtractor}
+          renderItem={Home.renderGalleryTile}
         />
       </View>
     )

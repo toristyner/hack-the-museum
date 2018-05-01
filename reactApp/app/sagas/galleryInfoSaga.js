@@ -28,7 +28,7 @@ export function* handleGalleryLocationChange({ payload }) {
   const isValidGalleryUpdate = true
   if (isValidGalleryUpdate) {
     yield put({
-      type: actions.UPDATE_ART_LIST,
+      type: actions.REQUEST_ART_LIST,
       payload: {
         galleryId: 111,
       },
@@ -39,13 +39,19 @@ export function* handleGalleryLocationChange({ payload }) {
 function* requestArtList() {
   const galleryId = yield select(state => state.galleryInfo.currentGalleryId)
   const galleryData = yield select(state => state.galleryInfo.data)
-  if (galleryData[galleryId] === undefined) {
-    const response = yield call(PhilaMuseumService.getArtList, galleryId)
-    console.log(response)
-    yield put({
-      type: actions.RECEIVE_ART_LIST,
-      payload: { ...response, id: galleryId } || [],
-    })
+  if (!galleryData[galleryId] || !galleryData[galleryId].Objects) {
+    try {
+      const response = yield call(PhilaMuseumService.getArtList, galleryId)
+      yield put({
+        type: actions.RECEIVE_ART_LIST,
+        payload: { ...response, id: galleryId } || [],
+      })
+    } catch (err) {
+      yield put({
+        type: actions.API_ERROR,
+        payload: err,
+      })
+    }
   }
 
   yield put({ type: actions.STOP_LOADER })
@@ -71,7 +77,7 @@ function* requestArtDetail({ payload }) {
 function* galleryInfoSaga() {
   yield takeLatest(actions.INIT_GALLERY_SERVICES, initGalleryServices)
   yield takeLatest(actions.GALLERY_LOCATION_CHANGED, handleGalleryLocationChange)
-  yield takeLatest(actions.UPDATE_ART_LIST, requestArtList)
+  yield takeLatest(actions.REQUEST_ART_LIST, requestArtList)
   yield takeLatest(actions.REQUEST_ART_DETAIL, requestArtDetail)
 }
 

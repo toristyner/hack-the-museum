@@ -43,7 +43,7 @@ class App extends Component {
             <View style={{ flex: 1, paddingTop: 30 }}>
                 <Route
                   exact
-                  path="/home"
+                  path="/"
                   render={props => <Home history={props.history} />}
                 />
                 <Route
@@ -53,7 +53,7 @@ class App extends Component {
                 />
                 <Route
                   exact
-                  path="/"
+                  path="/profile"
                   component={props => <Profile />}
                 />
             </View>

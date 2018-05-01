@@ -1,17 +1,22 @@
 import React from 'react'
 import { Image, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native'
 import PropTypes from 'prop-types'
-import { lightGray } from '../styles'
+import { lightGray, numOfGalleryTilesPerRow } from '../styles'
 
 const { width } = Dimensions.get('window')
-const baseDim = (width - 20) / 2
+const baseDim = (width - 50) / numOfGalleryTilesPerRow
 const myStyle = {
   container: {
-    flex: 1,
     width: baseDim,
     height: baseDim,
-    backgroundColor: lightGray,
-    margin: 2,
+    backgroundColor: 'white',
+    shadowOpacity: 0.75,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowRadius: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
