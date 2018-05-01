@@ -2,7 +2,8 @@ export const darkGray = '#3f3f3f'
 export const lightGray = '#ccc'
 export const white = '#fff'
 
-export const numOfGalleryTilesPerRow = 3;
+export const numOfGalleryTilesPerRow = 3
+export const galleryBottomNavHeight = 60
 
 export const styles = {
   container: {
@@ -13,7 +14,7 @@ export const styles = {
   },
   bold: {
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
   },
   boldItalic: {
     fontSize: 16,
@@ -45,6 +46,6 @@ export const styles = {
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 }

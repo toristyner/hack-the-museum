@@ -7,14 +7,16 @@ import GenreSlider from './GenreSlider'
 import GenreTile from './GenreTile'
 import SongList from './SongList'
 import SongListItem from './SongListItem'
+import GalleryBottomNav from './GalleryBottomNav'
 
-export { 
+export {
   ArtImage,
   IconButton,
   GalleryTile,
+  GalleryBottomNav,
   GenreSlider,
   GenreTile,
   LoaderHoc as withLoader,
   SongList,
-  SongListItem
+  SongListItem,
 }
