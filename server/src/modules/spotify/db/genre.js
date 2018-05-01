@@ -1,4 +1,5 @@
 import { Genre } from '../../../db/models'
+import genreService from '../services/genre'
 
 class GenreModel {
   constructor() {
@@ -8,8 +9,7 @@ class GenreModel {
   getTop() {
     return new Promise(resolve => {
       this.genre.find({}).then(genres => {
-        // TODO: make popularity dynamic
-        resolve(genres.map(({ name }) => ({ name, popularity: 1 })))
+        resolve(genreService.sortMap(genres))
       })
     })
   }
@@ -18,7 +18,11 @@ class GenreModel {
     return new Promise(resolve => {
       this.genre.findOneAndUpdate(
         { name },
-        { name, $addToSet: { artworkIds: artworkId } },
+        {
+          name,
+          $addToSet: { artworkIds: artworkId },
+          $inc: { popularity: 1 }
+        },
         { upsert: true, new: true },
         (err, data) => {
           resolve(data)

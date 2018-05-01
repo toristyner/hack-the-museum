@@ -2,19 +2,18 @@ import artistService from '../../spotify/services/artist'
 import genreModel from '../../spotify/db/genre'
 import artworkModel from '../db/artwork'
 import cache from '../services/cache'
+import genreService from '../../spotify/services/genre'
+
+const popularitySort = (a, b) => b.popularity - a.popularity
 
 class ArtworkService {
   getSavedById(id) {
     return new Promise(async resolve => {
       const artwork = await artworkModel.findById(id)
-      const { genres = [] } = artwork
 
-      if (genres.length) {
-        artwork.genres = genres.map(({ name }) => ({
-          name,
-          popularity: 1 // TODO: Should be dynaimic
-        }))
-      }
+      artwork.genres = genreService.formatToList(artwork.genres)
+
+      artwork.songs = artwork.songs.sort(popularitySort)
 
       resolve(artwork)
     })
@@ -45,6 +44,29 @@ class ArtworkService {
       },
       genres
     })
+
+    artwork.genres = genreService.formatToList(artwork.genres)
+    artwork.songs = artwork.songs.sort(popularitySort)
+
+    return artwork
+  }
+
+  async likeSong(artworkId, data) {
+    const { id, artist } = data
+
+    const artistDetail = await artistService.detail(artist.id)
+    const genres = await Promise.all(
+      artistDetail.genres.map(genre => genreModel.addGenre(genre, artworkId))
+    )
+
+    const artwork = await artworkModel.likeSong({
+      id: artworkId,
+      songId: id,
+      genres
+    })
+
+    artwork.genres = genreService.formatToList(artwork.genres)
+    artwork.songs = artwork.songs.sort(popularitySort)
 
     return artwork
   }

@@ -16,7 +16,7 @@ services:
     command: redis-server --appendonly yes
     container_name: "htm-redis"
     volumes:
-      - ./data:/data/redis
+      - ./cache:/cache
     ports:
       - "6379:6379"
     command: [

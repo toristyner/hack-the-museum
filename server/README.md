@@ -3,7 +3,7 @@
 ## Museum
 
 ### Location
-*Endpoint:* `GET /api/museum/location/<location_id>`
+*Endpoint:* `GET /api/museum/locations/<location_id>`
 
 ---
 
@@ -14,6 +14,16 @@
 
 ### Add Song
 *Endpoint:* `POST /museum/artwork/<artwork_id>/song`
+
+*Body:*
+```
+  { <spotify_song_object> }
+```
+
+---
+
+### Like Song
+*Endpoint:* `POST /museum/artwork/<artwork_id>/song/like`
 
 *Body:*
 ```
