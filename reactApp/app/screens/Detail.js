@@ -34,11 +34,11 @@ class Detail extends Component {
           year={Dated}
         />
         <GenreSlider
-          genres={music.genres}
+          genres={music && music.genres}
           onPressGenre={(id) => console.log('genre', id)}
         />
         <SongList
-          songs={music.songs}
+          songs={music && music.songs}
           addSong={this.props.addSong}
           likeSong={this.props.likeSong}
           playSong={this.props.playSong}

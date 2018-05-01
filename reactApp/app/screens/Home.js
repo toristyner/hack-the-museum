@@ -24,14 +24,6 @@ class Home extends Component {
     }
   }
 
-  static renderGalleryTile({ item }) {
-    return (<GalleryTile
-        onPress={() => this.goToArtDetail(item.ObjectID)}
-        photoUrl={item.Thumbnail}
-      />
-    )
-  }
-
   static galleryItemKeyExtractor(item) {
     return `art${item.ObjectID}`
   }
@@ -50,9 +42,14 @@ class Home extends Component {
     }
   }
 
+  renderGalleryTile= ({ item })=> <GalleryTile
+        onPress={() => this.goToArtDetail(item.ObjectID)}
+        photoUrl={item.Thumbnail}
+      />
+
   goToArtDetail = (id) => {
     this.props.selectArt(id)
-    this.props.navigation.navigate('Detail')
+    this.props.history.push('detail')
   }
 
   render() {
@@ -75,7 +72,7 @@ class Home extends Component {
           }}
           data={this.state.galleryData.Objects}
           keyExtractor={Home.galleryItemKeyExtractor}
-          renderItem={Home.renderGalleryTile}
+          renderItem={this.renderGalleryTile}
         />
       </View>
     )
