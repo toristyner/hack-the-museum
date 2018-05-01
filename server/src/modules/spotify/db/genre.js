@@ -38,6 +38,14 @@ class GenreModel {
       })
     })
   }
+
+  findGenresByArtworkIds(ids) {
+    return new Promise(resolve => {
+      this.genre.find({ artworkIds: { $in: ids } }).then(genres => {
+        resolve(genres)
+      })
+    })
+  }
 }
 
 export default new GenreModel()
