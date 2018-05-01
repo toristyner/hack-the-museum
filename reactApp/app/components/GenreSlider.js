@@ -13,7 +13,7 @@ const GenreSlider = props => (
     <ScrollView horizontal>
       <View style={myStyle.scroller}>
       {
-        props.genres.map((g,i) => (
+        props.genres && props.genres.map((g,i) => (
           <GenreTile
             key={`g${i}`}
             name={g.name}
