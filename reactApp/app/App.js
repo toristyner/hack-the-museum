@@ -40,7 +40,7 @@ class App extends Component {
         <PersistGate persistor={this.persistor}>
           <NativeRouter>
             <View style={{ flex: 1, paddingTop: 30 }}>
-              <Route exact path="/" render={() => <Redirect to="/detail" />} />
+              <Route exact path="/" render={() => <Redirect to="/home" />} />
               <Route
                 exact
                 path="/home"

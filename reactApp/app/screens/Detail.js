@@ -22,7 +22,10 @@ class Detail extends Component {
 
   toggleSearch = () => this.setState({ showSearch: !this.state.showSearch })
 
-  addSong = song => this.props.addSong(song)
+  addSong = (song) => {
+    this.toggleSearch()
+    this.props.addSong(song)
+  }
 
   playSong = uri => Linking
     .openURL(uri)

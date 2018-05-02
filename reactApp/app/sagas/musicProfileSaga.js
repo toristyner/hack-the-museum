@@ -58,6 +58,13 @@ function* addSong({ payload }) {
         genre: '',
       },
     })
+
+    yield put({
+      type: actions.REQUEST_ART_DETAIL,
+      payload: {
+        artId,
+      },
+    })
   }
 }
 

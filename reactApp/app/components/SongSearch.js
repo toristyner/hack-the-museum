@@ -57,6 +57,9 @@ const myStyle = {
   },
   songRow: {
     paddingBottom: 10,
+    paddingTop: 10,
+    borderBottomWidth: 1,
+    borderColor: darkGray,
   },
 }
 

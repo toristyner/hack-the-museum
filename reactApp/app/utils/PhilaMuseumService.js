@@ -24,7 +24,6 @@ export const getArtDetail = (galleryId, artId) => {
 
 export const addSong = (artId, song) => {
   const url = `${baseUrl}api/museum/artwork/${artId}/song`
-  console.log(url)
   return fetch(url, {
     method: 'POST',
     headers: {
