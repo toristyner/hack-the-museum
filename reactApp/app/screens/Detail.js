@@ -11,6 +11,8 @@ class Detail extends Component {
     addSong: PropTypes.func.isRequired,
     likeSong: PropTypes.func.isRequired,
     detail: PropTypes.object.isRequired,
+    songSearch: PropTypes.func.isRequired,
+    songResults: PropTypes.arrayOf(PropTypes.object),
   }
 
   constructor() {
@@ -42,7 +44,7 @@ class Detail extends Component {
       Style,
       music,
     } = this.props.detail
-    console.log('THIS PROPS', this.props.detail)
+
     return (
       <ScrollView contentContainerStyle={myStyles.container}>
         <ArtImage

@@ -24,7 +24,9 @@ export default function galleryInfo(state = initialState, action) {
   case actions.REQUEST_ART_DETAIL: {
     return {
       ...state,
-      // detail: {},
+      // detail: {
+      //   ...initialState.detail,
+      // },
       isLoading: true,
     }
   }

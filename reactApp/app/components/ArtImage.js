@@ -5,7 +5,7 @@ import { styles } from '../styles'
 import BackButton from './BackButton'
 
 const { width, height } = Dimensions.get('window')
-const imageHeight = height / 3
+const imageHeight = height / 2.5
 
 const ArtImage = props => (
   <View
@@ -21,7 +21,11 @@ const ArtImage = props => (
       />
     </View>
     <View style={myStyle.overlayContainer}>
-      <Text style={styles.boldItalic}>{`${props.title}`}</Text>
+      <Text
+        style={styles.boldItalic}
+        numberOfLines={1}
+      >{`${props.title}`}
+      </Text>
       <Text style={myStyle.date}>{`${props.style}, ${props.year}`}</Text>
     </View>
   </View>

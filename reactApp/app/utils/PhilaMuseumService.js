@@ -2,10 +2,8 @@ const baseUrl = 'http://167.99.5.121:3000/'
 
 export const getArtList = (galleryId) => {
   const url = `${baseUrl}api/museum/locations/${galleryId}`
-  console.log(url)
   return fetch(url)
     .then((response) => {
-      console.log(response)
       if (response.status === 200) {
         return response.json()
       }

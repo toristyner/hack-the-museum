@@ -21,6 +21,7 @@ const SongList = props => (
         <SongListItem
           name={item.name}
           artist={item.artist.name}
+          image={item.images && item.images.length ? item.images[0].url : null}
           onLike={() => props.likeSong(item)}
           onPlay={() => props.playSong(item.uri)}
           isLiked={item.isLiked}
