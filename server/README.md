@@ -32,6 +32,16 @@
 
 ---
 
+### Dislike Song
+*Endpoint:* `POST /museum/artwork/<artwork_id>/song/dislike`
+
+*Body:*
+```
+  { <spotify_song_object> }
+```
+
+---
+
 ### Artwork Recommendation From Genres
 *Endpoint:* `POST /museum/artwork/recommendations/genres`
 
