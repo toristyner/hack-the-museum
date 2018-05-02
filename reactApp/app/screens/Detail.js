@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, Linking } from 'react-native'
+import { View, ScrollView, StyleSheet, Linking } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { ArtImage, GenreSlider, SongList, SongSearch, withLoader } from '../components/'
@@ -34,12 +34,14 @@ class Detail extends Component {
     .openURL(uri)
     .catch(err => console.log('Bitch doesnt have spotify or something', err))
 
-  navToArtList = () => this.props.history.push('home')
-
   recommendBasedOnGenre = (genreName) => {
-    console.log(genreName)
     this.props.recommendBasedOnGenres(genreName)
-    this.navToArtList()
+    this.props.history.push('home')
+  }
+
+  goToHome = () => {
+    this.props.requestArtList(this.props.currentGalleryId)
+    this.props.history.goBack()
   }
 
   render() {
@@ -55,31 +57,35 @@ class Detail extends Component {
     return (
       <ScrollView contentContainerStyle={myStyles.container}>
         <ArtImage
-          onBack={this.navToArtList}
+          onBack={this.goToHome}
           photoUrl={photoUrl}
           title={Title}
           artist={Artist}
           style={Style}
           year={Dated}
         />
-        <GenreSlider
-          genres={music.genres}
-          onPressGenre={this.recommendBasedOnGenre}
-        />
-        {
-          this.state.showSearch
-            ? <SongSearch
-              cancelSearch={this.toggleSearch}
-              addSong={this.addSong}
-              search={this.props.songSearch}
-              songs={this.props.songResults}
-            />
-            : <SongList
-              songs={music.songs}
-              addSong={this.toggleSearch}
-              likeSong={this.props.likeSong}
-              playSong={this.playSong}
-            />
+        { music &&
+        <View>
+          <GenreSlider
+            genres={music.genres}
+            onPressGenre={this.recommendBasedOnGenre}
+          />
+          {
+            this.state.showSearch
+              ? <SongSearch
+                cancelSearch={this.toggleSearch}
+                addSong={this.addSong}
+                search={this.props.songSearch}
+                songs={this.props.songResults}
+              />
+              : <SongList
+                songs={music.songs}
+                addSong={this.toggleSearch}
+                likeSong={this.props.likeSong}
+                playSong={this.playSong}
+              />
+          }
+        </View>
         }
       </ScrollView>
     )
@@ -87,6 +93,7 @@ class Detail extends Component {
 }
 
 export const mapStateToProps = state => ({
+  currentGalleryId: state.galleryInfo.currentGalleryId,
   detail: state.galleryInfo.detail,
   songResults: state.musicProfile.songResults,
 })
@@ -104,6 +111,12 @@ export const mapDispatchToProps = dispatch => ({
     type: actions.SEARCH_SONG,
     payload: {
       searchTerm,
+    },
+  }),
+  requestArtList: galleryId => dispatch({
+    type: actions.REQUEST_ART_LIST,
+    payload: {
+      galleryId,
     },
   }),
   recommendBasedOnGenres: genre => dispatch({

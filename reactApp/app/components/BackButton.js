@@ -10,7 +10,7 @@ const BackButton = props => (
     style={myStyle.container}
   >
     <Icon
-      color={white}
+      color={props.color}
       name="md-arrow-back"
       size={30}
     />
@@ -27,6 +27,10 @@ const myStyle = {
 
 BackButton.propTypes = {
   onPress: PropTypes.func.isRequired,
+  color: PropTypes.string,
+}
+BackButton.defaultProps = {
+  color: white,
 }
 
 export default BackButton
