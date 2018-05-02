@@ -32,7 +32,7 @@ class ArtworkService {
   }
 
   async addSong(artworkId, data) {
-    const { id, uri, name, images, artist } = data
+    const { id, uri, url, name, images, artist } = data
 
     const artistDetail = await artistService.detail(artist.id)
     const genres = await Promise.all(
@@ -45,6 +45,7 @@ class ArtworkService {
         name,
         id,
         uri,
+        url,
         artist: artistDetail,
         images
       },

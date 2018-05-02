@@ -23,6 +23,7 @@ function formatSearchResults(tracks) {
     name: track.name,
     artist: track.artists[0],
     images: track.album.images[0],
-    uri: track.uri
+    uri: track.uri,
+    url: track.external_urls.spotify
   }))
 }
