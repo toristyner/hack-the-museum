@@ -1,32 +1,54 @@
 import React, { Component } from 'react'
-import { Image, Text, ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, Linking } from 'react-native'
 import { connect } from 'react-redux'
-import { ArtImage, GenreSlider, SongList, withLoader, BackButton } from '../components/'
+import { PropTypes } from 'prop-types'
+import { ArtImage, GenreSlider, SongList, SongSearch, withLoader } from '../components/'
 import { styles } from '../styles'
 import * as actions from '../actionTypes'
 
 class Detail extends Component {
-  static propTypes = {}
+  static propTypes = {
+    addSong: PropTypes.func.isRequired,
+    likeSong: PropTypes.func.isRequired,
+    detail: PropTypes.object.isRequired,
+    songSearch: PropTypes.func.isRequired,
+    songResults: PropTypes.arrayOf(PropTypes.object),
+  }
 
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      showSearch: false,
+    }
   }
+
+  toggleSearch = () => this.setState({ showSearch: !this.state.showSearch })
+
+  addSong = (song) => {
+    this.toggleSearch()
+    this.props.addSong(song)
+  }
+
+  playSong = uri => Linking
+    .openURL(uri)
+    .catch(err => console.log('Bitch doesnt have spotify or something', err))
+
+  navToArtList = () => this.props.history.push('home')
 
   render() {
     const {
       Title,
       Artist,
-      GalleryLabel,
       photoUrl,
       Dated,
       Style,
-      music
+      music,
     } = this.props.detail
 
     return (
       <ScrollView contentContainerStyle={myStyles.container}>
         <ArtImage
+          onBack={this.navToArtList}
           photoUrl={photoUrl}
           title={Title}
           artist={Artist}
@@ -34,37 +56,49 @@ class Detail extends Component {
           year={Dated}
         />
         <GenreSlider
-          genres={music && music.genres}
-          onPressGenre={(id) => console.log('genre', id)}
+          genres={music.genres}
+          onPressGenre={id => console.log('genre', id)}
         />
-        <SongList
-          songs={music && music.songs}
-          addSong={this.props.addSong}
-          likeSong={this.props.likeSong}
-          playSong={this.props.playSong}
-        />
+        {
+          this.state.showSearch
+            ? <SongSearch
+              cancelSearch={this.toggleSearch}
+              addSong={this.addSong}
+              search={this.props.songSearch}
+              songs={this.props.songResults}
+            />
+            : <SongList
+              songs={music.songs}
+              addSong={this.toggleSearch}
+              likeSong={this.props.likeSong}
+              playSong={this.playSong}
+            />
+        }
       </ScrollView>
     )
   }
 }
 
-export const mapStateToProps = ({ galleryInfo }) => ({
-  detail: galleryInfo.detail,
+export const mapStateToProps = state => ({
+  detail: state.galleryInfo.detail,
+  songResults: state.musicProfile.songResults,
 })
 
 export const mapDispatchToProps = dispatch => ({
-  addSong: () => dispatch({
+  addSong: song => dispatch({
     type: actions.ADD_SONG,
-    payload: {}
+    payload: { song },
   }),
-  likeSong: () => dispatch({
+  likeSong: song => dispatch({
     type: actions.LIKE_SONG,
-    payload: {}
+    payload: { song },
   }),
-  playSong: () => dispatch({
-    type: actions.PLAY_SONG,
-    payload: {}
-  })
+  songSearch: searchTerm => dispatch({
+    type: actions.SEARCH_SONG,
+    payload: {
+      searchTerm,
+    },
+  }),
 })
 
 const myStyles = StyleSheet.create({

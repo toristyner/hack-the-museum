@@ -2,23 +2,27 @@ import React, { Component } from 'react'
 import { FlatList, Text, View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { GenreTile, withLoader} from '../components';
+import { GenreTile, withLoader } from '../components';
 import * as actions from '../actionTypes'
 import { styles } from '../styles'
 import { getGenreColor } from '../utils/ColorPicker';
 
 class Profile extends Component {
-  static propTypes = {}
+  static propTypes = {
+    // getPopularGenres: PropTypes.func.isRequired,
+    // popularGenres: PropTypes.obj.isRequired,
+    // toggleGenre: PropTypes.func.isRequired,
+  }
 
   componentDidMount = () => this.props.getPopularGenres()
 
   render() {
     return (
       <View style={myStyle.container}>
-        <Text style={myStyle.title}>{`Songs`}</Text>
+        <Text style={myStyle.title}>Songs</Text>
         <FlatList
           contentContainerStyle={styles.grid}
-          data={this.props.genreOptions}
+          data={this.props.popularGenres}
           keyExtractor={item => `gp${item.name}`}
           horizontal
           renderItem={({ item }) => (
@@ -41,7 +45,7 @@ const myStyle = StyleSheet.create({
 })
 
 export const mapStateToProps = ({ musicProfile }) => ({
-  genreOptions: musicProfile.genreOptions,
+  popularGenres: musicProfile.popularGenres,
 })
 
 export const mapDispatchToProps = dispatch => ({
@@ -50,7 +54,7 @@ export const mapDispatchToProps = dispatch => ({
   }),
   toggleGenre: () => dispatch({
     type: actions.TOGGLE_USER_PREFERRED_GENRE,
-    payload: {}
+    payload: {},
   })
 })
 

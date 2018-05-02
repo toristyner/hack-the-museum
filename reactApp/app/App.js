@@ -6,12 +6,11 @@ import { createLogger } from 'redux-logger'
 import { Provider } from 'react-redux'
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/es/integration/react'
-import { NativeRouter, Route } from 'react-router-native'
+import { NativeRouter, Route, Redirect } from 'react-router-native'
 import reducer from './reducers/index'
 import sagas from './sagas'
 import * as actions from './actionTypes'
 import { Home, Detail, Profile } from './screens/'
-import { styles } from './styles'
 
 class App extends Component {
   constructor(props) {
@@ -25,7 +24,7 @@ class App extends Component {
       this.appStore = createStore(reducer, applyMiddleware(...middleware))
       // create the persistor
       this.persistor = persistStore(this.appStore, {})
-      // this.persistor.purge(() => console.log('purged'))
+      this.persistor.purge(() => console.log('purged'))
       sagaMiddleware.run(sagas)
     }
   }
@@ -41,21 +40,26 @@ class App extends Component {
         <PersistGate persistor={this.persistor}>
           <NativeRouter>
             <View style={{ flex: 1, paddingTop: 30 }}>
-                <Route
-                  exact
-                  path="/"
-                  render={props => <Home history={props.history} />}
-                />
-                <Route
-                  exact
-                  path="/detail"
-                  component={props => <Detail history={props.history} />}
-                />
-                <Route
-                  exact
-                  path="/profile"
-                  component={props => <Profile />}
-                />
+              <Route
+                exact
+                path="/"
+                render={() => <Redirect to="/home" />}
+              />
+              <Route
+                exact
+                path="/home"
+                render={props => <Home history={props.history} />}
+              />
+              <Route
+                exact
+                path="/detail"
+                component={props => <Detail history={props.history} />}
+              />
+              <Route
+                exact
+                path="/profile"
+                component={() => <Profile />}
+              />
             </View>
           </NativeRouter>
         </PersistGate>

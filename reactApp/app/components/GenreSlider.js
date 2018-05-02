@@ -1,27 +1,24 @@
 import React from 'react'
-import { Image, ScrollView, Text, View, Dimensions } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { GenreTile } from './'
 import { styles } from '../styles'
-import { getGenreColor } from '../utils/ColorPicker';
-
-const { width, height } = Dimensions.get('window')
 
 const GenreSlider = props => (
   <View style={myStyle.container}>
-    <Text style={styles.bold}>{`Genres`}</Text>
+    <Text style={styles.bold}>Genres</Text>
     <ScrollView horizontal>
       <View style={myStyle.scroller}>
-      {
-        props.genres && props.genres.map((g,i) => (
-          <GenreTile
-            key={`g${i}`}
-            name={g.name}
-            onPress={() => props.onPressGenre(g)}
-            color={getGenreColor()}
-          />
-        ))
-      }
+        {
+          props.genres && props.genres.map(g => (
+            <GenreTile
+              key={`g${g.name}`}
+              name={g.name}
+              onPress={() => props.onPressGenre(g)}
+              color={g.color}
+            />
+          ))
+        }
       </View>
     </ScrollView>
   </View>
@@ -29,15 +26,15 @@ const GenreSlider = props => (
 
 const myStyle = {
   container: {
-    padding: 10
+    padding: 10,
   },
   scroller: {
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 }
 
 GenreSlider.propTypes = {
-  photoUrl: PropTypes.string
+  photoUrl: PropTypes.string,
 }
 
 GenreSlider.defaultProps = {}
