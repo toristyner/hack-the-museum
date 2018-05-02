@@ -20,9 +20,16 @@ class ArtworkService {
   }
 
   async getByIds(ids) {
-    const artwork = ids.map(id => cache.getJson(id))
+    const reqs = ids.map(id => cache.getJson(id))
+    const artworks = await Promise.all(reqs)
 
-    return await Promise.all(artwork)
+    const artworkIds = artworks.map(art => art.ObjectID)
+    const artworkGenreMap = await genreService.mapToArtworkIds(artworkIds)
+
+    return artworks.map(art => ({
+      ...art,
+      genres: artworkGenreMap[art.ObjectID]
+    }))
   }
 
   async addSong(artworkId, data) {
@@ -86,7 +93,7 @@ class ArtworkService {
   }
 
   formatList(artwork) {
-    const props = ['ObjectID', 'Title', 'Artist', 'Thumbnail']
+    const props = ['ObjectID', 'Title', 'Artist', 'Thumbnail', 'genres']
 
     return props.reduce(
       (obj, prop) => ({
