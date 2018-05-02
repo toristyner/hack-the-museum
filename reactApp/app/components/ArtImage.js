@@ -17,7 +17,7 @@ const ArtImage = props => (
     <View style={myStyle.imageContainer}>
       <Image
         style={{ width: '100%', height: imageHeight }}
-        source={{ uri: props.photoUrl }}
+        source={props.photoUrl ? { uri: props.photoUrl } : {}}
       />
     </View>
     <View style={myStyle.overlayContainer}>

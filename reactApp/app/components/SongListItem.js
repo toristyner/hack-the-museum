@@ -19,7 +19,7 @@ const SongListItem = (props) => {
           props.image !== null ?
             <Image
               style={{ width: 45, height: 45 }}
-              source={{ uri: props.image }}
+              source={props.image ? { uri: props.image } : {}}
             />
             : <Icon
               color={white}
