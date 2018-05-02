@@ -3,6 +3,17 @@ import * as actions from '../actionTypes'
 const initialState = {
   currentGalleryId: 'N/A',
   data: {},
+  detail: {
+    Title: '',
+    Artist: '',
+    photoUrl: '',
+    Dated: '',
+    Style: '',
+    music: {
+      genres: [],
+      songs: [],
+    },
+  },
   history: [],
   isLoading: true,
   loadingMessage: 'Launching HTM',

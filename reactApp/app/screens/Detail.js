@@ -42,7 +42,7 @@ class Detail extends Component {
       Style,
       music,
     } = this.props.detail
-
+    console.log('THIS PROPS', this.props.detail)
     return (
       <ScrollView contentContainerStyle={myStyles.container}>
         <ArtImage
@@ -54,7 +54,7 @@ class Detail extends Component {
           year={Dated}
         />
         <GenreSlider
-          genres={music && music.genres}
+          genres={music.genres}
           onPressGenre={id => console.log('genre', id)}
         />
         {
@@ -66,7 +66,7 @@ class Detail extends Component {
               songs={this.props.songResults}
             />
             : <SongList
-              songs={music && music.songs}
+              songs={music.songs}
               addSong={this.toggleSearch}
               likeSong={this.props.likeSong}
               playSong={this.playSong}
@@ -85,7 +85,7 @@ export const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   addSong: song => dispatch({
     type: actions.ADD_SONG,
-    payload: { song }
+    payload: { song },
   }),
   likeSong: song => dispatch({
     type: actions.LIKE_SONG,

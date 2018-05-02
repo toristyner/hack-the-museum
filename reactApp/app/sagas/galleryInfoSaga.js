@@ -37,10 +37,10 @@ export function* handleGalleryLocationChange({ payload }) {
   }
 }
 
-function* requestArtList() {
-  const galleryId = yield select(state => state.galleryInfo.currentGalleryId)
+function* requestArtList({ payload }) {
+  const { galleryId } = payload
   const galleryData = yield select(state => state.galleryInfo.data)
-  if (!galleryData[galleryId] || !galleryData[galleryId].Objects) {
+  if (galleryId !== 'N/A' && (!galleryData[galleryId] || !galleryData[galleryId].Objects)) {
     try {
       const response = yield call(PhilaMuseumService.getArtList, galleryId)
       yield put({

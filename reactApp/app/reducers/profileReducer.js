@@ -2,7 +2,9 @@ import * as actions from '../actionTypes'
 
 const initialState = {
   genres: [],
-  popularGenres: []
+  popularGenres: [],
+  songResults: [],
+  likedSongs: [],
 }
 
 export default function profileReducer(state = initialState, action) {
@@ -15,7 +17,7 @@ export default function profileReducer(state = initialState, action) {
   case actions.RECEIVE_POPULAR_GENRES: {
     return {
       ...state,
-      popularGenres: action.payload.data 
+      popularGenres: action.payload.data,
     }
   }
   case actions.RECEIVE_SONG_RESULTS: {

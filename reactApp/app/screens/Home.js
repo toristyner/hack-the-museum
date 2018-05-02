@@ -30,7 +30,7 @@ class Home extends Component {
   }
 
   componentWillMount = () => {
-    // GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
+    GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
 
     // Just try it with a random gallery:
     this.props.handleGalleryLocationChange(111)

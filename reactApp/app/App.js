@@ -24,7 +24,7 @@ class App extends Component {
       this.appStore = createStore(reducer, applyMiddleware(...middleware))
       // create the persistor
       this.persistor = persistStore(this.appStore, {})
-      // this.persistor.purge(() => console.log('purged'))
+      this.persistor.purge(() => console.log('purged'))
       sagaMiddleware.run(sagas)
     }
   }
@@ -40,7 +40,11 @@ class App extends Component {
         <PersistGate persistor={this.persistor}>
           <NativeRouter>
             <View style={{ flex: 1, paddingTop: 30 }}>
-              <Route exact path="/" render={() => <Redirect to="/home" />} />
+              <Route
+                exact
+                path="/"
+                render={() => <Redirect to="/home" />}
+              />
               <Route
                 exact
                 path="/home"
