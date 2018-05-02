@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, Text, View, Dimensions } from 'react-native'
 import PropTypes from 'prop-types'
 import { styles } from '../styles'
+import BackButton from './BackButton'
 
 const { width, height } = Dimensions.get('window')
 const imageHeight = height / 3
@@ -10,9 +11,12 @@ const ArtImage = props => (
   <View
     style={myStyle.container}
   >
+    <BackButton
+      onPress={props.onBack}
+    />
     <View style={myStyle.imageContainer}>
       <Image
-        style={{ width: '100%', height: imageHeight}}
+        style={{ width: '100%', height: imageHeight }}
         source={{ uri: props.photoUrl }}
       />
     </View>
@@ -31,24 +35,33 @@ const myStyle = {
   },
   imageContainer: {
     flex: 4,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   overlayContainer: {
     flex: 1,
     backgroundColor: '#cecece',
     opacity: 0.5,
-    padding: 10
+    padding: 10,
   },
   date: {
     fontSize: 16,
     fontWeight: 'bold',
-  }
+  },
 }
 
 ArtImage.propTypes = {
-  photoUrl: PropTypes.string
+  onBack: PropTypes.func.isRequired,
+  photoUrl: PropTypes.string,
+  title: PropTypes.string,
+  style: PropTypes.string,
+  year: PropTypes.string,
 }
 
-ArtImage.defaultProps = {}
+ArtImage.defaultProps = {
+  photoUrl: null,
+  title: '',
+  style: '',
+  year: '',
+}
 
 export default ArtImage

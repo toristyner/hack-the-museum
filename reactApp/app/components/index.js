@@ -1,5 +1,6 @@
 
 import ArtImage from './ArtImage'
+import BackButton from './BackButton'
 import IconButton from './IconButton'
 import LoaderHoc from './LoaderHoc'
 import GalleryTile from './GalleryTile'
@@ -11,6 +12,7 @@ import GalleryBottomNav from './GalleryBottomNav'
 
 export {
   ArtImage,
+  BackButton,
   IconButton,
   GalleryTile,
   GalleryBottomNav,

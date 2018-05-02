@@ -1,5 +1,6 @@
 import { call, select, takeLatest, put } from 'redux-saga/effects'
 import { GalleryLocationService, PhilaMuseumService } from '../utils'
+import { getGenreColor } from '../utils/ColorPicker'
 import * as actions from '../actionTypes'
 
 export function* initGalleryServices() {
@@ -30,7 +31,7 @@ export function* handleGalleryLocationChange({ payload }) {
     yield put({
       type: actions.REQUEST_ART_LIST,
       payload: {
-        galleryId: 111,
+        galleryId,
       },
     })
   }
@@ -59,19 +60,28 @@ function* requestArtList() {
 
 
 function* requestArtDetail({ payload }) {
-  const { id } = payload
+  const { artId } = payload
   const galleryId = yield select(state => state.galleryInfo.currentGalleryId)
-  if (galleryId && id) {
-    const artDetail = yield call(PhilaMuseumService.getArtDetail, galleryId, id)
+  if (galleryId && artId) {
+    const artDetail = yield call(PhilaMuseumService.getArtDetail, galleryId, artId)
+    const likedSongs = yield select(state => state.musicProfile.likedSongs)
+    // is song liked
+    artDetail.music.songs.forEach((song) => {
+      song.isLiked = likedSongs[song.id] !== undefined
+    })
+
+    artDetail.music.genres.forEach((genre) => {
+      genre.color = getGenreColor()
+    })
+
     yield put({
       type: actions.RECEIVE_ART_DETAIL,
       payload: {
-        id,
+        id: artId,
         data: artDetail,
       },
     })
   }
-
 }
 
 function* galleryInfoSaga() {

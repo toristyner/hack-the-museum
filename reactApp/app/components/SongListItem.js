@@ -2,8 +2,8 @@ import React from 'react'
 import { Text, View, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
-import { styles, lightGray, white } from '../styles'
-import { IconButton } from '.';
+import { styles, lightGray, white, likedColor } from '../styles'
+import { IconButton } from '.'
 
 const SongListItem = props => (
   <View
@@ -28,7 +28,7 @@ const SongListItem = props => (
     >
       <IconButton
         onPress={props.onLike}
-        color={lightGray}
+        color={props.isLiked ? likedColor : lightGray}
         name="md-thumbs-up"
         size={30}
       />
@@ -43,8 +43,11 @@ const myStyle = {
     flexDirection: 'row',
     backgroundColor: white,
     height: 45,
-    margin: 10,
-    shadowOffset:{  width: 2,  height: 2,  },
+    margin: 5,
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
     shadowColor: 'black',
     shadowOpacity: 0.3,
   },
@@ -67,12 +70,17 @@ const myStyle = {
     justifyContent: 'center',
     alignItems: 'center',
     borderLeftWidth: 1,
-    borderColor: lightGray
-  }
+    borderColor: lightGray,
+  },
 }
 
 SongListItem.propTypes = {
-  photoUrl: PropTypes.string
+  artist: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  isLiked: PropTypes.bool.isRequired,
+  onLike: PropTypes.func.isRequired,
+  onPlay: PropTypes.func.isRequired,
+
 }
 
 SongListItem.defaultProps = {}

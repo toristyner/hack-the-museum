@@ -1,55 +1,57 @@
 import React from 'react'
-import { Image, FlatList, Text, View } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { styles } from '../styles'
-import { SongListItem, IconButton } from '.';
+import { SongListItem, IconButton } from '.'
 
 const SongList = props => (
   <View style={myStyle.container}>
     <View style={myStyle.row}>
-      <Text style={myStyle.title}>{`Songs`}</Text>
+      <Text style={myStyle.title}>Songs</Text>
       <IconButton
-          name='ios-add'
-          size={28}
-          onPress={props.addSong}
-        />
+        name="ios-add"
+        size={28}
+        onPress={props.addSong}
+      />
     </View>
     <FlatList
       data={props.songs}
       keyExtractor={item => `song${item.id}`}
       renderItem={({ item }) => (
-        <SongListItem 
+        <SongListItem
           name={item.name}
           artist={item.artist.name}
-          onLike={props.likeSong}
-          onPlay={props.playSong}
+          onLike={() => props.likeSong(item)}
+          onPlay={() => props.playSong(item.uri)}
+          isLiked={item.isLiked}
         />
       )}
     />
   </View>
 )
 
-
 const myStyle = {
   container: {
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
   },
   title: {
     ...styles.bold,
   },
   row: {
     ...styles.row,
-    padding: 5
   },
   scroller: {
     flexDirection: 'column',
-    margin: 10
+    margin: 10,
   },
 }
 
 SongList.propTypes = {
-  photoUrl: PropTypes.string
+  addSong: PropTypes.func.isRequired,
+  likeSong: PropTypes.func.isRequired,
+  playSong: PropTypes.func.isRequired,
+  songs: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 
 SongList.defaultProps = {}

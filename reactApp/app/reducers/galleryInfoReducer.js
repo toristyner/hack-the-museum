@@ -13,7 +13,7 @@ export default function galleryInfo(state = initialState, action) {
   case actions.REQUEST_ART_DETAIL: {
     return {
       ...state,
-      detail: {},
+      // detail: {},
       isLoading: true,
     }
   }
@@ -38,6 +38,25 @@ export default function galleryInfo(state = initialState, action) {
         ...action.payload.data,
       },
       isLoading: false,
+    }
+  }
+  case actions.LIKE_SONG: {
+    const newSongs = state.detail.music.songs.map((s) => {
+      const song = { ...s }
+      if (song.id === action.payload.song.id) {
+        song.isLiked = true
+      }
+      return song
+    })
+    return {
+      ...state,
+      detail: {
+        ...state.detail,
+        music: {
+          ...state.detail.music,
+          songs: newSongs,
+        },
+      },
     }
   }
   case actions.GALLERY_LOCATION_CHANGED: {

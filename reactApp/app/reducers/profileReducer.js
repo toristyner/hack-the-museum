@@ -2,7 +2,7 @@ import * as actions from '../actionTypes'
 
 const initialState = {
   genres: [],
-  genreOptions: []
+  popularGenres: []
 }
 
 export default function profileReducer(state = initialState, action) {
@@ -10,13 +10,22 @@ export default function profileReducer(state = initialState, action) {
   case actions.TOGGLE_USER_PREFERRED_GENRE: {
     return {
       ...state,
-      genres: []
     }
   }
   case actions.RECEIVE_POPULAR_GENRES: {
     return {
       ...state,
-      genreOptions: action.payload.data 
+      popularGenres: action.payload.data 
+    }
+  }
+  case actions.UPDATE_USER_PROFILE: {
+    return {
+      ...state,
+      likedSongs: {
+        ...state.likedSongs,
+        [action.payload.song.id]: action.payload.song,
+      },
+
     }
   }
   default:

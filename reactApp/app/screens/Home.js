@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FlatList, Text, View, StyleSheet } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { withLoader, GalleryTile, GalleryBottomNav } from '../components/'
-import { GalleryLocationService, PhilaMuseumService } from '../utils'
+import { GalleryLocationService } from '../utils'
 import { styles, numOfGalleryTilesPerRow, galleryBottomNavHeight } from '../styles'
 import * as actions from '../actionTypes'
 
 class Home extends Component {
   static propTypes = {
-    currentGallery: PropTypes.string,
-    data: PropTypes.object,
+    currentGallery: PropTypes.string.isRequired,
+    // data: PropTypes.objectOf(PropTypes.string).isRequired,
     handleGalleryLocationChange: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
     selectArt: PropTypes.func.isRequired,
   }
 
@@ -104,10 +105,10 @@ export const mapDispatchToProps = dispatch => ({
         galleryId,
       },
     }),
-  selectArt: id =>
+  selectArt: artId =>
     dispatch({
       type: actions.REQUEST_ART_DETAIL,
-      payload: { id },
+      payload: { artId },
     }),
 })
 
