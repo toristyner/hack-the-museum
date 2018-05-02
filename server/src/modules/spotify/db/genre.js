@@ -31,6 +31,22 @@ class GenreModel {
     })
   }
 
+  updateGenrePopularity(name, artworkId, increment = 1) {
+    return new Promise(resolve => {
+      this.genre.findOneAndUpdate(
+        { name },
+        {
+          name,
+          $inc: { popularity: increment }
+        },
+        { upsert: true, new: true },
+        (err, data) => {
+          resolve(data)
+        }
+      )
+    })
+  }
+
   findGenres(genres) {
     return new Promise(resolve => {
       this.genre.find({ name: { $in: genres } }).then(genres => {

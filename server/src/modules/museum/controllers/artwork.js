@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.get('/artwork/:id', artworkDetail)
 router.post('/artwork/:id/song', addSongToArtwork)
-router.post('/artwork/:id/song/like', artworkLikeSong)
+router.post('/artwork/:id/song/:action', artworkSongAction)
 router.post('/artwork/recommendations/genres', getArtworkForGenres)
 
 async function artworkDetail(req, res) {
@@ -49,18 +49,19 @@ async function addSongToArtwork(req, res) {
   }
 }
 
-async function artworkLikeSong(req, res) {
+async function artworkSongAction(req, res) {
   const song = req.body
-  const { id } = req.params
+  const { id, action } = req.params
+  const artworkAction = artworkService.songActions[action]
 
-  if (!song) {
-    return res.status(400).send()
+  if (!song || !artworkAction) {
+    return res.status(!song ? 400 : 404).send()
   }
 
   try {
-    const artist = await artworkService.likeSong(id, song)
+    const data = await artworkAction(id, song)
 
-    return res.status(200).json(artist)
+    return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json(error)
   }

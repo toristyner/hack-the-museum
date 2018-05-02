@@ -7,6 +7,13 @@ import genreFormatter from '../../spotify/services/formatter'
 import artworkFormatter from './formatter'
 
 class ArtworkService {
+  constructor() {
+    this.songActions = {
+      like: this.likeSong,
+      dislike: this.dislikeSong
+    }
+  }
+
   getSavedById(id) {
     return new Promise(async resolve => {
       const artwork = await artworkModel.findById(id)
@@ -66,7 +73,7 @@ class ArtworkService {
       artistDetail.genres.map(genre => genreModel.addGenre(genre, artworkId))
     )
 
-    const artwork = await artworkModel.likeSong({
+    const artwork = await artworkModel.updateSongPopularity({
       id: artworkId,
       songId: id,
       genres
@@ -75,7 +82,32 @@ class ArtworkService {
     artwork.genres = genreFormatter.list(artwork.genres)
     artwork.songs = artworkFormatter.sortSongs(artwork.songs)
 
-    return artwork
+    return { artwork, updatedGenres: artistDetail.genres }
+  }
+
+  async dislikeSong(artworkId, data) {
+    const { id, artist } = data
+
+    const artistDetail = await artistService.detail(artist.id)
+    const genres = await Promise.all(
+      artistDetail.genres.map(genre =>
+        genreModel.updateGenrePopularity(genre, artworkId, -1)
+      )
+    )
+
+    const artwork = await artworkModel.updateSongPopularity(
+      {
+        id: artworkId,
+        songId: id,
+        genres
+      },
+      -1
+    )
+
+    artwork.genres = genreFormatter.list(artwork.genres)
+    artwork.songs = artworkFormatter.sortSongs(artwork.songs)
+
+    return { artwork, updatedGenres: artistDetail.genres }
   }
 
   async getArtworkForGenres(genreNames) {
