@@ -18,7 +18,8 @@ export function* initGalleryServices() {
 }
 
 export function* handleGalleryLocationChange({ payload }) {
-  const { galleryId } = payload
+  // const { galleryId } = payload
+  const galleryId = 111
 
   // TODO:
   // decide whether to actually update the current gallery
@@ -37,15 +38,35 @@ export function* handleGalleryLocationChange({ payload }) {
   }
 }
 
+function* requestByGallery(galleryId) {
+  const response = yield call(PhilaMuseumService.getArtList, galleryId)
+  return {
+    art: response.Objects,
+    name: response.Gallery,
+  }
+}
+
+function* requestRecommendations(genres) {
+  const response = yield call(PhilaMuseumService.getRecommendations, genres)
+  return {
+    art: response,
+    name: 'Recommendations for You',
+  }
+}
+
 function* requestArtList({ payload }) {
-  const { galleryId } = payload
-  const galleryData = yield select(state => state.galleryInfo.data)
-  if (galleryId !== 'N/A' && (!galleryData[galleryId] || !galleryData[galleryId].Objects)) {
+  const { galleryId, genres } = payload
+  if (!galleryId && !genres) {
+    yield put({
+      type: actions.API_ERROR,
+      payload: 'provide a galleryId or genre array to request art list',
+    })
+  } else {
     try {
-      const response = yield call(PhilaMuseumService.getArtList, galleryId)
+      const response = genres ? yield requestRecommendations(genres) : yield requestByGallery(galleryId)
       yield put({
         type: actions.RECEIVE_ART_LIST,
-        payload: { ...response, id: galleryId } || [],
+        payload: response || {},
       })
     } catch (err) {
       yield put({
@@ -54,10 +75,8 @@ function* requestArtList({ payload }) {
       })
     }
   }
-
   yield put({ type: actions.STOP_LOADER })
 }
-
 
 function* requestArtDetail({ payload }) {
   const { artId } = payload
