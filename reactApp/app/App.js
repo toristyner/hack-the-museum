@@ -24,7 +24,7 @@ class App extends Component {
       this.appStore = createStore(reducer, applyMiddleware(...middleware))
       // create the persistor
       this.persistor = persistStore(this.appStore, {})
-      this.persistor.purge(() => console.log('purged'))
+      // this.persistor.purge(() => console.log('purged'))
       sagaMiddleware.run(sagas)
     }
   }

@@ -9,7 +9,7 @@ import * as actions from '../actionTypes'
 
 class Home extends Component {
   static propTypes = {
-    currentGallery: PropTypes.string.isRequired,
+    // currentGallery: PropTypes.string.isRequired,
     // data: PropTypes.objectOf(PropTypes.string).isRequired,
     handleGalleryLocationChange: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
@@ -20,27 +20,8 @@ class Home extends Component {
     return `art${item.ObjectID}`
   }
 
-  constructor() {
-    super()
-    this.state = {
-      galleryData: {
-        Gallery: '',
-      },
-    }
-  }
-
   componentWillMount = () => {
     GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
-
-    // Just try it with a random gallery:
-    this.props.handleGalleryLocationChange(111)
-  }
-
-  componentWillReceiveProps = (nextProps) => {
-    const { data, currentGallery } = nextProps
-    if (currentGallery && data && data[currentGallery]) {
-      this.setState({ galleryData: data[currentGallery] })
-    }
   }
 
   goToArtDetail = (id) => {
@@ -61,8 +42,8 @@ class Home extends Component {
             // this goes in here because otherwise the bottom nav gets pushed down
             <View>
               <Text style={styles.title}>{`${
-                this.state.galleryData.Gallery && this.state.galleryData.Gallery.length
-                  ? this.state.galleryData.Gallery
+                this.props.data.name && this.props.data.name.length
+                  ? this.props.data.name
                   : 'No Gallery Found'
               }`}
               </Text>
@@ -79,7 +60,7 @@ class Home extends Component {
             justifyContent: 'space-between',
             marginTop: 20,
           }}
-          data={this.state.galleryData.Objects}
+          data={this.props.data.art}
           keyExtractor={Home.galleryItemKeyExtractor}
           renderItem={this.renderGalleryTile}
         />
@@ -90,7 +71,6 @@ class Home extends Component {
 }
 
 export const mapStateToProps = ({ galleryInfo }) => ({
-  currentGallery: galleryInfo.currentGalleryId,
   data: galleryInfo.data,
   galleriesVisited: galleryInfo.history,
   isLoading: galleryInfo.isLoading,

@@ -11,6 +11,7 @@ class Detail extends Component {
     addSong: PropTypes.func.isRequired,
     likeSong: PropTypes.func.isRequired,
     detail: PropTypes.object.isRequired,
+    recommendBasedOnGenres: PropTypes.func.isRequired,
     songSearch: PropTypes.func.isRequired,
     songResults: PropTypes.arrayOf(PropTypes.object),
   }
@@ -35,6 +36,12 @@ class Detail extends Component {
 
   navToArtList = () => this.props.history.push('home')
 
+  recommendBasedOnGenre = (genreName) => {
+    console.log(genreName)
+    this.props.recommendBasedOnGenres(genreName)
+    this.navToArtList()
+  }
+
   render() {
     const {
       Title,
@@ -57,7 +64,7 @@ class Detail extends Component {
         />
         <GenreSlider
           genres={music.genres}
-          onPressGenre={id => console.log('genre', id)}
+          onPressGenre={this.recommendBasedOnGenre}
         />
         {
           this.state.showSearch
@@ -97,6 +104,12 @@ export const mapDispatchToProps = dispatch => ({
     type: actions.SEARCH_SONG,
     payload: {
       searchTerm,
+    },
+  }),
+  recommendBasedOnGenres: genre => dispatch({
+    type: actions.REQUEST_ART_LIST,
+    payload: {
+      genres: [genre],
     },
   }),
 })

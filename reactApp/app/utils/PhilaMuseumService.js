@@ -11,6 +11,25 @@ export const getArtList = (galleryId) => {
     })
 }
 
+export const getArtRecommendations = (genres) => {
+  const url = `${baseUrl}api/museum/artwork/recommendations/genres`
+  console.log(url)
+  return fetch(url, {
+    headers: {
+      'content-type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify({ genres }),
+  })
+    .then((response) => {
+      console.log(response)
+      if (response.status === 200) {
+        return response.json()
+      }
+      throw response
+    })
+}
+
 export const getArtDetail = (galleryId, artId) => {
   const url = `${baseUrl}api/museum/artwork/${artId}`
   return fetch(url)
@@ -62,13 +81,20 @@ export const search = (searchTerm) => {
 }
 
 
-export const getReccommendations = (genres) => {
-  const url = `${baseUrl}museum/artwork/recommendations/genres`
+export const getRecommendations = (genres) => {
+  const url = `${baseUrl}api/museum/artwork/recommendations/genres`
+  console.log(url)
   return fetch(url, {
     method: 'POST',
-    body: JSON.stringify(genres),
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({ genres }),
   })
-    .then(response => response.json())
+    .then((response) => {
+      console.log(response)
+      return response.json()
+    })
     .catch((err) => {
       console.log(err)
     })
@@ -88,6 +114,7 @@ export default {
   getArtList,
   getArtDetail,
   getPopularGenres,
+  getRecommendations,
   likeSong,
   search,
 }

@@ -14,7 +14,7 @@ const GenreSlider = props => (
             <GenreTile
               key={`g${g.name}`}
               name={g.name}
-              onPress={() => props.onPressGenre(g)}
+              onPress={() => props.onPressGenre(g.name)}
               color={g.color}
             />
           ))

@@ -34,10 +34,7 @@ export default function galleryInfo(state = initialState, action) {
     return {
       ...state,
       data: {
-        ...state.data,
-        [state.currentGalleryId]: {
-          ...action.payload,
-        },
+        ...action.payload,
       },
       isLoading: false,
     }
