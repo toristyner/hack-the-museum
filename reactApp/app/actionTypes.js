@@ -14,6 +14,8 @@ export const PLAY_SONG = 'PLAY_SONG'
 export const LIKE_SONG = 'LIKE_SONG'
 export const SEARCH_SONG = 'SEARCH_SONG'
 
+export const SEARCH = 'SEARCH'
+export const RECEIVE_SONG_RESULTS = 'RECEIVE_SONG_RESULTS'
 
 // Profile
 export const REQUEST_POPULAR_GENRES = 'REQUEST_POPULAR_GENRES'

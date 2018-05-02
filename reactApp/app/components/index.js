@@ -6,8 +6,10 @@ import LoaderHoc from './LoaderHoc'
 import GalleryTile from './GalleryTile'
 import GenreSlider from './GenreSlider'
 import GenreTile from './GenreTile'
+import SearchBar from './SearchBar'
 import SongList from './SongList'
 import SongListItem from './SongListItem'
+import SongSearch from './SongSearch'
 import GalleryBottomNav from './GalleryBottomNav'
 
 export {
@@ -19,6 +21,8 @@ export {
   GenreSlider,
   GenreTile,
   LoaderHoc as withLoader,
+  SearchBar,
   SongList,
   SongListItem,
+  SongSearch,
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
-import { white } from '../styles';
+import { white } from '../styles'
 
 const BackButton = props => (
   <TouchableOpacity

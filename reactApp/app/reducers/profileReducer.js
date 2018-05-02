@@ -18,6 +18,12 @@ export default function profileReducer(state = initialState, action) {
       popularGenres: action.payload.data 
     }
   }
+  case actions.RECEIVE_SONG_RESULTS: {
+    return {
+      ...state,
+      songResults: action.payload.data,
+    }
+  }
   case actions.UPDATE_USER_PROFILE: {
     return {
       ...state,

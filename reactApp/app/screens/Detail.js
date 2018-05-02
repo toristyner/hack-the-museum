@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { ScrollView, StyleSheet, Linking } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
-import { ArtImage, GenreSlider, SongList, withLoader } from '../components/'
+import { ArtImage, GenreSlider, SongList, SongSearch, withLoader } from '../components/'
 import { styles } from '../styles'
 import * as actions from '../actionTypes'
 
@@ -15,8 +15,14 @@ class Detail extends Component {
 
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      showSearch: false,
+    }
   }
+
+  toggleSearch = () => this.setState({ showSearch: !this.state.showSearch })
+
+  addSong = song => this.props.addSong(song)
 
   playSong = uri => Linking
     .openURL(uri)
@@ -48,32 +54,45 @@ class Detail extends Component {
           genres={music && music.genres}
           onPressGenre={id => console.log('genre', id)}
         />
-        <SongList
-          songs={music && music.songs}
-          addSong={this.props.addSong}
-          likeSong={this.props.likeSong}
-          playSong={this.playSong}
-        />
+        {
+          this.state.showSearch
+            ? <SongSearch
+              cancelSearch={this.toggleSearch}
+              addSong={this.addSong}
+              search={this.props.songSearch}
+              songs={this.props.songResults}
+            />
+            : <SongList
+              songs={music && music.songs}
+              addSong={this.toggleSearch}
+              likeSong={this.props.likeSong}
+              playSong={this.playSong}
+            />
+        }
       </ScrollView>
     )
   }
 }
 
-export const mapStateToProps = ({ galleryInfo }) => ({
-  detail: galleryInfo.detail,
+export const mapStateToProps = state => ({
+  detail: state.galleryInfo.detail,
+  songResults: state.musicProfile.songResults,
 })
 
 export const mapDispatchToProps = dispatch => ({
-  addSong: () => dispatch({
+  addSong: song => dispatch({
     type: actions.ADD_SONG,
+    payload: { song }
   }),
   likeSong: song => dispatch({
     type: actions.LIKE_SONG,
     payload: { song },
   }),
-  searchSong: () => dispatch({
+  songSearch: searchTerm => dispatch({
     type: actions.SEARCH_SONG,
-    payload: {},
+    payload: {
+      searchTerm,
+    },
   }),
 })
 

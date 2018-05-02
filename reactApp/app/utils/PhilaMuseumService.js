@@ -23,9 +23,13 @@ export const getArtDetail = (galleryId, artId) => {
 }
 
 export const addSong = (artId, song) => {
-  const url = `${baseUrl}museum/artwork/${artId}/song`
+  const url = `${baseUrl}api/museum/artwork/${artId}/song`
+  console.log(url)
   return fetch(url, {
     method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+    },
     body: JSON.stringify(song),
   })
     .then(response => response.json())
@@ -49,6 +53,16 @@ export const likeSong = (artId, song) => {
     })
 }
 
+export const search = (searchTerm) => {
+  const url = `${baseUrl}api/spotify/search?q="${searchTerm}"`
+  return fetch(url)
+    .then(response => response.json())
+    .catch((err) => {
+      console.log('search', err)
+    })
+}
+
+
 export const getReccommendations = (genres) => {
   const url = `${baseUrl}museum/artwork/recommendations/genres`
   return fetch(url, {
@@ -71,8 +85,10 @@ export const getPopularGenres = () => {
 }
 
 export default {
+  addSong,
   getArtList,
   getArtDetail,
   getPopularGenres,
   likeSong,
+  search,
 }

@@ -1,5 +1,6 @@
 export const darkGray = '#3f3f3f'
 export const lightGray = '#ccc'
+export const lighterGray = '#cecece'
 export const white = '#fff'
 export const likedColor = 'purple'
 
