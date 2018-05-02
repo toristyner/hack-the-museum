@@ -1,5 +1,5 @@
 import { Genre } from '../../../db/models'
-import genreService from '../services/genre'
+import genreFormatter from '../services/formatter'
 
 class GenreModel {
   constructor() {
@@ -9,7 +9,7 @@ class GenreModel {
   getTop() {
     return new Promise(resolve => {
       this.genre.find({}).then(genres => {
-        resolve(genreService.sortMap(genres))
+        resolve(genreFormatter.sortMap(genres))
       })
     })
   }

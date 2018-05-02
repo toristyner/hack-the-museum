@@ -1,6 +1,7 @@
 import express from 'express'
 import cache from '../services/cache'
 import artworkService from '../services/artwork'
+import artworkFormatter from '../services/formatter'
 
 const router = express.Router()
 
@@ -23,7 +24,7 @@ async function loctionDetail(req, res) {
     const data = {
       Gallery,
       GalleryShort,
-      Objects: objects.map(artworkService.formatList)
+      Objects: artworkFormatter.list(objects)
     }
 
     return res.status(200).json(data)

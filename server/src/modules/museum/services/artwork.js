@@ -3,17 +3,16 @@ import genreModel from '../../spotify/db/genre'
 import artworkModel from '../db/artwork'
 import cache from '../services/cache'
 import genreService from '../../spotify/services/genre'
-
-const popularitySort = (a, b) => b.popularity - a.popularity
+import genreFormatter from '../../spotify/services/formatter'
+import artworkFormatter from './formatter'
 
 class ArtworkService {
   getSavedById(id) {
     return new Promise(async resolve => {
       const artwork = await artworkModel.findById(id)
 
-      artwork.genres = genreService.formatToList(artwork.genres)
-
-      artwork.songs = artwork.songs.sort(popularitySort)
+      artwork.genres = genreFormatter.list(artwork.genres)
+      artwork.songs = artworkFormatter.sortSongs(artwork.songs)
 
       resolve(artwork)
     })
@@ -24,7 +23,7 @@ class ArtworkService {
     const artworks = await Promise.all(reqs)
 
     const artworkIds = artworks.map(art => art.ObjectID)
-    const artworkGenreMap = await genreService.mapToArtworkIds(artworkIds)
+    const artworkGenreMap = await genreService.getByArtworkIds(artworkIds)
 
     return artworks.map(art => ({
       ...art,
@@ -52,8 +51,8 @@ class ArtworkService {
       genres
     })
 
-    artwork.genres = genreService.formatToList(artwork.genres)
-    artwork.songs = artwork.songs.sort(popularitySort)
+    artwork.genres = genreFormatter.list(artwork.genres)
+    artwork.songs = artworkFormatter.sortSongs(artwork.songs)
 
     return artwork
   }
@@ -72,8 +71,8 @@ class ArtworkService {
       genres
     })
 
-    artwork.genres = genreService.formatToList(artwork.genres)
-    artwork.songs = artwork.songs.sort(popularitySort)
+    artwork.genres = genreFormatter.list(artwork.genres)
+    artwork.songs = artworkFormatter.sortSongs(artwork.songs)
 
     return artwork
   }
@@ -89,19 +88,8 @@ class ArtworkService {
     )
 
     const artworks = await this.getByIds(ids)
-    return artworks.map(artwork => this.formatList(artwork))
-  }
 
-  formatList(artwork) {
-    const props = ['ObjectID', 'Title', 'Artist', 'Thumbnail', 'genres']
-
-    return props.reduce(
-      (obj, prop) => ({
-        ...obj,
-        [prop]: artwork[prop]
-      }),
-      {}
-    )
+    return artworkFormatter.simpleList(artworks)
   }
 }
 
