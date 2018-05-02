@@ -1,6 +1,7 @@
 import express from 'express'
 import cache from '../services/cache'
 import artworkService from '../services/artwork'
+import artworkFormatter from '../services/formatter'
 
 const router = express.Router()
 
@@ -20,10 +21,12 @@ async function artworkDetail(req, res) {
       return res.status(404).send()
     }
 
-    return res.status(200).json({
+    const data = artworkFormatter.detail({
       ...artwork,
       music: savedArtwork
     })
+
+    return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json(error)
   }
