@@ -17,8 +17,9 @@ class ArtworkService {
   getSavedById(id) {
     return new Promise(async resolve => {
       const artwork = await artworkModel.findById(id)
+      const genres = await genreModel.findGenres(Object.keys(artwork.genres))
 
-      artwork.genres = genreFormatter.list(artwork.genres)
+      artwork.genres = genreFormatter.sort(Object.values(artwork.genres))
       artwork.songs = artworkFormatter.sortSongs(artwork.songs)
 
       resolve(artwork)
@@ -46,7 +47,7 @@ class ArtworkService {
       artistDetail.genres.map(genre => genreModel.addGenre(genre, artworkId))
     )
 
-    const artwork = await artworkModel.add({
+    const music = await artworkModel.add({
       id: artworkId,
       song: {
         name,
@@ -59,10 +60,10 @@ class ArtworkService {
       genres
     })
 
-    artwork.genres = genreFormatter.list(artwork.genres)
-    artwork.songs = artworkFormatter.sortSongs(artwork.songs)
+    music.genres = genreFormatter.sort(Object.values(music.genres))
+    music.songs = artworkFormatter.sortSongs(music.songs)
 
-    return artwork
+    return { music, updatedGenres: artistDetail.genres }
   }
 
   async likeSong(artworkId, data) {
@@ -73,16 +74,16 @@ class ArtworkService {
       artistDetail.genres.map(genre => genreModel.addGenre(genre, artworkId))
     )
 
-    const artwork = await artworkModel.updateSongPopularity({
+    const music = await artworkModel.updateSongPopularity({
       id: artworkId,
       songId: id,
       genres
     })
 
-    artwork.genres = genreFormatter.list(artwork.genres)
-    artwork.songs = artworkFormatter.sortSongs(artwork.songs)
+    music.genres = genreFormatter.sort(Object.values(music.genres))
+    music.songs = artworkFormatter.sortSongs(music.songs)
 
-    return { artwork, updatedGenres: artistDetail.genres }
+    return { music, updatedGenres: artistDetail.genres }
   }
 
   async dislikeSong(artworkId, data) {
@@ -95,7 +96,7 @@ class ArtworkService {
       )
     )
 
-    const artwork = await artworkModel.updateSongPopularity(
+    const music = await artworkModel.updateSongPopularity(
       {
         id: artworkId,
         songId: id,
@@ -104,10 +105,10 @@ class ArtworkService {
       -1
     )
 
-    artwork.genres = genreFormatter.list(artwork.genres)
-    artwork.songs = artworkFormatter.sortSongs(artwork.songs)
+    music.genres = genreFormatter.sort(Object.values(music.genres))
+    music.songs = artworkFormatter.sortSongs(music.songs)
 
-    return { artwork, updatedGenres: artistDetail.genres }
+    return { music, updatedGenres: artistDetail.genres }
   }
 
   async getArtworkForGenres(genreNames) {
