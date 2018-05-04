@@ -1,6 +1,5 @@
 import { call, select, takeLatest, put } from 'redux-saga/effects'
 import { GalleryLocationService, PhilaMuseumService } from '../utils'
-import { getGenreColor } from '../utils/ColorPicker'
 import * as actions from '../actionTypes'
 
 export function* initGalleryServices() {
@@ -87,10 +86,6 @@ function* requestArtDetail({ payload }) {
     // is song liked
     artDetail.music.songs.forEach((song) => {
       song.isLiked = likedSongs[song.id] !== undefined
-    })
-
-    artDetail.music.genres.forEach((genre) => {
-      genre.color = getGenreColor()
     })
 
     yield put({

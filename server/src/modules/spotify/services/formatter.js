@@ -1,6 +1,6 @@
 import { mapProps, sortDesc } from '../../../shared/formatter'
 
-const genreProps = ['name', 'popularity']
+const genreProps = ['name', 'color', 'popularity']
 
 const sort = genres => {
   return genres.sort(sortDesc('popularity'))
@@ -10,13 +10,14 @@ const sortMap = (genres = []) => {
   return sort(mapProps(genres, genreProps))
 }
 
-const formatToList = (genres = []) => {
+const list = (genres = []) => {
   const genreNames = Object.keys(genres)
   const formattedGenres = genreNames.reduce(
     (genreList, name) => [
       ...genreList,
       {
         name,
+        color,
         popularity: genres[name]
       }
     ],
@@ -27,6 +28,7 @@ const formatToList = (genres = []) => {
 }
 
 export default {
-  list: formatToList,
-  sortMap
+  list,
+  sortMap,
+  sort
 }

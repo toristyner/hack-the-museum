@@ -13,8 +13,9 @@ const genreColor = [
   '#F99F1F',
   '#DC844B',
   '#C56E61',
-  '#B56B86',
+  '#B56B86'
 ]
 
-export const getGenreColor = () => genreColor[Math.floor(Math.random() * genreColor.length - 1 + 1)]
-
+export default {
+  get: () => genreColor[Math.floor(Math.random() * genreColor.length - 1 + 1)]
+}

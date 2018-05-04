@@ -1,5 +1,6 @@
 import { Genre } from '../../../db/models'
 import genreFormatter from '../services/formatter'
+import colorGenerator from '../../../shared/colors'
 
 class GenreModel {
   constructor() {
@@ -20,6 +21,7 @@ class GenreModel {
         { name },
         {
           name,
+          $setOnInsert: { color: colorGenerator.get() },
           $addToSet: { artworkIds: artworkId },
           $inc: { popularity: 1 }
         },

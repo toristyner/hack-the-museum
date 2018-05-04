@@ -15,7 +15,7 @@ async function artworkDetail(req, res) {
 
   try {
     const artwork = await cache.getJson(id)
-    const savedArtwork = await artworkService.getSavedById(id)
+    const music = await artworkService.getSavedById(id)
 
     if (!artwork) {
       return res.status(404).send()
@@ -23,7 +23,7 @@ async function artworkDetail(req, res) {
 
     const data = artworkFormatter.detail({
       ...artwork,
-      music: savedArtwork
+      music
     })
 
     return res.status(200).json(data)
@@ -41,9 +41,9 @@ async function addSongToArtwork(req, res) {
   }
 
   try {
-    const artist = await artworkService.addSong(id, song)
+    const data = await artworkService.addSong(id, song)
 
-    return res.status(200).json(artist)
+    return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json(error)
   }
