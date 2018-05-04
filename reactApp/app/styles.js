@@ -3,6 +3,7 @@ export const lightGray = '#ccc'
 export const lighterGray = '#cecece'
 export const white = '#fff'
 export const likedColor = 'purple'
+export const bloodOrange = '#E25241'
 
 export const numOfGalleryTilesPerRow = 3
 export const galleryBottomNavHeight = 60

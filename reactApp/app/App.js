@@ -8,6 +8,7 @@ import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/es/integration/react'
 import { NativeRouter, Route, Redirect } from 'react-router-native'
 import reducer from './reducers/index'
+import { GalleryBottomNav } from './components'
 import sagas from './sagas'
 import * as actions from './actionTypes'
 import { Home, Detail, Profile } from './screens/'
@@ -23,7 +24,7 @@ class App extends Component {
 
       this.appStore = createStore(reducer, applyMiddleware(...middleware))
       // create the persistor
-      this.persistor = persistStore(this.appStore, {})
+      this.persistor = persistStore(this.appStore)
       // this.persistor.purge(() => console.log('purged'))
       sagaMiddleware.run(sagas)
     }
@@ -60,6 +61,7 @@ class App extends Component {
                 path="/profile"
                 component={() => <Profile />}
               />
+              <GalleryBottomNav />
             </View>
           </NativeRouter>
         </PersistGate>

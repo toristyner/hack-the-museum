@@ -64,7 +64,6 @@ class Home extends Component {
           keyExtractor={Home.galleryItemKeyExtractor}
           renderItem={this.renderGalleryTile}
         />
-        <GalleryBottomNav />
       </View>
     )
   }
@@ -78,6 +77,20 @@ export const mapStateToProps = ({ galleryInfo }) => ({
 })
 
 export const mapDispatchToProps = dispatch => ({
+
+  /*
+[
+  '111',
+  '116',
+  '155',
+  '161',
+  '201',
+  '204',
+  '226',
+  '244',
+  '265'
+]
+  */
   handleGalleryLocationChange: galleryId =>
     dispatch({
       type: actions.GALLERY_LOCATION_CHANGED,

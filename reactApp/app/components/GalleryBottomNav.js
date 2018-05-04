@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { View, Text, Dimensions, StyleSheet } from 'react-native'
-import { galleryBottomNavHeight } from '../styles'
 import Icon from 'react-native-vector-icons/Ionicons'
-
-const bloodOrange = '#E25241'
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity } from 'react-native'
+import { withRouter } from 'react-router'
+import { bloodOrange, galleryBottomNavHeight } from '../styles'
+import * as actions from '../actionTypes'
 
 const { width } = Dimensions.get('window')
 
@@ -24,39 +25,57 @@ class GalleryBottomNav extends Component {
     static defaultProps = {
       activeGalleryId: 111,
     }
-    state = {
-      historyItems: [{ id: 102 }, { id: 103 }, { id: 104 }, { id: 105 }, { id: 106 }],
+
+    onGalleryNav = (galleryId) => {
+      this.props.history.push('home')
+      this.props.navToArtList(galleryId)
     }
+
     render() {
       return (
         <View
           style={styles.bottomNavContainer}
         >
-          <View style={styles.historyContainer}>
+          <View
+            style={styles.historyContainer}
+          >
             {
-              this.state.historyItems.map(item => (
-                <View
-                  key={item.id}
-                  style={{ flex: 1, alignItems: 'center' }}
-                >
-                  <Circle size={9} />
-                  <Text style={styles.text}>{item.id.toString()}</Text>
-                </View>
-              ))
+              this.props.galleryPath
+                ? this.props.galleryPath.map((galleryId, i) => (
+                  <TouchableOpacity
+                    key={`${galleryId}${i}`}
+                    onPress={() => this.onGalleryNav(galleryId)}
+                    style={{ flex: 1, alignItems: 'center' }}
+                  >
+                    <Circle size={9} />
+                    <Text style={styles.text}>{galleryId}</Text>
+                  </TouchableOpacity>
+                ))
+                : <Text>Get your ass to a gallery</Text>
             }
           </View>
-          <View style={styles.activeContainer}>
-            <Text style={[styles.text, { fontSize: 12 }]}>
-            Active
-            </Text>
+          {/* <View style={styles.activeContainer}>
+            <Text style={[styles.text, { fontSize: 12 }]}>Active</Text>
             <Text style={[styles.textShadow, { fontSize: 20 }]}>
               {this.props.activeGalleryId.toString()}
             </Text>
-          </View>
+          </View> */}
         </View>
       )
     }
 }
+
+export const mapStateToProps = ({ galleryInfo }) => ({
+  galleryPath: galleryInfo.history,
+  activeGalleryId: galleryInfo.history[galleryInfo.history.length - 1],
+})
+
+export const mapDispatchToProps = dispatch => ({
+  navToArtList: galleryId => dispatch({
+    type: actions.REQUEST_ART_LIST,
+    payload: { galleryId },
+  }),
+})
 
 const styles = {
   bottomNavContainer: {
@@ -111,4 +130,8 @@ const styles = {
   },
 }
 
-export default GalleryBottomNav
+GalleryBottomNav.propTypes = {
+  galleryPath: PropTypes.array.isRequired,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(GalleryBottomNav))

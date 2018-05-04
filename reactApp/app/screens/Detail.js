@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, Linking } from 'react-native'
+import { ScrollView, View, StyleSheet, Linking } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { ArtImage, GenreSlider, SongList, SongSearch, withLoader } from '../components/'
@@ -37,7 +37,6 @@ class Detail extends Component {
   navToArtList = () => this.props.history.push('home')
 
   recommendBasedOnGenre = (genreName) => {
-    console.log(genreName)
     this.props.recommendBasedOnGenres(genreName)
     this.navToArtList()
   }
@@ -53,7 +52,7 @@ class Detail extends Component {
     } = this.props.detail
 
     return (
-      <ScrollView contentContainerStyle={myStyles.container}>
+      <View style={myStyles.container}>
         <ArtImage
           onBack={this.navToArtList}
           photoUrl={photoUrl}
@@ -81,7 +80,7 @@ class Detail extends Component {
               playSong={this.playSong}
             />
         }
-      </ScrollView>
+      </View>
     )
   }
 }

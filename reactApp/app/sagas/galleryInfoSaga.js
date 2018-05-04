@@ -18,8 +18,7 @@ export function* initGalleryServices() {
 }
 
 export function* handleGalleryLocationChange({ payload }) {
-  // const { galleryId } = payload
-  const galleryId = 111
+  const { galleryId } = payload
 
   // TODO:
   // decide whether to actually update the current gallery

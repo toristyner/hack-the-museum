@@ -13,6 +13,6 @@ const persistorConfig = {
 
 export default persistCombineReducers(persistorConfig, {
   galleryInfo,
-  musicProfile
+  musicProfile,
 })
 
