@@ -1,5 +1,6 @@
 import { Genre } from '../../../db/models'
-import genreService from '../services/genre'
+import genreFormatter from '../services/formatter'
+import colorGenerator from '../../../shared/colors'
 
 class GenreModel {
   constructor() {
@@ -9,7 +10,7 @@ class GenreModel {
   getTop() {
     return new Promise(resolve => {
       this.genre.find({}).then(genres => {
-        resolve(genreService.sortMap(genres))
+        resolve(genreFormatter.sortMap(genres))
       })
     })
   }
@@ -20,8 +21,25 @@ class GenreModel {
         { name },
         {
           name,
+          $setOnInsert: { color: colorGenerator.get() },
           $addToSet: { artworkIds: artworkId },
           $inc: { popularity: 1 }
+        },
+        { upsert: true, new: true },
+        (err, data) => {
+          resolve(data)
+        }
+      )
+    })
+  }
+
+  updateGenrePopularity(name, artworkId, increment = 1) {
+    return new Promise(resolve => {
+      this.genre.findOneAndUpdate(
+        { name },
+        {
+          name,
+          $inc: { popularity: increment }
         },
         { upsert: true, new: true },
         (err, data) => {
@@ -34,6 +52,14 @@ class GenreModel {
   findGenres(genres) {
     return new Promise(resolve => {
       this.genre.find({ name: { $in: genres } }).then(genres => {
+        resolve(genres)
+      })
+    })
+  }
+
+  findGenresByArtworkIds(ids) {
+    return new Promise(resolve => {
+      this.genre.find({ artworkIds: { $in: ids } }).then(genres => {
         resolve(genres)
       })
     })

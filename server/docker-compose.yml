@@ -13,16 +13,16 @@ services:
       - mongo
   redis:
     image: redis
-    command: redis-server --appendonly yes
     container_name: "htm-redis"
     volumes:
-      - ./cache:/cache
+      - ./cache/redis:/data
     ports:
       - "6379:6379"
     command: [
       "bash", "-c",
       '
         docker-entrypoint.sh
+        --appendonly yes
         --requirepass ${REDIS_PASSWORD}
       '
     ]

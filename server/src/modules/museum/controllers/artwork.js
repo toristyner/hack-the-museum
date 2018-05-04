@@ -1,12 +1,13 @@
 import express from 'express'
 import cache from '../services/cache'
 import artworkService from '../services/artwork'
+import artworkFormatter from '../services/formatter'
 
 const router = express.Router()
 
 router.get('/artwork/:id', artworkDetail)
 router.post('/artwork/:id/song', addSongToArtwork)
-router.post('/artwork/:id/song/like', artworkLikeSong)
+router.post('/artwork/:id/song/:action', artworkSongAction)
 router.post('/artwork/recommendations/genres', getArtworkForGenres)
 
 async function artworkDetail(req, res) {
@@ -14,16 +15,18 @@ async function artworkDetail(req, res) {
 
   try {
     const artwork = await cache.getJson(id)
-    const savedArtwork = await artworkService.getSavedById(id)
+    const music = await artworkService.getSavedById(id)
 
     if (!artwork) {
       return res.status(404).send()
     }
 
-    return res.status(200).json({
+    const data = artworkFormatter.detail({
       ...artwork,
-      music: savedArtwork
+      music
     })
+
+    return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json(error)
   }
@@ -38,26 +41,27 @@ async function addSongToArtwork(req, res) {
   }
 
   try {
-    const artist = await artworkService.addSong(id, song)
+    const data = await artworkService.addSong(id, song)
 
-    return res.status(200).json(artist)
+    return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json(error)
   }
 }
 
-async function artworkLikeSong(req, res) {
+async function artworkSongAction(req, res) {
   const song = req.body
-  const { id } = req.params
+  const { id, action } = req.params
+  const artworkAction = artworkService.songActions[action]
 
-  if (!song) {
-    return res.status(400).send()
+  if (!song || !artworkAction) {
+    return res.status(!song ? 400 : 404).send()
   }
 
   try {
-    const artist = await artworkService.likeSong(id, song)
+    const data = await artworkAction(id, song)
 
-    return res.status(200).json(artist)
+    return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json(error)
   }

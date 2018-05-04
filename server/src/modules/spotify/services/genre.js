@@ -1,29 +1,19 @@
+import genreModel from '../db/genre'
+
 class GenreService {
-  sort(genres) {
-    return genres.sort((a, b) => b.popularity - a.popularity)
-  }
+  async getByArtworkIds(artworkIds) {
+    const genres = await genreModel.findGenresByArtworkIds(artworkIds)
 
-  sortMap(genres = []) {
-    return this.sort(genres).map(({ name, popularity }) => ({
-      name,
-      popularity
-    }))
-  }
+    const artworkGenreMap = artworkIds.reduce((artMap, artId) => {
+      return {
+        ...artMap,
+        [artId]: genres
+          .filter(genre => genre.artworkIds.includes(artId.toString()))
+          .map(genre => genre.name)
+      }
+    }, {})
 
-  formatToList(genres = []) {
-    const genreNames = Object.keys(genres)
-    const formattedGenres = genreNames.reduce(
-      (genreList, name) => [
-        ...genreList,
-        {
-          name,
-          popularity: genres[name]
-        }
-      ],
-      []
-    )
-
-    return this.sort(formattedGenres)
+    return artworkGenreMap
   }
 }
 
