@@ -52,9 +52,11 @@ public class GalleryLocationManager : RCTEventEmitter  {
             if self.locationSensingMethod == Constants.locationSensing.method.apple {
                 if self.lastLocation != nil {
                     // for testing
-                    let testLocation = CLLocation(latitude: 39.964792733, longitude: -75.181071223)
-                    return LocationStore.sharedInstance.locationForCLLocation(location: testLocation)
-//                    return LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
+//                    let testLocation = CLLocation(latitude: 39.964792733, longitude: -75.181071223)
+//                    return LocationStore.sharedInstance.locationForCLLocation(location: testLocation)
+//                    print( LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!))
+                    return LocationStore.sharedInstance.locationForCLLocation(location: self.lastLocation!)
+
                 }
             }
             return nil
@@ -112,6 +114,7 @@ public class GalleryLocationManager : RCTEventEmitter  {
         if self.previousLocation == currentLocation {
             // previous and current location are identical, which means we haven't moved
             // so we don't need to trigger a location update
+          print("Same")
         } else {
             print("We Moved:", currentLocation.name)
             self.sendEventToReactNative(name: currentLocation.name)

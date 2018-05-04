@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FlatList, Text, View, Dimensions } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import PropTypes from 'prop-types'
-import { withLoader, GalleryTile, GalleryBottomNav, BackButton } from '../components/'
+import { withLoader, GalleryTile, GalleryBottomNav } from '../components/'
 import { GalleryLocationService } from '../utils'
 import { styles, numOfGalleryTilesPerRow, galleryBottomNavHeight } from '../styles'
 import * as actions from '../actionTypes'
-
-const { height } = Dimensions.get('screen')
 
 class Home extends Component {
   static propTypes = {
@@ -31,10 +29,6 @@ class Home extends Component {
     this.props.history.push('detail')
   }
 
-  goBackToHome = () => {
-    this.props.history.goBack()
-  }
-
   renderGalleryTile = ({ item }) => (<GalleryTile
     onPress={() => this.goToArtDetail(item.ObjectID)}
     photoUrl={item.Thumbnail}
@@ -46,17 +40,7 @@ class Home extends Component {
         <FlatList
           ListHeaderComponent={
             // this goes in here because otherwise the bottom nav gets pushed down
-            <View style={{
-              justifyContent: 'center',
-            }}
-            >
-              {
-                this.props.history.index > 0 &&
-                <BackButton
-                  color="black"
-                  onPress={this.goBackToHome}
-                />
-              }
+            <View>
               <Text style={styles.title}>{`${
                 this.props.data.name && this.props.data.name.length
                   ? this.props.data.name
@@ -66,7 +50,6 @@ class Home extends Component {
             </View>
           }
           contentContainerStyle={{
-            minHeight: height,
             paddingHorizontal: 10,
             paddingBottom: galleryBottomNavHeight + 20,
             // also adding some extra padding for the header at the top
@@ -81,7 +64,6 @@ class Home extends Component {
           keyExtractor={Home.galleryItemKeyExtractor}
           renderItem={this.renderGalleryTile}
         />
-        <GalleryBottomNav />
       </View>
     )
   }

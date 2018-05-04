@@ -70,9 +70,21 @@ export default function galleryInfo(state = initialState, action) {
     }
   }
   case actions.GALLERY_LOCATION_CHANGED: {
+    console.log('HERE: ', action.payload)
+    if (state.history[state.history.length - 1] === action.payload.galleryId) {
+      return state
+    }
+
+    let newHistory
+    if (state.history.length > 5) {
+      newHistory = [...state.history.slice(1, 4), action.payload.galleryId]
+    } else {
+      newHistory = [...state.history, action.payload.galleryId]
+    }
+
     return {
       ...state,
-      history: [action.payload.galleryId, ...state.history],
+      history: newHistory,
     }
   }
   case actions.UPDATE_ART_LIST:
