@@ -1,5 +1,7 @@
 import React from 'react'
-import { Image, Text, View, Dimensions } from 'react-native'
+import { Text, View, Dimensions } from 'react-native'
+import Image from 'react-native-image-progress'
+import Circle from 'react-native-progress/Circle'
 import PropTypes from 'prop-types'
 import { styles } from '../styles'
 import BackButton from './BackButton'
@@ -16,8 +18,12 @@ const ArtImage = props => (
     />
     <View style={myStyle.imageContainer}>
       <Image
-        style={{ width: '100%', height: imageHeight }}
         source={props.photoUrl ? { uri: props.photoUrl } : {}}
+        indicator={Circle}
+        style={{
+          width: '100%',
+          height: imageHeight,
+        }}
       />
     </View>
     <View style={myStyle.overlayContainer}>
