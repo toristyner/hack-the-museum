@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import { GenreTile, withLoader } from '../components';
 import * as actions from '../actionTypes'
 import { styles } from '../styles'
-import { getGenreColor } from '../utils/ColorPicker';
 
 class Profile extends Component {
   static propTypes = {
@@ -29,7 +28,7 @@ class Profile extends Component {
             <GenreTile
               onPress={() => this.props.toggleGenre(item)}
               name={item.name}
-              color={getGenreColor()}
+              color={item.color}
             />
           )}
         />
