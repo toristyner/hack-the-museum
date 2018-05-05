@@ -1,19 +1,28 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Linking } from 'react-native'
+import { View, StyleSheet, Linking, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { ArtImage, GenreSlider, SongList, SongSearch, withLoader } from '../components/'
-import { styles } from '../styles'
+import { styles, galleryBottomNavHeight, headerPadding } from '../styles'
 import * as actions from '../actionTypes'
+
+const { width, height } = Dimensions.get('screen')
+const imageComponentHeight = height / 3
+const genreSliderHeight = 140
 
 class Detail extends Component {
   static propTypes = {
     addSong: PropTypes.func.isRequired,
+    isSongSearchLoading: PropTypes.bool,
     songAction: PropTypes.func.isRequired,
     detail: PropTypes.object.isRequired,
     recommendBasedOnGenres: PropTypes.func.isRequired,
     songSearch: PropTypes.func.isRequired,
     songResults: PropTypes.arrayOf(PropTypes.object),
+  }
+
+  static defaultProps = {
+    isSongSearchLoading: false,
   }
 
   constructor() {
@@ -56,29 +65,39 @@ class Detail extends Component {
 
     return (
       <View style={myStyles.container}>
-        <ArtImage
-          onBack={this.goToHome}
-          photoUrl={photoUrl}
-          title={Title}
-          artist={Artist}
-          style={Style}
-          year={Dated}
-        />
+        <View style={{
+          height: imageComponentHeight,
+        }}
+        >
+          <ArtImage
+            onBack={this.goToHome}
+            photoUrl={photoUrl}
+            title={Title}
+            artist={Artist}
+            imageHeight={imageComponentHeight}
+            style={Style}
+            year={Dated}
+          />
+        </View>
         { music &&
         <React.Fragment>
-          <GenreSlider
-            genres={music.genres}
-            onPressGenre={this.recommendBasedOnGenre}
-          />
+          <View style={{ height: genreSliderHeight }}>
+            <GenreSlider
+              genres={music.genres}
+              onPressGenre={this.recommendBasedOnGenre}
+            />
+          </View>
           {
             this.state.showSearch
               ? <SongSearch
+                loading={this.props.isSongSearchLoading}
                 cancelSearch={this.toggleSearch}
                 addSong={this.addSong}
                 search={this.props.songSearch}
                 songs={this.props.songResults}
               />
               : <SongList
+                height={height - genreSliderHeight - imageComponentHeight - galleryBottomNavHeight - headerPadding}
                 songs={music.songs}
                 addSong={this.toggleSearch}
                 songAction={this.props.songAction}
@@ -93,6 +112,7 @@ class Detail extends Component {
 }
 
 export const mapStateToProps = state => ({
+  isSongSearchLoading: state.musicProfile.isSongSearchLoading,
   currentGalleryId: state.galleryInfo.currentGalleryId,
   detail: state.galleryInfo.detail,
   songResults: state.musicProfile.songResults,

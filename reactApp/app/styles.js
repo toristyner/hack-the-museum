@@ -8,6 +8,7 @@ export const transparentDark = 'rgba(52, 52, 52, 0.8)'
 
 export const numOfGalleryTilesPerRow = 3
 export const galleryBottomNavHeight = 60
+export const headerPadding = 30
 
 export const styles = {
   container: {
