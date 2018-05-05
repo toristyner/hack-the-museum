@@ -65,7 +65,7 @@ class Detail extends Component {
           year={Dated}
         />
         { music &&
-        <View>
+        <React.Fragment>
           <GenreSlider
             genres={music.genres}
             onPressGenre={this.recommendBasedOnGenre}
@@ -85,7 +85,7 @@ class Detail extends Component {
                 playSong={this.playSong}
               />
           }
-        </View>
+        </React.Fragment>
         }
       </View>
     )
@@ -130,6 +130,7 @@ export const mapDispatchToProps = dispatch => ({
 const myStyles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
   },
   title: {
     ...styles.title,
