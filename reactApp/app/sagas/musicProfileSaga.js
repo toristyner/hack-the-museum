@@ -25,19 +25,37 @@ function* search({ payload }) {
   }
 }
 
-function* likeSong({ payload }) {
+function* updateSong({ type, payload }) {
   const { song } = payload
 
   // update global genre popularities
   const artId = yield select(state => state.galleryInfo.detail.id)
-  const response = yield call(PhilaMuseumService.likeSong, artId, song)
+  const response = yield call(PhilaMuseumService.updateSong, { artId, song, type })
+
   if (response) {
     // update user profile
     yield put({
-      type: actions.UPDATE_USER_PROFILE,
+      type: actions.USER_PROFILE_UPDATE_SONG,
       payload: {
+        artId,
         song,
-        genre: '',
+      },
+    })
+
+    yield put({
+      type: type === actions.LIKE_SONG ?
+        actions.USER_PROFILE_LIKE_GENRES :
+        actions.USER_PROFILE_UNLIKE_GENRES,
+      payload: {
+        genres: response.updatedGenres,
+      },
+    })
+
+    yield put({
+      type: actions.UPDATE_ART_MUSIC,
+      payload: {
+        artId,
+        music: response.music,
       },
     })
   }
@@ -49,20 +67,32 @@ function* addSong({ payload }) {
   // update global genre popularities
   const artId = yield select(state => state.galleryInfo.detail.id)
   const response = yield call(PhilaMuseumService.addSong, artId, song)
+
   if (response) {
     // update user profile
     yield put({
-      type: actions.UPDATE_USER_PROFILE,
+      type: actions.USER_PROFILE_UPDATE_SONG,
       payload: {
-        song,
-        genre: '',
+        artId,
+        song: {
+          ...song,
+          addedByUser: true,
+        },
       },
     })
 
     yield put({
-      type: actions.REQUEST_ART_DETAIL,
+      type: actions.USER_PROFILE_LIKE_GENRES,
+      payload: {
+        genres: response.updatedGenres,
+      },
+    })
+
+    yield put({
+      type: actions.UPDATE_ART_MUSIC,
       payload: {
         artId,
+        music: response.music,
       },
     })
   }
@@ -70,7 +100,7 @@ function* addSong({ payload }) {
 
 function* musicProfileSaga() {
   yield takeLatest(actions.REQUEST_POPULAR_GENRES, requestPopularGenres)
-  yield takeLatest(actions.LIKE_SONG, likeSong)
+  yield takeLatest([actions.LIKE_SONG, actions.UNLIKE_SONG], updateSong)
   yield takeLatest(actions.SEARCH_SONG, search)
   yield takeLatest(actions.ADD_SONG, addSong)
 }

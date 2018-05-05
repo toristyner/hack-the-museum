@@ -6,7 +6,6 @@ import { styles, lightGray, white, likedColor } from '../styles'
 import { IconButton } from '.'
 
 const SongListItem = (props) => {
-  console.log(props.image)
   return (
     <View
       style={myStyle.container}
@@ -36,9 +35,10 @@ const SongListItem = (props) => {
         style={myStyle.rightIcon}
       >
         <IconButton
-          onPress={props.onLike}
-          color={props.isLiked ? likedColor : lightGray}
-          name="md-thumbs-up"
+          onPress={props.onSongAction}
+          disabled={props.addedByUser}
+          color={props.isLiked || props.addedByUser ? likedColor : lightGray}
+          name={props.addedByUser ? 'md-contact' : 'md-thumbs-up'}
           size={30}
         />
       </View>
@@ -84,10 +84,12 @@ const myStyle = {
 }
 
 SongListItem.propTypes = {
+  addedByUser: PropTypes.bool.isRequired,
   artist: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
   isLiked: PropTypes.bool.isRequired,
-  onLike: PropTypes.func.isRequired,
+  onSongAction: PropTypes.func.isRequired,
   onPlay: PropTypes.func.isRequired,
 
 }
