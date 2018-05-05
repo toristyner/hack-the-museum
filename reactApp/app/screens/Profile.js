@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { FlatList, Text, View, StyleSheet } from 'react-native'
+import { Dimensions, FlatList, Text, View, StyleSheet, Image } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { GenreTile, withLoader } from '../components';
+import { GenreTile, withLoader } from '../components'
 import * as actions from '../actionTypes'
-import { styles } from '../styles'
+import { styles, white, likedColor, lighterGray } from '../styles'
 
+const { height, width } = Dimensions.get('window')
 class Profile extends Component {
   static propTypes = {
     // getPopularGenres: PropTypes.func.isRequired,
@@ -13,24 +14,54 @@ class Profile extends Component {
     // toggleGenre: PropTypes.func.isRequired,
   }
 
+  state = {
+    refreshCount: 0,
+    myGenres: {},
+  }
+
   componentDidMount = () => this.props.getPopularGenres()
+
+  toggleGenre = (genre) => {
+    const myNewGenres = { ...this.state.myGenres }
+    const isLiked = myNewGenres[genre.name] !== undefined
+    let action
+    if (isLiked) {
+      delete myNewGenres[genre.name]
+      action = actions.USER_PROFILE_UNLIKE_GENRES
+    } else {
+      myNewGenres[genre.name] = genre.popularity
+      action = actions.USER_PROFILE_LIKE_GENRES
+    }
+    this.setState({ myGenres: myNewGenres }, () => console.log(this.state))
+    this.props.toggleGenre(genre.name, action)
+  }
+
+  renderGenre = (item) => {
+    const isLiked = this.state.myGenres[item.name] !== undefined
+    return (
+      <GenreTile
+        onPress={() => this.toggleGenre(item)}
+        name={item.name}
+        color={isLiked ? lighterGray : item.color}
+      />
+    )
+  }
 
   render() {
     return (
       <View style={myStyle.container}>
-        <Text style={myStyle.title}>Songs</Text>
+        <Image
+          source={require('../assets/pam.jpg')}
+          style={myStyle.backgroundImage}
+        />
+        <Text style={myStyle.title}>Pick your favorite genres to get started!</Text>
         <FlatList
           contentContainerStyle={styles.grid}
           data={this.props.popularGenres}
-          keyExtractor={item => `gp${item.name}`}
-          horizontal
-          renderItem={({ item }) => (
-            <GenreTile
-              onPress={() => this.props.toggleGenre(item)}
-              name={item.name}
-              color={item.color}
-            />
-          )}
+          extraData={this.state.myGenres}
+          keyExtractor={(item, index) => `${item.name}${index}`}
+          horizontal={false}
+          renderItem={({ item }) => this.renderGenre(item)}
         />
       </View>
     )
@@ -41,20 +72,36 @@ const myStyle = StyleSheet.create({
   container: {
     flex: 1,
   },
+  backgroundImage: {
+    position: 'absolute',
+    height,
+    width,
+  },
+  title: {
+    fontSize: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: white,
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
 })
 
 export const mapStateToProps = ({ musicProfile }) => ({
   popularGenres: musicProfile.popularGenres,
+  myGenres: musicProfile.genres,
 })
 
 export const mapDispatchToProps = dispatch => ({
   getPopularGenres: () => dispatch({
     type: actions.REQUEST_POPULAR_GENRES,
   }),
-  toggleGenre: () => dispatch({
-    type: actions.TOGGLE_USER_PREFERRED_GENRE,
-    payload: {},
-  })
+  toggleGenre: (genre, actionType) => dispatch({
+    type: actionType,
+    payload: {
+      genres: [genre],
+    },
+  }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLoader(Profile))

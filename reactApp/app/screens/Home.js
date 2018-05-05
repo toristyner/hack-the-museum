@@ -21,7 +21,8 @@ class Home extends Component {
   }
 
   componentWillMount = () => {
-    GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
+    // GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
+    this.props.handleGalleryLocationChange(111)
   }
 
   goToArtDetail = (id) => {

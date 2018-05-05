@@ -7,13 +7,13 @@ import { white } from '../styles'
 const GenreTile = props => (
   <TouchableOpacity
     onPress={props.onPress}
-    style={{ ...myStyle.container, backgroundColor: props.color}}
+    style={{ ...myStyle.container, backgroundColor: props.color }}
   >
-    <View style={{flex: 2}}>
+    <View style={{ flex: 2 }}>
       <Icon
         size={60}
         color={white}
-        name='ios-musical-notes'
+        name="ios-musical-notes"
       />
     </View>
     <Text style={myStyle.label}>{props.name}</Text>
@@ -29,7 +29,7 @@ const myStyle = {
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    shadowOffset:{  width: 2,  height: 2,  },
+    shadowOffset: { width: 2, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.3,
   },
@@ -37,8 +37,8 @@ const myStyle = {
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
-    flexDirection: 'column'
-  }
+    flexDirection: 'column',
+  },
 }
 
 
