@@ -62,7 +62,7 @@ function* requestRecommendations(genres) {
   const response = yield call(PhilaMuseumService.getRecommendations, genres)
   return {
     art: response,
-    name: 'Recommendations for You',
+    name: genres.length > 1 ? 'Recommendations for You' : `Recommendations for ${genres[0]}`,
   }
 }
 
@@ -75,7 +75,9 @@ function* requestArtList({ payload }) {
     })
   } else {
     try {
-      const response = genres ? yield requestRecommendations(genres) : yield requestByGallery(galleryId)
+      const response = genres
+        ? yield requestRecommendations(genres)
+        : yield requestByGallery(galleryId)
       yield put({
         type: actions.RECEIVE_ART_LIST,
         payload: response || {},

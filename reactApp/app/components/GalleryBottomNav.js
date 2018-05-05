@@ -26,10 +26,12 @@ class GalleryBottomNav extends Component {
     }
 
     onProfileButtonPress = () => {
-      this.props.history.push('profile')
+      this.props.history.push('home')
+      this.props.navToArtList(Object.keys(this.props.genres))
     }
 
     render() {
+      if (!this.props.profileComplete) { return null }
       return (
         <View
           style={styles.bottomNavContainer}
@@ -96,16 +98,11 @@ class GalleryBottomNav extends Component {
     }
 }
 
-/* <View style={styles.activeContainer}>
-            <Text style={[styles.text, { fontSize: 12 }]}>Active</Text>
-            <Text style={[styles.textShadow, { fontSize: 20 }]}>
-              {this.props.activeGalleryId.toString()}
-            </Text>
-          </View> */
-
-export const mapStateToProps = ({ galleryInfo }) => ({
-  galleryPath: galleryInfo.history,
-  activeGalleryId: galleryInfo.history[galleryInfo.history.length - 1],
+export const mapStateToProps = state => ({
+  galleryPath: state.galleryInfo.history,
+  activeGalleryId: state.galleryInfo.history[state.galleryInfo.history.length - 1],
+  profileComplete: state.musicProfile.profileComplete,
+  genres: state.musicProfile.genres,
 })
 
 export const mapDispatchToProps = dispatch => ({
@@ -124,14 +121,6 @@ const styles = {
     height: galleryBottomNavHeight,
     width,
   },
-  // activeContainer: {
-  //   borderLeftWidth: StyleSheet.hairlineWidth,
-  //   borderLeftColor: 'white',
-  //   flex: 1,
-  //   height: galleryBottomNavHeight,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
 }
 
 GalleryBottomNav.propTypes = {

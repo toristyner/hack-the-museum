@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FlatList, Text, View } from 'react-native'
+import { FlatList, Text, View, Image, Dimensions } from 'react-native'
 import PropTypes from 'prop-types'
 import { withLoader, GalleryTile, GalleryBottomNav } from '../components/'
 import { GalleryLocationService } from '../utils'
 import { styles, numOfGalleryTilesPerRow, headerPadding } from '../styles'
 import * as actions from '../actionTypes'
+
+const { width, height } = Dimensions.get('window')
 
 class Home extends Component {
   static propTypes = {
@@ -21,8 +23,8 @@ class Home extends Component {
   }
 
   componentWillMount = () => {
-    // GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
-    this.props.handleGalleryLocationChange(111)
+    GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
+    // this.props.handleGalleryLocationChange(111)
   }
 
   goToArtDetail = (id) => {
@@ -41,8 +43,12 @@ class Home extends Component {
         <FlatList
           ListHeaderComponent={
             // this goes in here because otherwise the bottom nav gets pushed down
-            <View>
-              <Text style={styles.title}>{`${
+            <View style={myStyles.imageContainer}>
+              <Image
+                source={require('../assets/pam.jpg')}
+                style={myStyles.headerImage}
+              />
+              <Text style={styles.boldWhite}>{`${
                 this.props.data.name && this.props.data.name.length
                   ? this.props.data.name
                   : 'No Gallery Found'
@@ -67,6 +73,20 @@ class Home extends Component {
       </View>
     )
   }
+}
+
+const myStyles = {
+  imageContainer: {
+    height: height / 5,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerImage: {
+    width,
+    height: height / 5,
+    position: 'absolute',
+  },
 }
 
 export const mapStateToProps = ({ galleryInfo }) => ({

@@ -6,6 +6,7 @@ const initialState = {
   popularGenres: [],
   songResults: [],
   likedSongs: {},
+  profileComplete: false,
 }
 
 export default function profileReducer(state = initialState, action) {
@@ -13,6 +14,12 @@ export default function profileReducer(state = initialState, action) {
   case actions.TOGGLE_USER_PREFERRED_GENRE: {
     return {
       ...state,
+    }
+  }
+  case actions.COMPLETE_MUSIC_PROFILE: {
+    return {
+      ...state,
+      profileComplete: true,
     }
   }
   case actions.RECEIVE_POPULAR_GENRES: {
