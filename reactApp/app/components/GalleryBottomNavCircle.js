@@ -15,18 +15,23 @@ const GalleryBottomNavCircle = (props) => {
     return (
       <View>
         <TouchableOpacity
-          onPress={() => this.onGalleryNav(props.galleryId)}
+          onPress={() => props.onGalleryNav(props.galleryId)}
         >
           <Circle size={9} />
+          <Text style={[styles.text, {
+            left: -5,
+            top: 10,
+          }]}
+          >{props.galleryId.toString()}
+          </Text>
         </TouchableOpacity>
-        <Text style={styles.text}>{props.galleryId.toString()}</Text>
       </View>
     )
   }
   return (
     <View >
       <TouchableOpacity
-        onPress={() => this.onGalleryNav(props.galleryId)}
+        onPress={() => props.onGalleryNav(props.galleryId)}
       >
         <View style={{
           borderColor: 'white',
@@ -41,8 +46,13 @@ const GalleryBottomNavCircle = (props) => {
         >
           <Circle size={13} />
         </View>
+        <Text style={[styles.text, {
+          top: 20,
+          left: -2,
+        }]}
+        >{props.galleryId.toString()}
+        </Text>
       </TouchableOpacity>
-      <Text style={styles.text}>{props.galleryId.toString()}</Text>
     </View>
   )
 }
@@ -62,8 +72,6 @@ const styles = {
   },
   text: {
     width: 30,
-    left: -5,
-    top: 10,
     position: 'absolute',
     fontFamily: 'Arial',
     color: 'white',
