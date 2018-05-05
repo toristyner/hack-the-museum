@@ -15,7 +15,6 @@ export const getArtList = (galleryId) => {
 
 export const getArtRecommendations = (genres) => {
   const url = `${baseUrl}api/museum/artwork/recommendations/genres`
-  console.log(url)
   return fetch(url, {
     headers: {
       'content-type': 'application/json',
@@ -24,7 +23,6 @@ export const getArtRecommendations = (genres) => {
     body: JSON.stringify({ genres }),
   })
     .then((response) => {
-      console.log(response)
       if (response.status === 200) {
         return response.json()
       }
@@ -95,10 +93,7 @@ export const getRecommendations = (genres) => {
     },
     body: JSON.stringify({ genres }),
   })
-    .then((response) => {
-      console.log(response)
-      return response.json()
-    })
+    .then(response => response.json())
     .catch((err) => {
       console.log(err)
     })

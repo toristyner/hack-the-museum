@@ -5,46 +5,48 @@ import PropTypes from 'prop-types'
 import { styles, lightGray, white, likedColor } from '../styles'
 import { IconButton } from '.'
 
-const SongListItem = (props) => {
-  return (
-    <View
-      style={myStyle.container}
+const SongListItem = props => (
+  <View
+    style={myStyle.container}
+  >
+    <TouchableOpacity
+      style={myStyle.playButton}
+      onPress={props.onPlay}
     >
-      <TouchableOpacity
-        style={myStyle.playButton}
-        onPress={props.onPlay}
-      >
-        {
-          props.image !== null ?
-            <Image
-              style={{ width: 45, height: 45 }}
-              source={props.image ? { uri: props.image } : {}}
-            />
-            : <Icon
-              color={white}
-              name="ios-play"
-              size={44}
-            />
-        }
-      </TouchableOpacity>
-      <View style={myStyle.details}>
-        <Text style={styles.boldItalic}>{props.name}</Text>
-        <Text style={styles.bold}>{props.artist}</Text>
-      </View>
-      <View
-        style={myStyle.rightIcon}
-      >
-        <IconButton
-          onPress={props.onSongAction}
-          disabled={props.addedByUser}
-          color={props.isLiked || props.addedByUser ? likedColor : lightGray}
-          name={props.addedByUser ? 'md-contact' : 'md-thumbs-up'}
-          size={30}
-        />
-      </View>
+      {
+        props.image !== null ?
+          <Image
+            style={{ width: 45, height: 45 }}
+            source={props.image ? { uri: props.image } : {}}
+          />
+          : <Icon
+            color={white}
+            name="ios-play"
+            size={44}
+          />
+      }
+    </TouchableOpacity>
+    <View style={myStyle.details}>
+      <Text
+        style={styles.boldItalic}
+        numberOfLines={1}
+      >{props.name}
+      </Text>
+      <Text style={styles.bold}>{props.artist}</Text>
     </View>
-  )
-}
+    <View
+      style={myStyle.rightIcon}
+    >
+      <IconButton
+        onPress={props.onSongAction}
+        disabled={props.addedByUser}
+        color={props.isLiked || props.addedByUser ? likedColor : lightGray}
+        name={props.addedByUser ? 'md-contact' : 'md-thumbs-up'}
+        size={30}
+      />
+    </View>
+  </View>
+)
 
 const myStyle = {
   container: {
