@@ -43,6 +43,15 @@ function* updateSong({ type, payload }) {
     })
 
     yield put({
+      type: type === actions.LIKE_SONG ?
+        actions.USER_PROFILE_LIKE_GENRES :
+        actions.USER_PROFILE_UNLIKE_GENRES,
+      payload: {
+        genres: response.updatedGenres,
+      },
+    })
+
+    yield put({
       type: actions.UPDATE_ART_MUSIC,
       payload: {
         artId,
@@ -65,7 +74,17 @@ function* addSong({ payload }) {
       type: actions.USER_PROFILE_UPDATE_SONG,
       payload: {
         artId,
-        song: { ...song, addedByUser: true },
+        song: {
+          ...song,
+          addedByUser: true,
+        },
+      },
+    })
+
+    yield put({
+      type: actions.USER_PROFILE_LIKE_GENRES,
+      payload: {
+        genres: response.updatedGenres,
       },
     })
 

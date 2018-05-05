@@ -1,7 +1,7 @@
 import * as actions from '../actionTypes'
 
 const initialState = {
-  genres: [],
+  genres: {},
   popularGenres: [],
   songResults: [],
   likedSongs: {},
@@ -50,6 +50,32 @@ export default function profileReducer(state = initialState, action) {
           ...likedSongs,
           ...(!selectedSong ? { [song.id]: song } : {}),
         },
+      },
+    }
+  }
+  case actions.USER_PROFILE_LIKE_GENRES:
+  case actions.USER_PROFILE_UNLIKE_GENRES: {
+    const { payload } = action
+    const genres = { ...state.genres }
+    const increment = action.type === actions.USER_PROFILE_LIKE_GENRES ? 1 : -1
+
+    const updatedGenres = {
+      ...genres,
+      ...payload.genres.reduce((updated, genre) => ({
+        ...updated,
+        [genre]: genres[genre] ? genres[genre] + increment : 1,
+      }), {}),
+    }
+
+    return {
+      ...state,
+      genres: {
+        ...Object.keys(updatedGenres).reduce((updated, genre) => ({
+          ...updated,
+          ...(
+            updatedGenres[genre] > 0 ? { [genre]: updatedGenres[genre] } : {}
+          ),
+        }), {}),
       },
     }
   }

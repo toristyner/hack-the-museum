@@ -103,8 +103,8 @@ export const mapDispatchToProps = dispatch => ({
     type: actions.ADD_SONG,
     payload: { song },
   }),
-  songAction: (liked, song) => dispatch({
-    type: !liked ? actions.LIKE_SONG : actions.UNLIKE_SONG,
+  songAction: (isLiked, song) => dispatch({
+    type: isLiked ? actions.UNLIKE_SONG : actions.LIKE_SONG,
     payload: { song },
   }),
   songSearch: searchTerm => dispatch({
