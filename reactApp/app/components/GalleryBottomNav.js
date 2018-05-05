@@ -47,6 +47,7 @@ class GalleryBottomNav extends Component {
                     index={i}
                     galleryId={galleryId}
                     active={i === mockGalleryPath.length - 1}
+                    onGalleryNav={this.onGalleryNav}
                   />
                   {
                     i !== mockGalleryPath.length - 1 &&

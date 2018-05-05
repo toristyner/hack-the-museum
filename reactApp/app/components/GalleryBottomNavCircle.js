@@ -15,7 +15,7 @@ const GalleryBottomNavCircle = (props) => {
     return (
       <View>
         <TouchableOpacity
-          onPress={() => this.onGalleryNav(props.galleryId)}
+          onPress={() => props.onGalleryNav(props.galleryId)}
         >
           <Circle size={9} />
         </TouchableOpacity>
