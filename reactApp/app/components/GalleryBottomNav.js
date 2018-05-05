@@ -10,17 +10,14 @@ import * as actions from '../actionTypes'
 
 const { width } = Dimensions.get('window')
 
-const mockGalleryPath = [
-  111, 116,
-]
 const numOfPastGalleriesToDisplay = 5
+const widthOfProfileContainer = 50
+const horizontalPaddingOfNavContainer = 15
+const widthOfEachLineBetweenNavButtons = (width - widthOfProfileContainer - horizontalPaddingOfNavContainer) / numOfPastGalleriesToDisplay
 
 class GalleryBottomNav extends Component {
     static propTypes = {
       activeGalleryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    }
-    static defaultProps = {
-      activeGalleryId: 111,
     }
 
     onGalleryNav = (galleryId) => {
@@ -28,41 +25,72 @@ class GalleryBottomNav extends Component {
       this.props.navToArtList(galleryId)
     }
 
+    onProfileButtonPress = () => {
+      this.props.history.push('profile')
+    }
+
     render() {
       return (
         <View
           style={styles.bottomNavContainer}
         >
-          {
-            this.props.galleryPath
-              ? mockGalleryPath.map((galleryId, i) => (
-                <View
-                  key={`${galleryId}${i}`}
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                >
-                  <GalleryBottomNavCircle
-                    index={i}
-                    galleryId={galleryId}
-                    active={i === mockGalleryPath.length - 1}
-                    onGalleryNav={this.onGalleryNav}
-                  />
-                  {
-                    i !== mockGalleryPath.length - 1 &&
-                    <View style={{
-                      width: width / numOfPastGalleriesToDisplay,
-                      height: 1,
-                      backgroundColor: 'white',
+          <TouchableOpacity
+            onPress={this.onProfileButtonPress}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: widthOfProfileContainer,
+              borderRightColor: 'white',
+              borderRightWidth: StyleSheet.hairlineWidth,
+            }}
+          >
+            <Icon
+              color="white"
+              size={48}
+              name="ios-person"
+              iconStyle={{
+                textShadowColor: 'black',
+                textShadowRadius: 5,
+              }}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingHorizontal: 10,
+            }}
+          >
+            {
+              this.props.galleryPath
+                ? this.props.galleryPath.map((galleryId, i) => (
+                  <View
+                    key={`${galleryId}${i}`}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
                     }}
+                  >
+                    <GalleryBottomNavCircle
+                      onGalleryNav={this.onGalleryNav}
+                      index={i}
+                      galleryId={galleryId}
+                      active={i === this.props.galleryPath.length - 1}
                     />
-                  }
-                </View>
-              ))
-              : <Text>Get your ass to a gallery</Text>
+                    {
+                      i !== this.props.galleryPath.length - 1 &&
+                      <View style={{
+                        width: widthOfEachLineBetweenNavButtons,
+                        height: 1,
+                        backgroundColor: 'white',
+                      }}
+                      />
+                    }
+                  </View>
+                ))
+                : <Text>Get your ass to a gallery</Text>
 
-          }
+            }
+          </View>
         </View>
       )
     }
@@ -93,7 +121,6 @@ const styles = {
     flexDirection: 'row',
     bottom: 0,
     left: 0,
-    paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: bloodOrange,
