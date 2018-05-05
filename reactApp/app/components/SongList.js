@@ -9,8 +9,9 @@ const SongList = props => (
     <View style={myStyle.row}>
       <Text style={myStyle.title}>Songs</Text>
       <IconButton
-        name="ios-add"
-        size={28}
+        style={myStyle.addButton}
+        name="md-add"
+        size={23}
         onPress={props.addSong}
       />
     </View>
@@ -46,6 +47,9 @@ const myStyle = {
   scroller: {
     flexDirection: 'column',
     margin: 10,
+  },
+  addButton: {
+    paddingRight: 7,
   },
 }
 

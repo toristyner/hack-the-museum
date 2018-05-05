@@ -2,8 +2,9 @@ export const darkGray = '#3f3f3f'
 export const lightGray = '#ccc'
 export const lighterGray = '#cecece'
 export const white = '#fff'
-export const likedColor = 'purple'
 export const bloodOrange = '#E25241'
+export const likedColor = bloodOrange
+export const transparentDark = 'rgba(52, 52, 52, 0.8)'
 
 export const numOfGalleryTilesPerRow = 3
 export const galleryBottomNavHeight = 60

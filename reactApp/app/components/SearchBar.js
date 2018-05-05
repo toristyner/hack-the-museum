@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput } from 'react-native'
+import { TextInput } from 'react-native'
 import * as _ from 'lodash'
 import PropTypes from 'prop-types'
 import { lighterGray } from '../styles'
@@ -15,22 +15,17 @@ class SearchBar extends Component {
 
   render() {
     return (
-      <View style={myStyle.container}>
-        <TextInput
-          onChangeText={this.onChangeTextDelayed}
-          placeholder="Search for a song..."
-          style={myStyle.search}
-        />
-      </View>
+      <TextInput
+        onChangeText={this.onChangeTextDelayed}
+        placeholder={this.props.placeholder}
+        placeholderTextColor={this.props.placeholderTextColor}
+        style={{ ...myStyle.search, ...this.props.style }}
+      />
     )
   }
 }
 
 const myStyle = {
-  container: {
-    marginLeft: 15,
-    marginRight: 10,
-  },
   search: {
     height: 30,
     borderWidth: 1,
@@ -40,8 +35,17 @@ const myStyle = {
   },
 }
 
+SearchBar.defaultProps = {
+  style: {},
+  placeholder: 'Search for a song...',
+  placeholderTextColor: lighterGray,
+}
+
 SearchBar.propTypes = {
   onChangeText: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  placeholderTextColor: PropTypes.string,
+  style: PropTypes.object,
 }
 
 export default SearchBar
