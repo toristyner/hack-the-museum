@@ -75,7 +75,9 @@ function* requestArtList({ payload }) {
     })
   } else {
     try {
-      const response = genres ? yield requestRecommendations(genres) : yield requestByGallery(galleryId)
+      const response = genres
+        ? yield requestRecommendations(genres)
+        : yield requestByGallery(galleryId)
       yield put({
         type: actions.RECEIVE_ART_LIST,
         payload: response || {},

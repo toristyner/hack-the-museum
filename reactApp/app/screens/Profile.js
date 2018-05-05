@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { Dimensions, FlatList, Text, View, StyleSheet, Image } from 'react-native'
+import { TouchableOpacity, Dimensions, FlatList, Text, View, StyleSheet, Image } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { GenreTile, withLoader } from '../components'
 import * as actions from '../actionTypes'
-import { styles, white, likedColor, lighterGray } from '../styles'
+import * as _ from 'lodash'
+import { styles, lighterGray, bloodOrange, white } from '../styles'
+import galleryInfo from '../reducers/galleryInfoReducer'
 
 const { height, width } = Dimensions.get('window')
 class Profile extends Component {
@@ -20,6 +22,11 @@ class Profile extends Component {
   }
 
   componentDidMount = () => this.props.getPopularGenres()
+
+  completeProfile = () => {
+    this.props.completeProfile()
+    this.props.history.push('home')
+  }
 
   toggleGenre = (genre) => {
     const myNewGenres = { ...this.state.myGenres }
@@ -48,6 +55,7 @@ class Profile extends Component {
   }
 
   render() {
+    const genresAreSelected = !_.isEmpty(this.state.myGenres)
     return (
       <View style={myStyle.container}>
         <Image
@@ -63,28 +71,53 @@ class Profile extends Component {
           horizontal={false}
           renderItem={({ item }) => this.renderGenre(item)}
         />
+
+        <TouchableOpacity
+          onPress={() => this.completeProfile()}
+          title="Learn More"
+          style={genresAreSelected ? myStyle.buttonStyle : { ...myStyle.buttonStyle, ...myStyle.disabledStyle }}
+        >
+          <Text style={styles.boldWhite}>Continue</Text>
+        </TouchableOpacity>
       </View>
     )
   }
 }
 
-const myStyle = StyleSheet.create({
+const myStyle = {
   container: {
     flex: 1,
+  },
+  disabledStyle: {
+    backgroundColor: 'rgba(206, 206, 206, 0.8)',
+  },
+  buttonStyle: {
+    margin: 10,
+    bottom: 10,
+    marginLeft: '10%',
+    marginRight: '10%',
+    position: 'absolute',
+    backgroundColor: 'rgba(226, 82, 65, 0.8)',
+    flex: 1,
+    width: '80%',
   },
   backgroundImage: {
     position: 'absolute',
     height,
     width,
   },
-})
+}
 
-export const mapStateToProps = ({ musicProfile }) => ({
-  popularGenres: musicProfile.popularGenres,
-  myGenres: musicProfile.genres,
+export const mapStateToProps = state => ({
+  popularGenres: state.musicProfile.popularGenres,
+  myGenres: state.musicProfile.genres,
+  galleryPath: state.galleryInfo.history,
 })
 
 export const mapDispatchToProps = dispatch => ({
+  completeProfile: () => dispatch({
+    type: actions.COMPLETE_MUSIC_PROFILE,
+  }),
   getPopularGenres: () => dispatch({
     type: actions.REQUEST_POPULAR_GENRES,
   }),

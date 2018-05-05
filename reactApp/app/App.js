@@ -25,7 +25,7 @@ class App extends Component {
       this.appStore = createStore(reducer, applyMiddleware(...middleware))
       // create the persistor
       this.persistor = persistStore(this.appStore)
-      // this.persistor.purge(() => console.log('purged'))
+      this.persistor.purge(() => console.log('purged'))
       sagaMiddleware.run(sagas)
     }
   }
@@ -36,6 +36,7 @@ class App extends Component {
 
   render() {
     const store = this.props.store !== undefined ? this.props.store : this.appStore
+    const { profileComplete } = store.getState().musicProfile
     return (
       <Provider store={store}>
         <PersistGate persistor={this.persistor}>
@@ -44,7 +45,7 @@ class App extends Component {
               <Route
                 exact
                 path="/"
-                render={() => <Redirect to="/home" />}
+                render={() => <Redirect to={profileComplete ? '/home' : '/profile'} />}
               />
               <Route
                 exact
@@ -59,7 +60,7 @@ class App extends Component {
               <Route
                 exact
                 path="/profile"
-                component={() => <Profile />}
+                component={props => <Profile history={props.history} />}
               />
               <GalleryBottomNav />
             </View>

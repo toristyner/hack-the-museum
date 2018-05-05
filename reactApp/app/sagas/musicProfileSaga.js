@@ -2,6 +2,14 @@ import { call, select, takeLatest, put } from 'redux-saga/effects'
 import { PhilaMuseumService } from '../utils'
 import * as actions from '../actionTypes'
 
+function* completeProfile() {
+  const { genres } = yield select(state => state.musicProfile)
+  yield put({
+    type: actions.REQUEST_ART_LIST,
+    payload: { genres: Object.keys(genres) },
+  })
+}
+
 function* requestPopularGenres() {
   const response = yield call(PhilaMuseumService.getPopularGenres)
   yield put({
@@ -99,6 +107,7 @@ function* addSong({ payload }) {
 }
 
 function* musicProfileSaga() {
+  yield takeLatest(actions.COMPLETE_MUSIC_PROFILE, completeProfile)
   yield takeLatest(actions.REQUEST_POPULAR_GENRES, requestPopularGenres)
   yield takeLatest([actions.LIKE_SONG, actions.UNLIKE_SONG], updateSong)
   yield takeLatest(actions.SEARCH_SONG, search)
