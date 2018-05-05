@@ -22,9 +22,10 @@ const SongList = props => (
           name={item.name}
           artist={item.artist.name}
           image={item.images && item.images.length ? item.images[0].url : null}
-          onLike={() => props.likeSong(item)}
+          onSongAction={() => props.songAction(item.isLiked, item)}
           onPlay={() => props.playSong(item.uri)}
           isLiked={item.isLiked}
+          addedByUser={item.addedByUser}
         />
       )}
     />
@@ -50,7 +51,7 @@ const myStyle = {
 
 SongList.propTypes = {
   addSong: PropTypes.func.isRequired,
-  likeSong: PropTypes.func.isRequired,
+  songAction: PropTypes.func.isRequired,
   playSong: PropTypes.func.isRequired,
   songs: PropTypes.arrayOf(PropTypes.object).isRequired,
 }

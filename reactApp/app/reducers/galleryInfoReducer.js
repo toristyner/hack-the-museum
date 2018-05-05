@@ -50,6 +50,16 @@ export default function galleryInfo(state = initialState, action) {
       isLoading: false,
     }
   }
+  case actions.RECEIVE_ART_MUSIC: {
+    return {
+      ...state,
+      detail: {
+        ...state.detail,
+        music: action.payload.music,
+      },
+      isLoading: false,
+    }
+  }
   case actions.LIKE_SONG: {
     const newSongs = state.detail.music.songs.map((s) => {
       const song = { ...s }

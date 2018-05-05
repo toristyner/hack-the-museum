@@ -1,3 +1,5 @@
+import * as actions from '../actionTypes'
+
 const baseUrl = 'http://167.99.5.121:3000/'
 
 export const getArtList = (galleryId) => {
@@ -56,8 +58,10 @@ export const addSong = (artId, song) => {
     })
 }
 
-export const likeSong = (artId, song) => {
-  const url = `${baseUrl}api/museum/artwork/${artId}/song/like`
+export const updateSong = ({ artId, song, type }) => {
+  const action = type === actions.LIKE_SONG ? 'like' : 'dislike'
+  const url = `${baseUrl}api/museum/artwork/${artId}/song/${action}`
+
   return fetch(url, {
     headers: {
       'content-type': 'application/json',
@@ -115,6 +119,6 @@ export default {
   getArtDetail,
   getPopularGenres,
   getRecommendations,
-  likeSong,
+  updateSong,
   search,
 }

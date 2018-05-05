@@ -2,6 +2,20 @@ import { call, select, takeLatest, put } from 'redux-saga/effects'
 import { GalleryLocationService, PhilaMuseumService } from '../utils'
 import * as actions from '../actionTypes'
 
+function* mergeProfileSongs(artId, songs) {
+  const likedSongs = yield select(({ musicProfile }) => musicProfile.likedSongs)
+
+  return songs.map((song) => {
+    const { [song.id]: likedSong } = likedSongs[artId] || {}
+
+    return {
+      ...song,
+      isLiked: !!likedSong,
+      addedByUser: !!(likedSong && likedSong.addedByUser),
+    }
+  })
+}
+
 export function* initGalleryServices() {
   // We need to know the users location
   GalleryLocationService.requestLocationPermissions()
@@ -81,11 +95,8 @@ function* requestArtDetail({ payload }) {
   const galleryId = yield select(state => state.galleryInfo.currentGalleryId)
   if (galleryId && artId) {
     const artDetail = yield call(PhilaMuseumService.getArtDetail, galleryId, artId)
-    const likedSongs = yield select(state => state.musicProfile.likedSongs)
-    // is song liked
-    artDetail.music.songs.forEach((song) => {
-      song.isLiked = likedSongs[song.id] !== undefined
-    })
+
+    artDetail.music.songs = yield mergeProfileSongs(artId, artDetail.music.songs)
 
     yield put({
       type: actions.RECEIVE_ART_DETAIL,
@@ -97,11 +108,23 @@ function* requestArtDetail({ payload }) {
   }
 }
 
+function* updateArtMusic({ payload }) {
+  const { artId, music } = payload
+
+  music.songs = yield mergeProfileSongs(artId, music.songs)
+
+  yield put({
+    type: actions.RECEIVE_ART_MUSIC,
+    payload: { music },
+  })
+}
+
 function* galleryInfoSaga() {
   yield takeLatest(actions.INIT_GALLERY_SERVICES, initGalleryServices)
   yield takeLatest(actions.GALLERY_LOCATION_CHANGED, handleGalleryLocationChange)
   yield takeLatest(actions.REQUEST_ART_LIST, requestArtList)
   yield takeLatest(actions.REQUEST_ART_DETAIL, requestArtDetail)
+  yield takeLatest(actions.UPDATE_ART_MUSIC, updateArtMusic)
 }
 
 export default galleryInfoSaga

@@ -9,7 +9,7 @@ import * as actions from '../actionTypes'
 class Detail extends Component {
   static propTypes = {
     addSong: PropTypes.func.isRequired,
-    likeSong: PropTypes.func.isRequired,
+    songAction: PropTypes.func.isRequired,
     detail: PropTypes.object.isRequired,
     recommendBasedOnGenres: PropTypes.func.isRequired,
     songSearch: PropTypes.func.isRequired,
@@ -81,7 +81,7 @@ class Detail extends Component {
               : <SongList
                 songs={music.songs}
                 addSong={this.toggleSearch}
-                likeSong={this.props.likeSong}
+                songAction={this.props.songAction}
                 playSong={this.playSong}
               />
           }
@@ -103,8 +103,8 @@ export const mapDispatchToProps = dispatch => ({
     type: actions.ADD_SONG,
     payload: { song },
   }),
-  likeSong: song => dispatch({
-    type: actions.LIKE_SONG,
+  songAction: (liked, song) => dispatch({
+    type: !liked ? actions.LIKE_SONG : actions.UNLIKE_SONG,
     payload: { song },
   }),
   songSearch: searchTerm => dispatch({
