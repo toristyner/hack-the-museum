@@ -4,7 +4,7 @@ import { FlatList, Text, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { withLoader, GalleryTile, GalleryBottomNav } from '../components/'
 import { GalleryLocationService } from '../utils'
-import { styles, numOfGalleryTilesPerRow, galleryBottomNavHeight } from '../styles'
+import { styles, numOfGalleryTilesPerRow, headerPadding } from '../styles'
 import * as actions from '../actionTypes'
 
 class Home extends Component {
@@ -52,8 +52,7 @@ class Home extends Component {
           }
           contentContainerStyle={{
             paddingHorizontal: 10,
-            paddingBottom: galleryBottomNavHeight + 20,
-            // also adding some extra padding for the header at the top
+            paddingBottom: headerPadding, // adding some extra padding for the header at the top
           }}
           horizontal={false}
           numColumns={numOfGalleryTilesPerRow}

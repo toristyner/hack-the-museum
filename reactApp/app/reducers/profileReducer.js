@@ -1,6 +1,7 @@
 import * as actions from '../actionTypes'
 
 const initialState = {
+  isSongSearchLoading: false,
   genres: {},
   popularGenres: [],
   songResults: [],
@@ -20,9 +21,16 @@ export default function profileReducer(state = initialState, action) {
       popularGenres: action.payload.data,
     }
   }
+  case actions.SEARCH_SONG: {
+    return {
+      ...state,
+      isSongSearchLoading: true,
+    }
+  }
   case actions.RECEIVE_SONG_RESULTS: {
     return {
       ...state,
+      isSongSearchLoading: false,
       songResults: action.payload.data,
     }
   }

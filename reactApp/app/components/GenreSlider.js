@@ -12,6 +12,7 @@ const GenreSlider = props => (
         {
           props.genres && props.genres.map(g => (
             <GenreTile
+              size="small"
               key={`g${g.name}`}
               name={g.name}
               onPress={() => props.onPressGenre(g.name)}
@@ -26,7 +27,8 @@ const GenreSlider = props => (
 
 const myStyle = {
   container: {
-    padding: 10,
+    paddingTop: 10,
+    paddingLeft: 5,
   },
   scroller: {
     flexDirection: 'row',

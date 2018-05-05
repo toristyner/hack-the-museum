@@ -6,13 +6,8 @@ import PropTypes from 'prop-types'
 import { styles } from '../styles'
 import BackButton from './BackButton'
 
-const { width, height } = Dimensions.get('window')
-const imageHeight = height / 2.5
-
 const ArtImage = props => (
-  <View
-    style={myStyle.container}
-  >
+  <View style={{ ...myStyle.container, height: props.imageHeight }}>
     <BackButton
       onPress={props.onBack}
     />
@@ -22,7 +17,7 @@ const ArtImage = props => (
         indicator={Circle}
         style={{
           width: '100%',
-          height: imageHeight,
+          height: props.imageHeight,
         }}
       />
     </View>
@@ -40,8 +35,7 @@ const ArtImage = props => (
 
 const myStyle = {
   container: {
-    width,
-    height: imageHeight,
+    width: '100%',
   },
   imageContainer: {
     flex: 4,
@@ -65,6 +59,7 @@ ArtImage.propTypes = {
   title: PropTypes.string,
   style: PropTypes.string,
   year: PropTypes.string,
+  imageHeight: PropTypes.number.isRequired,
 }
 
 ArtImage.defaultProps = {
