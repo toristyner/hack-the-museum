@@ -25,6 +25,14 @@ export const styles = {
     fontWeight: 'bold',
     fontStyle: 'italic',
   },
+  boldWhite: {
+    fontSize: 18,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: white,
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
   grid: {
     justifyContent: 'center',
     flexDirection: 'row',

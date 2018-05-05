@@ -54,7 +54,7 @@ class Profile extends Component {
           source={require('../assets/pam.jpg')}
           style={myStyle.backgroundImage}
         />
-        <Text style={myStyle.title}>Pick your favorite genres to get started!</Text>
+        <Text style={styles.boldWhite}>Pick your favorite genres to get started!</Text>
         <FlatList
           contentContainerStyle={styles.grid}
           data={this.props.popularGenres}
@@ -76,14 +76,6 @@ const myStyle = StyleSheet.create({
     position: 'absolute',
     height,
     width,
-  },
-  title: {
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: white,
-    paddingTop: 15,
-    paddingBottom: 15,
   },
 })
 

@@ -62,7 +62,7 @@ function* requestRecommendations(genres) {
   const response = yield call(PhilaMuseumService.getRecommendations, genres)
   return {
     art: response,
-    name: 'Recommendations for You',
+    name: genres.length > 1 ? 'Recommendations for You' : `Recommendations for ${genres[0]}`,
   }
 }
 
