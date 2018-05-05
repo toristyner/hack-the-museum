@@ -1,10 +1,13 @@
 import React from 'react'
-import { Text, TouchableOpacity, View, FlatList } from 'react-native'
+import { Text, TouchableOpacity, View, FlatList, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
 import { SearchBar } from './'
 import { transparentDark, styles, lighterGray, bloodOrange } from '../styles'
 import SongSearchItem from './SongSearchItem'
+import { search } from '../utils/PhilaMuseumService'
+
+const searchBarHeight = 80
 
 const SongSearch = props => (
   <View style={myStyle.container}>
@@ -33,17 +36,24 @@ const SongSearch = props => (
       </View>
     </View>
     <View>
-      <FlatList
-        data={props.songs}
-        keyExtractor={item => `song${item.id}`}
-        keyboardDismissMode="on-drag"
-        renderItem={({ item }) => (
-          <SongSearchItem
-            addSong={props.addSong}
-            item={item}
-          />
-        )}
-      />
+      { props.loading ?
+        <ActivityIndicator size="large" />
+        :
+        <FlatList
+          contentContainerStyle={{
+            paddingBottom: searchBarHeight,
+          }}
+          data={props.songs}
+          keyExtractor={item => `song${item.id}`}
+          keyboardDismissMode="on-drag"
+          renderItem={({ item }) => (
+            <SongSearchItem
+              addSong={props.addSong}
+              item={item}
+            />
+          )}
+        />
+      }
     </View>
   </View>
 )
@@ -60,7 +70,7 @@ const myStyle = {
   },
   searchBarContainer: {
     flex: 1,
-    height: 80,
+    height: searchBarHeight,
     backgroundColor: bloodOrange,
     paddingLeft: 15,
     paddingRight: 15,

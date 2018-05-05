@@ -5,7 +5,7 @@ import { styles } from '../styles'
 import { SongListItem, IconButton } from '.'
 
 const SongList = props => (
-  <View style={myStyle.container}>
+  <View style={{ ...myStyle.container, height: props.height }}>
     <View style={myStyle.row}>
       <Text style={myStyle.title}>Songs</Text>
       <IconButton
@@ -16,6 +16,9 @@ const SongList = props => (
       />
     </View>
     <FlatList
+      contentContainerStyle={{
+        paddingBottom: 15,
+      }}
       data={props.songs}
       keyExtractor={item => `song${item.id}`}
       renderItem={({ item }) => (

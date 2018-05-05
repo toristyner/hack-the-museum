@@ -114,10 +114,7 @@ export const mapDispatchToProps = dispatch => ({
 
 const styles = {
   bottomNavContainer: {
-    position: 'absolute',
     flexDirection: 'row',
-    bottom: 0,
-    left: 0,
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: bloodOrange,

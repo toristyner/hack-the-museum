@@ -28,7 +28,7 @@ const SongListItem = props => (
     </TouchableOpacity>
     <View style={myStyle.details}>
       <Text
-        style={styles.boldItalic}
+        adjustsFontSizeToFit
         numberOfLines={1}
       >{props.name}
       </Text>
