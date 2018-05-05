@@ -3,20 +3,17 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { View, Text, Dimensions, StyleSheet, TouchableOpacity } from 'react-native'
+import GalleryBottomNavCircle from './GalleryBottomNavCircle'
 import { withRouter } from 'react-router'
 import { bloodOrange, galleryBottomNavHeight } from '../styles'
 import * as actions from '../actionTypes'
 
 const { width } = Dimensions.get('window')
 
-
-const Circle = props => (
-  <View style={[styles.circle, {
-    height: props.size,
-    width: props.size,
-    ...props.style,
-  }]}
-  />)
+const mockGalleryPath = [
+  111, 116,
+]
+const numOfPastGalleriesToDisplay = 5
 
 class GalleryBottomNav extends Component {
     static propTypes = {
@@ -36,34 +33,46 @@ class GalleryBottomNav extends Component {
         <View
           style={styles.bottomNavContainer}
         >
-          <View
-            style={styles.historyContainer}
-          >
-            {
-              this.props.galleryPath
-                ? this.props.galleryPath.map((galleryId, i) => (
-                  <TouchableOpacity
-                    key={`${galleryId}${i}`}
-                    onPress={() => this.onGalleryNav(galleryId)}
-                    style={{ flex: 1, alignItems: 'center' }}
-                  >
-                    <Circle size={9} />
-                    <Text style={styles.text}>{galleryId}</Text>
-                  </TouchableOpacity>
-                ))
-                : <Text>Get your ass to a gallery</Text>
-            }
-          </View>
-          {/* <View style={styles.activeContainer}>
-            <Text style={[styles.text, { fontSize: 12 }]}>Active</Text>
-            <Text style={[styles.textShadow, { fontSize: 20 }]}>
-              {this.props.activeGalleryId.toString()}
-            </Text>
-          </View> */}
+          {
+            this.props.galleryPath
+              ? mockGalleryPath.map((galleryId, i) => (
+                <View
+                  key={`${galleryId}${i}`}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <GalleryBottomNavCircle
+                    index={i}
+                    galleryId={galleryId}
+                    active={i === mockGalleryPath.length - 1}
+                  />
+                  {
+                    i !== mockGalleryPath.length - 1 &&
+                    <View style={{
+                      width: width / numOfPastGalleriesToDisplay,
+                      height: 1,
+                      backgroundColor: 'white',
+                    }}
+                    />
+                  }
+                </View>
+              ))
+              : <Text>Get your ass to a gallery</Text>
+
+          }
         </View>
       )
     }
 }
+
+/* <View style={styles.activeContainer}>
+            <Text style={[styles.text, { fontSize: 12 }]}>Active</Text>
+            <Text style={[styles.textShadow, { fontSize: 20 }]}>
+              {this.props.activeGalleryId.toString()}
+            </Text>
+          </View> */
 
 export const mapStateToProps = ({ galleryInfo }) => ({
   galleryPath: galleryInfo.history,
@@ -83,51 +92,21 @@ const styles = {
     flexDirection: 'row',
     bottom: 0,
     left: 0,
+    paddingHorizontal: 10,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: bloodOrange,
     height: galleryBottomNavHeight,
     width,
   },
-
-  circle: {
-    borderRadius: 50,
-    shadowColor: 'black',
-    shadowOpacity: 0.7,
-    shadowRadius: 3,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    backgroundColor: 'white',
-  },
-  historyContainer: {
-    flexDirection: 'row',
-    flex: 5,
-    justifyContent: 'space-around',
-  },
-  activeContainer: {
-    borderLeftWidth: StyleSheet.hairlineWidth,
-    borderLeftColor: 'white',
-    flex: 1,
-    height: galleryBottomNavHeight,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontFamily: 'Arial',
-    color: 'white',
-  },
-  textShadow: {
-    fontFamily: 'Arial',
-    color: 'white',
-    textShadowColor: '#E25241',
-    textShadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    textShadowRadius: 5,
-  },
+  // activeContainer: {
+  //   borderLeftWidth: StyleSheet.hairlineWidth,
+  //   borderLeftColor: 'white',
+  //   flex: 1,
+  //   height: galleryBottomNavHeight,
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  // },
 }
 
 GalleryBottomNav.propTypes = {
