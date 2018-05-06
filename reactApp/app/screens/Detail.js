@@ -6,7 +6,7 @@ import { ArtImage, GenreSlider, SongList, SongSearch, withLoader } from '../comp
 import { styles, galleryBottomNavHeight, headerPadding } from '../styles'
 import * as actions from '../actionTypes'
 
-const { width, height } = Dimensions.get('screen')
+const { height } = Dimensions.get('screen')
 const imageComponentHeight = height / 3
 const genreSliderHeight = 140
 
@@ -25,11 +25,8 @@ class Detail extends Component {
     isSongSearchLoading: false,
   }
 
-  constructor() {
-    super()
-    this.state = {
-      showSearch: false,
-    }
+  state = {
+    showSearch: false,
   }
 
   toggleSearch = () => this.setState({ showSearch: !this.state.showSearch })
@@ -77,6 +74,7 @@ class Detail extends Component {
             imageHeight={imageComponentHeight}
             style={Style}
             year={Dated}
+            onExpand={() => this.props.history.push('imageViewer')}
           />
         </View>
         { music &&

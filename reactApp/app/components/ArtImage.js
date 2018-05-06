@@ -1,7 +1,8 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
 import Image from 'react-native-image-progress'
 import Circle from 'react-native-progress/Circle'
+import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
 import { styles, lighterGray } from '../styles'
 import BackButton from './BackButton'
@@ -11,6 +12,16 @@ const ArtImage = props => (
     <BackButton
       onPress={props.onBack}
     />
+    <TouchableOpacity
+      style={myStyle.expandButton}
+      onPress={props.onExpand}
+    >
+      <Icon
+        name="md-expand"
+        color="white"
+        size={30}
+      />
+    </TouchableOpacity>
     <View style={myStyle.imageContainer}>
       <Image
         source={props.photoUrl ? { uri: props.photoUrl } : {}}
@@ -61,10 +72,17 @@ const myStyle = {
   indicator: {
     top: -28,
   },
+  expandButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+  },
 }
 
 ArtImage.propTypes = {
   onBack: PropTypes.func.isRequired,
+  onExpand: PropTypes.func.isRequired,
   photoUrl: PropTypes.string,
   title: PropTypes.string,
   style: PropTypes.string,
