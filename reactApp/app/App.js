@@ -6,12 +6,12 @@ import { createLogger } from 'redux-logger'
 import { Provider } from 'react-redux'
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/es/integration/react'
-import { NativeRouter, Route, Redirect } from 'react-router-native'
+import { NativeRouter, Route, Redirect, Switch } from 'react-router-native'
 import reducer from './reducers/index'
 import { GalleryBottomNav } from './components'
 import sagas from './sagas'
 import * as actions from './actionTypes'
-import { Home, Detail, Profile } from './screens/'
+import { Home, Detail, Profile, ArtImageViewer } from './screens/'
 
 class App extends Component {
   constructor(props) {
@@ -62,7 +62,15 @@ class App extends Component {
                 path="/profile"
                 component={props => <Profile history={props.history} />}
               />
-              <GalleryBottomNav />
+              <Route
+                exact
+                path="/imageViewer"
+                component={props => <ArtImageViewer history={props.history} />}
+              />
+              <Switch>
+                <Route path="/imageViewer" />
+                <Route component={GalleryBottomNav} />
+              </Switch>
             </View>
           </NativeRouter>
         </PersistGate>
