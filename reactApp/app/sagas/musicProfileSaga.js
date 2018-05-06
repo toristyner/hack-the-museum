@@ -1,5 +1,5 @@
 import { call, select, takeLatest, put } from 'redux-saga/effects'
-import { PhilaMuseumService } from '../utils'
+import { PhilaMuseumService, sortBy } from '../utils'
 import * as actions from '../actionTypes'
 
 function* completeProfile() {
@@ -15,7 +15,7 @@ function* requestPopularGenres() {
   yield put({
     type: actions.RECEIVE_POPULAR_GENRES,
     payload: {
-      data: response,
+      data: response.sort(sortBy),
     },
   })
 }

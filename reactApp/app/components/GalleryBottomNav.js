@@ -18,6 +18,11 @@ const widthOfEachLineBetweenNavButtons = (width - widthOfProfileContainer - hori
 class GalleryBottomNav extends Component {
     static propTypes = {
       activeGalleryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      navToRecomendations: PropTypes.func.isRequired,
+      navToArtList: PropTypes.func.isRequired,
+      history: PropTypes.func.isRequired,
+      genres: PropTypes.object.isRequired,
+      profileComplete: PropTypes.bool.isRequired,
     }
 
     onGalleryNav = (galleryId) => {
@@ -27,7 +32,7 @@ class GalleryBottomNav extends Component {
 
     onProfileButtonPress = () => {
       this.props.history.push('home')
-      this.props.navToArtList(Object.keys(this.props.genres))
+      this.props.navToRecomendations(Object.keys(this.props.genres))
     }
 
     render() {
@@ -109,6 +114,10 @@ export const mapDispatchToProps = dispatch => ({
   navToArtList: galleryId => dispatch({
     type: actions.REQUEST_ART_LIST,
     payload: { galleryId },
+  }),
+  navToRecomendations: genres => dispatch({
+    type: actions.REQUEST_ART_LIST,
+    payload: { genres },
   }),
 })
 
