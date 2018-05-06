@@ -85,7 +85,7 @@ export default function galleryInfo(state = initialState, action) {
     }
 
     let newHistory
-    if (state.history.length > 5) {
+    if (state.history.length > 4) {
       newHistory = [...state.history.slice(1, 4), action.payload.galleryId]
     } else {
       newHistory = [...state.history, action.payload.galleryId]

@@ -7,6 +7,7 @@ import * as actions from '../actionTypes'
 import * as _ from 'lodash'
 import { styles, lighterGray, bloodOrange, white } from '../styles'
 import galleryInfo from '../reducers/galleryInfoReducer'
+import { sortBy } from '../utils/utils'
 
 const { height, width } = Dimensions.get('window')
 class Profile extends Component {
@@ -56,6 +57,7 @@ class Profile extends Component {
 
   render() {
     const genresAreSelected = !_.isEmpty(this.state.myGenres)
+    console.log(sortBy)
     return (
       <View style={myStyle.container}>
         <Image
@@ -76,6 +78,7 @@ class Profile extends Component {
           onPress={() => this.completeProfile()}
           title="Learn More"
           style={genresAreSelected ? myStyle.buttonStyle : { ...myStyle.buttonStyle, ...myStyle.disabledStyle }}
+          disabled={!genresAreSelected}
         >
           <Text style={styles.boldWhite}>Continue</Text>
         </TouchableOpacity>
@@ -87,6 +90,7 @@ class Profile extends Component {
 const myStyle = {
   container: {
     flex: 1,
+    paddingBottom: 85,
   },
   disabledStyle: {
     backgroundColor: 'rgba(206, 206, 206, 0.8)',

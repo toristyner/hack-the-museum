@@ -53,13 +53,13 @@ class Home extends Component {
     )
   )
 
-  locationOverlay = item => (
+  locationOverlay = item => (item.Location && item.Location.GalleryShort ? (
     <View style={myStyles.locationOverlay}>
       <Text style={myStyles.location}>
-        {item.Location.GalleryShort}
+        {item.Location && item.Location.GalleryShort}
       </Text>
     </View>
-  )
+  ) : null)
 
   renderGalleryTile = ({ item }) => (
     <GalleryTile
