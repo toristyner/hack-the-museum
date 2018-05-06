@@ -5,6 +5,7 @@ export const white = '#fff'
 export const bloodOrange = '#E25241'
 export const likedColor = bloodOrange
 export const transparentDark = 'rgba(52, 52, 52, 0.8)'
+export const transparentLight = 'rgba(52, 52, 52, 0.5)'
 
 export const numOfGalleryTilesPerRow = 3
 export const galleryBottomNavHeight = 60
