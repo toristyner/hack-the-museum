@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Linking, Dimensions } from 'react-native'
+import { View, StyleSheet, Linking, Dimensions, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
-import { ArtImage, GenreSlider, SongList, SongSearch, withLoader } from '../components/'
+import { ArtImage, GenreSlider, SongList, SongSearch } from '../components/'
+import MusicPlacholder from '../components/MusicPlacholder'
 import { styles, galleryBottomNavHeight, headerPadding } from '../styles'
 import * as actions from '../actionTypes'
 
@@ -50,6 +51,29 @@ class Detail extends Component {
     this.props.history.goBack()
   }
 
+  renderMusic = music => (
+    music.songs.length ?
+      <React.Fragment>
+        <View style={{ height: genreSliderHeight }}>
+          <GenreSlider
+            genres={music.genres}
+            onPressGenre={this.recommendBasedOnGenre}
+          />
+        </View>
+        <SongList
+          height={
+            (height - genreSliderHeight - imageComponentHeight -
+              galleryBottomNavHeight - headerPadding)
+          }
+          songs={music.songs}
+          addSong={this.toggleSearch}
+          songAction={this.props.songAction}
+          playSong={this.playSong}
+        />
+      </React.Fragment>
+      : <MusicPlacholder addSong={this.toggleSearch} />
+  )
+
   render() {
     const {
       Title,
@@ -77,33 +101,22 @@ class Detail extends Component {
             onExpand={() => this.props.history.push('imageViewer')}
           />
         </View>
-        { music &&
-        <React.Fragment>
-          <View style={{ height: genreSliderHeight }}>
-            <GenreSlider
-              genres={music.genres}
-              onPressGenre={this.recommendBasedOnGenre}
+        {this.props.isLoading ?
+          <View style={myStyles.indicator}>
+            <ActivityIndicator
+              active
             />
           </View>
-          {
-            this.state.showSearch
-              ? <SongSearch
-                loading={this.props.isSongSearchLoading}
-                cancelSearch={this.toggleSearch}
-                addSong={this.addSong}
-                search={this.props.songSearch}
-                songs={this.props.songResults}
-              />
-              : <SongList
-                height={height - genreSliderHeight - imageComponentHeight - galleryBottomNavHeight - headerPadding}
-                songs={music.songs}
-                addSong={this.toggleSearch}
-                songAction={this.props.songAction}
-                playSong={this.playSong}
-              />
-          }
-        </React.Fragment>
-        }
+          : this.renderMusic(music)}
+        {this.state.showSearch && (
+          <SongSearch
+            loading={this.props.isSongSearchLoading}
+            cancelSearch={this.toggleSearch}
+            addSong={this.addSong}
+            search={this.props.songSearch}
+            songs={this.props.songResults}
+          />
+        )}
       </View>
     )
   }
@@ -114,6 +127,7 @@ export const mapStateToProps = state => ({
   currentGalleryId: state.galleryInfo.currentGalleryId,
   detail: state.galleryInfo.detail,
   songResults: state.musicProfile.songResults,
+  isLoading: state.galleryInfo.isLoading,
 })
 
 export const mapDispatchToProps = dispatch => ({
@@ -157,6 +171,12 @@ const myStyles = StyleSheet.create({
   text: {
     textAlign: 'center',
   },
+  indicator: {
+    flex: 1,
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withLoader(Detail))
+export default connect(mapStateToProps, mapDispatchToProps)(Detail)
