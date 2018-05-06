@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View, TouchableOpacity, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
-import { styles, lightGray, white, likedColor } from '../styles'
+import { styles, lightGray, white, likedColor, transparentWhite } from '../styles'
 import { IconButton } from '.'
 
 const SongListItem = props => (
@@ -10,21 +10,21 @@ const SongListItem = props => (
     style={myStyle.container}
   >
     <TouchableOpacity
-      style={myStyle.playButton}
+      style={myStyle.playButtonContainer}
       onPress={props.onPlay}
     >
-      {
-        props.image !== null ?
-          <Image
-            style={{ width: 45, height: 45 }}
-            source={props.image ? { uri: props.image } : {}}
-          />
-          : <Icon
-            color={white}
-            name="ios-play"
-            size={44}
-          />
-      }
+      {props.image && (
+        <Image
+          style={myStyle.songImage}
+          source={props.image ? { uri: props.image } : {}}
+        />
+      )}
+      <Icon
+        name="ios-play"
+        size={44}
+        style={myStyle.playButton}
+        color={transparentWhite}
+      />
     </TouchableOpacity>
     <View style={myStyle.details}>
       <Text
@@ -67,12 +67,24 @@ const myStyle = {
     paddingLeft: 10,
     justifyContent: 'center',
   },
-  playButton: {
+  playButtonContainer: {
+    position: 'relative',
     width: 45,
     height: 45,
     backgroundColor: lightGray,
+  },
+  songImage: {
+    width: 45,
+    height: 45,
+  },
+  playButton: {
+    top: 0,
+    left: 0,
+    right: 0,
+    position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
+    textAlign: 'center',
   },
   rightIcon: {
     width: 45,
