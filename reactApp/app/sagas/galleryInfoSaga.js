@@ -52,6 +52,15 @@ export function* handleGalleryLocationChange({ payload }) {
 
 function* requestByGallery(galleryId) {
   const response = yield call(PhilaMuseumService.getArtList, galleryId)
+  const genres = yield select(({ musicProfile }) =>
+    Object.keys(musicProfile.genres))
+
+  response.Objects = response.Objects.map(obj => ({
+    ...obj,
+    matchesProfile: obj.genres.some(genre =>
+      genres.indexOf(genre) > -1),
+  }))
+
   return {
     art: response.Objects,
     name: response.Gallery,
