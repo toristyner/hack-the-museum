@@ -1,9 +1,9 @@
 import React from 'react'
-import { Text, View, Dimensions } from 'react-native'
+import { Text, View } from 'react-native'
 import Image from 'react-native-image-progress'
 import Circle from 'react-native-progress/Circle'
 import PropTypes from 'prop-types'
-import { styles } from '../styles'
+import { styles, lighterGray } from '../styles'
 import BackButton from './BackButton'
 
 const ArtImage = props => (
@@ -14,7 +14,13 @@ const ArtImage = props => (
     <View style={myStyle.imageContainer}>
       <Image
         source={props.photoUrl ? { uri: props.photoUrl } : {}}
-        indicator={Circle}
+        indicator={({ progress }) => (
+          <Circle
+            color={indicatorColor}
+            progress={progress}
+            style={myStyle.indicator}
+          />
+        )}
         style={{
           width: '100%',
           height: props.imageHeight,
@@ -32,7 +38,7 @@ const ArtImage = props => (
   </View>
 )
 
-
+const indicatorColor = 'rgba(255, 255, 255, 0.5)'
 const myStyle = {
   container: {
     width: '100%',
@@ -40,6 +46,7 @@ const myStyle = {
   imageContainer: {
     flex: 4,
     alignItems: 'center',
+    backgroundColor: lighterGray,
   },
   overlayContainer: {
     flex: 1,
@@ -50,6 +57,9 @@ const myStyle = {
   date: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  indicator: {
+    top: -28,
   },
 }
 
