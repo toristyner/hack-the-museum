@@ -1,7 +1,8 @@
 import { reduceProps, mapProps, sortDesc } from '../../../shared/formatter'
 
-const simpleList = ['ObjectID', 'Title', 'Artist', 'Thumbnail', 'Location']
-const list = [...simpleList, 'genres']
+const coreListItems = ['ObjectID', 'Title', 'Artist', 'Thumbnail']
+const simpleList = [...coreListItems, 'Location']
+const list = [...coreListItems, 'genres']
 const detail = [
   'ObjectID',
   'Image',

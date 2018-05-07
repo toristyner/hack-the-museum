@@ -18,6 +18,12 @@ class ArtworkModel {
     return new Promise(resolve => {
       const genreIncrements = this.incrementGenres(genres)
       const genreUpdates = this.updateGenres(genres)
+      const addGenres = genres.length
+        ? {
+            $set: genreUpdates,
+            $inc: genreIncrements
+          }
+        : {}
 
       this.artwork.findOneAndUpdate(
         { id },
@@ -26,8 +32,7 @@ class ArtworkModel {
           $addToSet: {
             songs: song
           },
-          $set: genreUpdates,
-          $inc: genreIncrements
+          ...addGenres
         },
         { upsert: true, new: true },
         (err, data) => {
