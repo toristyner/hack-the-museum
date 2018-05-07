@@ -41,7 +41,7 @@ class App extends Component {
       <Provider store={store}>
         <PersistGate persistor={this.persistor}>
           <NativeRouter>
-            <View style={{ flex: 1, paddingTop: 30 }}>
+            <View style={{ flex: 1, paddingTop: 20 }}>
               <Route
                 exact
                 path="/"
