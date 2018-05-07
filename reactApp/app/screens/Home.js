@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/Ionicons'
 import isNil from 'lodash/isNil'
 import { withLoader, GalleryTile } from '../components/'
-import { GalleryLocationService } from '../utils'
+import { GalleryLocationService, TestingUtils } from '../utils'
 import {
   styles,
   numOfGalleryTilesPerRow,
@@ -34,6 +34,7 @@ class Home extends Component {
 
   componentWillMount = () => {
     GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
+    // TestingUtils.simulateGalleryChanges(this.props.handleGalleryLocationChange)
     // this.props.handleGalleryLocationChange(111)
   }
 

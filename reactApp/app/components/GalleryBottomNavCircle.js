@@ -19,8 +19,8 @@ const GalleryBottomNavCircle = (props) => {
         >
           <Circle size={9} />
           <Text style={[styles.text, {
-            left: -5,
-            top: 10,
+            left: -10.5,
+            top: 15,
           }]}
           >{props.galleryId.toString()}
           </Text>
@@ -48,7 +48,7 @@ const GalleryBottomNavCircle = (props) => {
         </View>
         <Text style={[styles.text, {
           top: 20,
-          left: -2,
+          left: -5,
         }]}
         >{props.galleryId.toString()}
         </Text>
@@ -75,6 +75,7 @@ const styles = {
     position: 'absolute',
     fontFamily: 'Arial',
     color: 'white',
+    textAlign: 'center',
   },
   textShadow: {
     fontFamily: 'Arial',

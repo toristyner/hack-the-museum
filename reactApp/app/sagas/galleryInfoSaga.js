@@ -2,6 +2,8 @@ import { call, select, takeLatest, put } from 'redux-saga/effects'
 import { GalleryLocationService, PhilaMuseumService } from '../utils'
 import * as actions from '../actionTypes'
 
+const GALLERY_ID_REGEX = /(^\d{2})$|(^\d{3}\w)$|(^\d{3})$/
+
 function* mergeProfileSongs(artId, songs) {
   const likedSongs = yield select(({ musicProfile }) => musicProfile.likedSongs)
 
@@ -33,16 +35,10 @@ export function* initGalleryServices() {
 export function* handleGalleryLocationChange({ payload }) {
   const { galleryId } = payload
 
-  // TODO:
-  // decide whether to actually update the current gallery
-  // maybe this is a valid change and we need to do the work
-  // maybe this is a glitch and we dont want to update rn
-
-  // assume for now its valid change
-  const isValidGalleryUpdate = true
-  if (isValidGalleryUpdate) {
+  // Prevents none galleryIds from being added (stairs, store, etc)
+  if (GALLERY_ID_REGEX.test(galleryId)) {
     yield put({
-      type: actions.REQUEST_ART_LIST,
+      type: actions.UPDATE_LOCATIONS,
       payload: {
         galleryId,
       },
@@ -77,6 +73,7 @@ function* requestRecommendations(genres) {
 
 function* requestArtList({ payload }) {
   const { galleryId, genres } = payload
+
   if (!galleryId && !genres) {
     yield put({
       type: actions.API_ERROR,
@@ -87,6 +84,7 @@ function* requestArtList({ payload }) {
       const response = genres
         ? yield requestRecommendations(genres)
         : yield requestByGallery(galleryId)
+
       yield put({
         type: actions.RECEIVE_ART_LIST,
         payload: response || {},
