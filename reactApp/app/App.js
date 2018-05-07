@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/es/integration/react'
 import { NativeRouter, Route, Redirect, Switch } from 'react-router-native'
+import SplashScreen from 'react-native-splash-screen'
 import reducer from './reducers/index'
 import { GalleryBottomNav } from './components'
 import sagas from './sagas'
@@ -30,7 +31,10 @@ class App extends Component {
     }
   }
 
-  componentDidMount = () => this.initNativeServices()
+  componentDidMount = () => {
+    this.initNativeServices()
+    SplashScreen.hide()
+  }
 
   initNativeServices = () => this.appStore.dispatch({ type: actions.INIT_GALLERY_SERVICES })
 
