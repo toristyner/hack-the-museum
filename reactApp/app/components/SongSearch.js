@@ -13,9 +13,9 @@ const SongSearch = props => (
   <View style={myStyle.container}>
     <View style={myStyle.row}>
       <View style={myStyle.searchBarContainer}>
-        <View style={myStyle.searchBarTile}>
+        <View style={myStyle.searchBarTitle}>
           <Text style={myStyle.searchTitle}>
-            Search Songs
+            Song Search
           </Text>
           <TouchableOpacity
             onPress={props.cancelSearch}
@@ -31,13 +31,16 @@ const SongSearch = props => (
         <SearchBar
           style={myStyle.searchBar}
           onChangeText={props.search}
-          placeholderTextColor={bloodOrange}
+          placeholder="Artist Name or Song Title"
         />
       </View>
     </View>
     <View>
       { props.loading ?
-        <ActivityIndicator size="large" />
+        <ActivityIndicator
+          style={myStyle.indicator}
+          size="large"
+        />
         :
         <FlatList
           contentContainerStyle={{
@@ -46,6 +49,7 @@ const SongSearch = props => (
           data={props.songs}
           keyExtractor={item => `song${item.id}`}
           keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
           renderItem={({ item }) => (
             <SongSearchItem
               addSong={props.addSong}
@@ -75,13 +79,13 @@ const myStyle = {
     paddingLeft: 15,
     paddingRight: 15,
   },
-  searchBarTile: {
-    paddingTop: 10,
+  searchBarTitle: {
     paddingBottom: 10,
     flexDirection: 'row',
   },
   searchTitle: {
     flex: 1,
+    paddingTop: 10,
     color: 'white',
     fontSize: 18,
   },
@@ -99,6 +103,15 @@ const myStyle = {
     backgroundColor: 'white',
     borderColor: lighterGray,
   },
+  closeButton: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginRight: -10,
+    justifyContent: 'flex-end',
+  },
+  indicator: {
+    top: 120,
+  },
 }
 
 SongSearch.propTypes = {
@@ -106,6 +119,11 @@ SongSearch.propTypes = {
   cancelSearch: PropTypes.func.isRequired,
   search: PropTypes.func.isRequired,
   songs: PropTypes.array.isRequired,
+  loading: PropTypes.bool,
+}
+
+SongSearch.defaultProps = {
+  loading: false,
 }
 
 export default SongSearch

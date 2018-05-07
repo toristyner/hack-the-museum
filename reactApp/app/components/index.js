@@ -11,6 +11,7 @@ import SongList from './SongList'
 import SongListItem from './SongListItem'
 import SongSearch from './SongSearch'
 import GalleryBottomNav from './GalleryBottomNav'
+import MusicPlacholder from './MusicPlacholder'
 
 export {
   ArtImage,
@@ -25,4 +26,5 @@ export {
   SongList,
   SongListItem,
   SongSearch,
+  MusicPlacholder,
 }
