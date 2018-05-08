@@ -149,7 +149,6 @@ class Home extends Component {
           horizontal={false}
           numColumns={numOfGalleryTilesPerRow}
           columnWrapperStyle={{
-            justifyContent: 'space-between',
             marginTop: 20,
           }}
           data={this.props.data.art}

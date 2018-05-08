@@ -11,6 +11,7 @@ const myStyle = {
     position: 'relative',
     width: baseDim,
     height: baseDim,
+    marginRight: 15,
     backgroundColor: 'white',
     shadowOpacity: 0.75,
     shadowColor: 'black',
