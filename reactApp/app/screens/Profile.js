@@ -57,7 +57,7 @@ class Profile extends Component {
 
   render() {
     const genresAreSelected = !_.isEmpty(this.state.myGenres)
-    console.log(sortBy)
+
     return (
       <View style={myStyle.container}>
         <Image

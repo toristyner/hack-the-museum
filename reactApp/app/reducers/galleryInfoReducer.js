@@ -1,7 +1,9 @@
 import * as actions from '../actionTypes'
 
+const maxLocationHistory = 4
 const initialState = {
   currentGalleryId: 'N/A',
+  nearestGalleryId: null,
   data: {},
   detail: {
     Title: '',
@@ -79,30 +81,26 @@ export default function galleryInfo(state = initialState, action) {
       },
     }
   }
-  case actions.GALLERY_LOCATION_CHANGED: {
-    if (state.history[state.history.length - 1] === action.payload.galleryId) {
-      return state
-    }
+  case actions.UPDATE_LOCATIONS: {
+    const { galleryId } = action.payload || {}
+    const history = state.history.slice()
 
-    let newHistory
-    if (state.history.length > 4) {
-      newHistory = [...state.history.slice(1, 4), action.payload.galleryId]
-    } else {
-      newHistory = [...state.history, action.payload.galleryId]
+    // don't add id if it is same as nearest gallery
+    if (galleryId !== state.nearestGalleryId) {
+      history.push(galleryId)
+
+      // remove oldest when max history is reached
+      if (history.length - 1 > maxLocationHistory) {
+        history.shift()
+      }
     }
 
     return {
       ...state,
-      history: newHistory,
+      nearestGalleryId: galleryId,
+      history,
     }
   }
-  case actions.UPDATE_ART_LIST:
-    return {
-      ...state,
-      currentGalleryId: action.payload.galleryId.toString(),
-      isLoading: true,
-      loadingMessage: `Loading data for Gallery ${action.payload.galleryId}`,
-    }
   case actions.GEOLOCATION_DATA_DID_LOAD:
     return {
       ...state,

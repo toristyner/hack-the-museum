@@ -64,7 +64,9 @@ class GalleryBottomNav extends Component {
           <View
             style={{
               flexDirection: 'row',
+              justifyContent: 'flex-end',
               paddingHorizontal: 10,
+              flex: 1,
             }}
           >
             {
@@ -75,6 +77,7 @@ class GalleryBottomNav extends Component {
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
+                      bottom: 5,
                     }}
                   >
                     <GalleryBottomNavCircle
