@@ -7,7 +7,7 @@ import { white } from '../styles'
 const BackButton = props => (
   <TouchableOpacity
     onPress={props.onPress}
-    style={myStyle.container}
+    style={{ ...myStyle.container, ...props.style }}
   >
     <Icon
       color={props.color}
@@ -28,9 +28,11 @@ const myStyle = {
 BackButton.propTypes = {
   onPress: PropTypes.func.isRequired,
   color: PropTypes.string,
+  style: PropTypes.object,
 }
 BackButton.defaultProps = {
   color: white,
+  style: {},
 }
 
 export default BackButton

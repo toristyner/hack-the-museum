@@ -49,26 +49,37 @@ class App extends Component {
               />
               <Route
                 exact
-                path="/home"
-                render={props => <Home history={props.history} />}
+                path="/recommendations"
+                component={Home}
               />
               <Route
                 exact
-                path="/detail"
-                component={props => <Detail history={props.history} />}
+                path="/gallery/:galleryId"
+                component={Home}
+              />
+              <Route
+                exact
+                path="/genre/:genreName"
+                component={Home}
+              />
+              <Route
+                exact
+                path="/detail/:artId"
+                component={Detail}
               />
               <Route
                 exact
                 path="/profile"
-                component={props => <Profile history={props.history} />}
+                component={Profile}
               />
               <Route
                 exact
                 path="/imageViewer"
-                component={props => <ArtImageViewer history={props.history} />}
+                component={ArtImageViewer}
               />
               <Switch>
                 <Route path="/imageViewer" />
+                <Route path="/profile" />
                 <Route component={GalleryBottomNav} />
               </Switch>
             </View>
