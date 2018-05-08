@@ -4,25 +4,26 @@ import PropTypes from 'prop-types'
 import { lighterGray, darkGray } from '../styles'
 
 const SongSearchItem = ({ item, addSong }) => (
-  <View>
-    <TouchableOpacity
-      onPress={() => addSong(item)}
-      style={myStyle.songRow}
-    >
-      <Image
-        source={item.images.url ? { uri: item.images.url } : {}}
-        style={myStyle.image}
-      />
-      <View style={myStyle.info}>
-        <Text style={myStyle.title}>
-          {item.name}
-        </Text>
-        <Text style={myStyle.artist}>
-          {item.artist.name}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  </View>
+  <TouchableOpacity
+    onPress={() => addSong(item)}
+    style={myStyle.songRow}
+  >
+    <Image
+      source={item.images.url ? { uri: item.images.url } : {}}
+      style={myStyle.image}
+    />
+    <View style={myStyle.info}>
+      <Text
+        numberOfLines={1}
+        style={myStyle.title}
+      >
+        {item.name}
+      </Text>
+      <Text style={myStyle.artist}>
+        {item.artist.name}
+      </Text>
+    </View>
+  </TouchableOpacity>
 )
 
 SongSearchItem.propTypes = {
@@ -32,13 +33,12 @@ SongSearchItem.propTypes = {
 
 const myStyle = {
   songRow: {
-    padding: 10,
     borderBottomWidth: 1,
     backgroundColor: 'white',
     borderColor: lighterGray,
     flexDirection: 'row',
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
   },
   image: {
     top: 1,
@@ -49,7 +49,7 @@ const myStyle = {
   },
   info: {
     paddingLeft: 8,
-    paddingRight: 8,
+    paddingRight: 30,
   },
   title: {
     fontWeight: 'bold',
