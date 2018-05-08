@@ -67,8 +67,15 @@ function* requestRecommendations(genres) {
   const response = yield call(PhilaMuseumService.getRecommendations, genres)
   return {
     art: response,
-    name: genres.length > 1 ? 'Recommendations for You' : `Recommendations for ${genres[0]}`,
   }
+}
+
+function* requestProfileRecommendations() {
+  const { genres } = yield select(state => state.musicProfile)
+  yield put({
+    type: actions.REQUEST_ART_LIST,
+    payload: { genres: Object.keys(genres) },
+  })
 }
 
 function* requestArtList({ payload }) {
@@ -102,6 +109,7 @@ function* requestArtList({ payload }) {
 function* requestArtDetail({ payload }) {
   const { artId } = payload
   const galleryId = yield select(state => state.galleryInfo.currentGalleryId)
+
   if (galleryId && artId) {
     const artDetail = yield call(PhilaMuseumService.getArtDetail, galleryId, artId)
 
@@ -132,6 +140,7 @@ function* galleryInfoSaga() {
   yield takeLatest(actions.INIT_GALLERY_SERVICES, initGalleryServices)
   yield takeLatest(actions.GALLERY_LOCATION_CHANGED, handleGalleryLocationChange)
   yield takeLatest(actions.REQUEST_ART_LIST, requestArtList)
+  yield takeLatest(actions.REQUEST_PROFILE_ART_LIST, requestProfileRecommendations)
   yield takeLatest(actions.REQUEST_ART_DETAIL, requestArtDetail)
   yield takeLatest(actions.UPDATE_ART_MUSIC, updateArtMusic)
 }

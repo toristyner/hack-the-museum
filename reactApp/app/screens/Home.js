@@ -4,7 +4,7 @@ import { FlatList, Text, View, Image, Dimensions } from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/Ionicons'
 import isNil from 'lodash/isNil'
-import { withLoader, GalleryTile } from '../components/'
+import { withLoader, GalleryTile, BackButton } from '../components/'
 import { GalleryLocationService, TestingUtils } from '../utils'
 import {
   styles,
@@ -21,11 +21,18 @@ const { width, height } = Dimensions.get('window')
 
 class Home extends Component {
   static propTypes = {
-    // currentGallery: PropTypes.string.isRequired,
-    // data: PropTypes.objectOf(PropTypes.string).isRequired,
+    data: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     handleGalleryLocationChange: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    selectArt: PropTypes.func.isRequired,
+    getGalleryArtwork: PropTypes.func.isRequired,
+    getArtworkForGenre: PropTypes.func.isRequired,
+    getProfileArtwork: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    isLoading: false,
   }
 
   static galleryItemKeyExtractor(item) {
@@ -33,14 +40,45 @@ class Home extends Component {
   }
 
   componentWillMount = () => {
-    GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
-    // TestingUtils.simulateGalleryChanges(this.props.handleGalleryLocationChange)
+    // GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
+    TestingUtils.simulateGalleryChanges(this.props.handleGalleryLocationChange, 5000)
     // this.props.handleGalleryLocationChange(111)
   }
 
+  componentDidMount = () => {
+    this.fetchArtForRoute()
+  }
+
+  componentDidUpdate = (prevProps) => {
+    const { params = {} } = this.props.match
+
+    if (params.galleryId !== prevProps.match.params.galleryId) {
+      this.fetchArtForRoute()
+    }
+  }
+
+  getHeaderTitle = () => {
+    const { data = {}, match = {}, isLoading } = this.props
+
+    if (isLoading) { return null }
+
+    return data.name ? data.name : `Recommendations for ${match.params.genreName || 'You'}`
+  }
+
+  fetchArtForRoute = () => {
+    const { params = {} } = this.props.match
+
+    if (params.galleryId) {
+      return this.props.getGalleryArtwork(params.galleryId)
+    } else if (params.genreName) {
+      return this.props.getArtworkForGenre(params.genreName)
+    }
+
+    return this.props.getProfileArtwork()
+  }
+
   goToArtDetail = (id) => {
-    this.props.selectArt(id)
-    this.props.history.push('detail')
+    this.props.history.push(`/detail/${id}`)
   }
 
   profileMatchOverlay = item => (
@@ -54,13 +92,38 @@ class Home extends Component {
     )
   )
 
-  locationOverlay = item => (item.Location && item.Location.GalleryShort ? (
-    <View style={myStyles.locationOverlay}>
-      <Text style={myStyles.location}>
-        {item.Location && item.Location.GalleryShort}
-      </Text>
-    </View>
-  ) : null)
+  locationOverlay = item =>
+    (item.Location && item.Location.GalleryShort) && (
+      <View style={myStyles.locationOverlay}>
+        <Text style={myStyles.location}>
+          {item.Location && item.Location.GalleryShort}
+        </Text>
+      </View>
+    )
+
+  renderHeader = () => {
+    const { params = {} } = this.props.match
+
+    return (
+      <View style={myStyles.imageContainer}>
+        {params.genreName && (
+          <BackButton
+            onPress={() => this.props.history.goBack()}
+            style={myStyles.backButton}
+          />
+        )}
+        <Image
+          source={pamImage}
+          style={myStyles.headerImage}
+        />
+        <View style={myStyles.headerTitle}>
+          <Text style={styles.boldWhite}>
+            {this.getHeaderTitle()}
+          </Text>
+        </View>
+      </View>
+    )
+  }
 
   renderGalleryTile = ({ item }) => (
     <GalleryTile
@@ -78,22 +141,7 @@ class Home extends Component {
     return (
       <View style={{ position: 'relative' }}>
         <FlatList
-          ListHeaderComponent={
-            // this goes in here because otherwise the bottom nav gets pushed down
-            <View style={myStyles.imageContainer}>
-              <Image
-                source={pamImage}
-                style={myStyles.headerImage}
-              />
-              <View style={myStyles.headerTitle}>
-                <Text style={styles.boldWhite}>
-                  {this.props.data.name && this.props.data.name.length
-                    ? this.props.data.name
-                    : 'No Gallery Found'}
-                </Text>
-              </View>
-            </View>
-          }
+          ListHeaderComponent={this.renderHeader}
           contentContainerStyle={{
             paddingHorizontal: 10,
             paddingBottom: headerPadding, // adding some extra padding for the header at the top
@@ -123,6 +171,10 @@ const myStyles = {
     justifyContent: 'center',
     marginLeft: -10,
     marginRight: -10,
+  },
+  backButton: {
+    left: 0,
+    top: 0,
   },
   headerImage: {
     width,
@@ -159,7 +211,6 @@ const myStyles = {
 
 export const mapStateToProps = ({ galleryInfo }) => ({
   data: galleryInfo.data,
-  galleriesVisited: galleryInfo.history,
   isLoading: galleryInfo.isLoading,
   loadingMessage: galleryInfo.loadingMessage,
 })
@@ -172,11 +223,19 @@ export const mapDispatchToProps = dispatch => ({
         galleryId,
       },
     }),
-  selectArt: artId =>
-    dispatch({
-      type: actions.REQUEST_ART_DETAIL,
-      payload: { artId },
-    }),
+  getGalleryArtwork: galleryId => dispatch({
+    type: actions.REQUEST_ART_LIST,
+    payload: { galleryId },
+  }),
+  getArtworkForGenre: genre => dispatch({
+    type: actions.REQUEST_ART_LIST,
+    payload: {
+      genres: [genre],
+    },
+  }),
+  getProfileArtwork: () => dispatch({
+    type: actions.REQUEST_PROFILE_ART_LIST,
+  }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLoader(Home))

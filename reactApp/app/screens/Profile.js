@@ -1,24 +1,24 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, Dimensions, FlatList, Text, View, StyleSheet, Image } from 'react-native'
+import { TouchableOpacity, Dimensions, FlatList, Text, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import isEmpty from 'lodash/isEmpty'
 import { GenreTile, withLoader } from '../components'
 import * as actions from '../actionTypes'
-import * as _ from 'lodash'
-import { styles, lighterGray, bloodOrange, white } from '../styles'
-import galleryInfo from '../reducers/galleryInfoReducer'
-import { sortBy } from '../utils/utils'
+import { styles, lighterGray } from '../styles'
+import pamImage from '../assets/pam.jpg'
 
 const { height, width } = Dimensions.get('window')
 class Profile extends Component {
   static propTypes = {
-    // getPopularGenres: PropTypes.func.isRequired,
-    // popularGenres: PropTypes.obj.isRequired,
-    // toggleGenre: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    getPopularGenres: PropTypes.func.isRequired,
+    popularGenres: PropTypes.array.isRequired,
+    toggleGenre: PropTypes.func.isRequired,
+    completeProfile: PropTypes.func.isRequired,
   }
 
   state = {
-    refreshCount: 0,
     myGenres: {},
   }
 
@@ -26,7 +26,7 @@ class Profile extends Component {
 
   completeProfile = () => {
     this.props.completeProfile()
-    this.props.history.push('home')
+    this.props.history.replace('/recommendations')
   }
 
   toggleGenre = (genre) => {
@@ -37,10 +37,11 @@ class Profile extends Component {
       delete myNewGenres[genre.name]
       action = actions.USER_PROFILE_UNLIKE_GENRES
     } else {
-      myNewGenres[genre.name] = genre.popularity
+      // set to 1 since it is first time liking genre
+      myNewGenres[genre.name] = 1
       action = actions.USER_PROFILE_LIKE_GENRES
     }
-    this.setState({ myGenres: myNewGenres }, () => console.log(this.state))
+    this.setState({ myGenres: myNewGenres })
     this.props.toggleGenre(genre.name, action)
   }
 
@@ -56,12 +57,12 @@ class Profile extends Component {
   }
 
   render() {
-    const genresAreSelected = !_.isEmpty(this.state.myGenres)
+    const genresAreSelected = !isEmpty(this.state.myGenres)
 
     return (
       <View style={myStyle.container}>
         <Image
-          source={require('../assets/pam.jpg')}
+          source={pamImage}
           style={myStyle.backgroundImage}
         />
         <Text style={styles.boldWhite}>Pick your favorite genres to get started!</Text>
@@ -77,7 +78,10 @@ class Profile extends Component {
         <TouchableOpacity
           onPress={() => this.completeProfile()}
           title="Learn More"
-          style={genresAreSelected ? myStyle.buttonStyle : { ...myStyle.buttonStyle, ...myStyle.disabledStyle }}
+          style={{
+            ...myStyle.buttonStyle,
+            ...(!genresAreSelected ? myStyle.disabledStyle : {}),
+          }}
           disabled={!genresAreSelected}
         >
           <Text style={styles.boldWhite}>Continue</Text>
@@ -115,7 +119,6 @@ const myStyle = {
 export const mapStateToProps = state => ({
   popularGenres: state.musicProfile.popularGenres,
   myGenres: state.musicProfile.genres,
-  galleryPath: state.galleryInfo.history,
 })
 
 export const mapDispatchToProps = dispatch => ({

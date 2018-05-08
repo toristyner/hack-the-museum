@@ -20,6 +20,7 @@
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
     "react/jsx-max-props-per-line": [1, { "maximum": 1 }],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/forbid-prop-types": 0
   }
 }

@@ -13,21 +13,33 @@ const genreSliderHeight = 140
 
 class Detail extends Component {
   static propTypes = {
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     addSong: PropTypes.func.isRequired,
     isSongSearchLoading: PropTypes.bool,
     songAction: PropTypes.func.isRequired,
     detail: PropTypes.object.isRequired,
-    recommendBasedOnGenres: PropTypes.func.isRequired,
     songSearch: PropTypes.func.isRequired,
-    songResults: PropTypes.arrayOf(PropTypes.object),
+    songResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+    getArtDetail: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
   }
 
   static defaultProps = {
     isSongSearchLoading: false,
+    isLoading: false,
   }
 
   state = {
     showSearch: false,
+  }
+
+  componentDidMount() {
+    const { params = {} } = this.props.match
+
+    if (params.artId) {
+      this.props.getArtDetail(params.artId)
+    }
   }
 
   toggleSearch = () => this.setState({ showSearch: !this.state.showSearch })
@@ -42,12 +54,10 @@ class Detail extends Component {
     .catch(err => console.log('Bitch doesnt have spotify or something', err))
 
   recommendBasedOnGenre = (genreName) => {
-    this.props.recommendBasedOnGenres(genreName)
-    this.props.history.push('home')
+    this.props.history.push(`/genre/${genreName}`)
   }
 
   goToHome = () => {
-    this.props.requestArtList(this.props.currentGalleryId)
     this.props.history.goBack()
   }
 
@@ -98,7 +108,7 @@ class Detail extends Component {
             imageHeight={imageComponentHeight}
             style={Style}
             year={Dated}
-            onExpand={() => this.props.history.push('imageViewer')}
+            onExpand={() => this.props.history.push('/imageViewer')}
           />
         </View>
         {this.props.isLoading ?
@@ -151,12 +161,11 @@ export const mapDispatchToProps = dispatch => ({
       galleryId,
     },
   }),
-  recommendBasedOnGenres: genre => dispatch({
-    type: actions.REQUEST_ART_LIST,
-    payload: {
-      genres: [genre],
-    },
-  }),
+  getArtDetail: artId =>
+    dispatch({
+      type: actions.REQUEST_ART_DETAIL,
+      payload: { artId },
+    }),
 })
 
 const myStyles = StyleSheet.create({
