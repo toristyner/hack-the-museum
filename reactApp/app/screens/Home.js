@@ -29,10 +29,12 @@ class Home extends Component {
     getArtworkForGenre: PropTypes.func.isRequired,
     getProfileArtwork: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
+    hasError: PropTypes.bool,
   }
 
   static defaultProps = {
     isLoading: false,
+    hasError: false,
   }
 
   static galleryItemKeyExtractor(item) {
@@ -58,9 +60,16 @@ class Home extends Component {
   }
 
   getHeaderTitle = () => {
-    const { data = {}, match = {}, isLoading } = this.props
+    const {
+      data = {},
+      match = {},
+      isLoading,
+      hasError,
+    } = this.props
 
     if (isLoading) { return null }
+
+    if (hasError) { return 'No Artwork Available' }
 
     return data.name ? data.name : `Recommendations for ${match.params.genreName || 'You'}`
   }
@@ -117,7 +126,10 @@ class Home extends Component {
           style={myStyles.headerImage}
         />
         <View style={myStyles.headerTitle}>
-          <Text style={styles.boldWhite}>
+          <Text
+            adjustsFontSizeToFit
+            style={styles.boldWhite}
+          >
             {this.getHeaderTitle()}
           </Text>
         </View>
@@ -184,7 +196,8 @@ const myStyles = {
     position: 'absolute',
     top: 0,
     left: 0,
-    padding: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
     paddingTop: headerHeight / 3.5,
     width: '100%',
     height: '100%',
@@ -211,6 +224,7 @@ const myStyles = {
 export const mapStateToProps = ({ galleryInfo }) => ({
   data: galleryInfo.data,
   isLoading: galleryInfo.isLoading,
+  hasError: galleryInfo.hasError,
   loadingMessage: galleryInfo.loadingMessage,
 })
 
