@@ -10,7 +10,7 @@ export const transparentWhite = 'rgba(255, 255, 255, 0.8)'
 
 export const numOfGalleryTilesPerRow = 3
 export const galleryBottomNavHeight = 60
-export const headerPadding = 30
+export const headerPadding = 20
 
 export const styles = {
   container: {
