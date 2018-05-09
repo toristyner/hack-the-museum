@@ -10,19 +10,19 @@ const galleries = [
   '265',
 ]
 
-let gelleryChangeInterval = null
+let galleryChangeInterval = null
 
 const getRandomGalleryId = () =>
   galleries[Math.floor(Math.random() * galleries.length - 1 + 1)]
 
 const simulateGalleryChanges = (dispatcher, interval = 5000) => {
-  if (gelleryChangeInterval) {
+  if (galleryChangeInterval) {
     return true
   }
 
   dispatcher(getRandomGalleryId())
 
-  gelleryChangeInterval = setInterval(() => {
+  galleryChangeInterval = setInterval(() => {
     dispatcher(getRandomGalleryId())
   }, interval)
 
