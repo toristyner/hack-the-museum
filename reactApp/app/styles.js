@@ -38,8 +38,8 @@ export const styles = {
   },
   grid: {
     justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: 'center',
+    flexDirection: 'column',
   },
   title: {
     textAlign: 'center',
