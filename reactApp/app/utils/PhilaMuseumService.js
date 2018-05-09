@@ -74,7 +74,7 @@ export const updateSong = ({ artId, song, type }) => {
 }
 
 export const search = (searchTerm) => {
-  const url = `${baseUrl}api/spotify/search?q="${searchTerm}"`
+  const url = `${baseUrl}api/spotify/search?q=${searchTerm}`
   return fetch(url)
     .then(response => response.json())
     .catch((err) => {

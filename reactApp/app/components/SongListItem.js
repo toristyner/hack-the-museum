@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View, TouchableOpacity, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
-import { styles, lightGray, white, likedColor, transparentWhite } from '../styles'
+import { styles, lightGray, white, likedColor, transparentWhite, darkGray } from '../styles'
 import { IconButton } from '.'
 
 const SongListItem = props => (
@@ -28,11 +28,17 @@ const SongListItem = props => (
     </TouchableOpacity>
     <View style={myStyle.details}>
       <Text
-        adjustsFontSizeToFit
+        style={myStyle.songName}
         numberOfLines={1}
-      >{props.name}
+      >
+        {props.name}
       </Text>
-      <Text style={styles.bold}>{props.artist}</Text>
+      <Text
+        style={myStyle.songArtist}
+        adjustsFontSizeToFit
+      >
+        {props.artist}
+      </Text>
     </View>
     <View
       style={myStyle.rightIcon}
@@ -64,7 +70,7 @@ const myStyle = {
   },
   details: {
     flex: 1,
-    paddingLeft: 10,
+    paddingHorizontal: 8,
     justifyContent: 'center',
   },
   playButtonContainer: {
@@ -72,6 +78,14 @@ const myStyle = {
     width: 45,
     height: 45,
     backgroundColor: lightGray,
+  },
+  songName: {
+    ...styles.bold,
+    fontSize: 14,
+  },
+  songArtist: {
+    fontSize: 11,
+    color: darkGray,
   },
   songImage: {
     width: 45,

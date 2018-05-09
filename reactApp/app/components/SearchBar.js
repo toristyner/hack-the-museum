@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { TextInput } from 'react-native'
-import * as _ from 'lodash'
+import debounce from 'lodash/debounce'
 import PropTypes from 'prop-types'
 import { lighterGray } from '../styles'
 
@@ -8,9 +8,11 @@ import { lighterGray } from '../styles'
 class SearchBar extends Component {
   constructor() {
     super()
-    this.onChangeTextDelayed = _.debounce((val) => {
-      this.props.onChangeText(val)
-    }, 2000)
+    this.onChangeTextDelayed = debounce((val) => {
+      if (val) {
+        this.props.onChangeText(val)
+      }
+    }, 1300)
   }
 
   componentDidMount() {
@@ -33,8 +35,6 @@ class SearchBar extends Component {
 const myStyle = {
   search: {
     height: 30,
-    borderWidth: 1,
-    borderColor: lighterGray,
     backgroundColor: lighterGray,
     padding: 5,
   },
