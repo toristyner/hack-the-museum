@@ -1,32 +1,73 @@
 import queue from '../../../shared/queue'
 import museumApi from '../services/api'
 import cache from '../services/cache'
+import artworkService from '../services/artwork'
 
-const addArtwork = queue('Add Artwork')
-addArtwork.process(job)
+const config = {
+  addDelay: 3500,
+  updateDelay: 3500
+}
+const queues = {
+  add: 'Add Artwork',
+  update: 'Update Missing Artwork'
+}
 
-const bufferTime = 1500
+const addArtwork = queue(queues.add)
+const updateArtwork = queue(queues.update)
 
-async function job(job, done) {
+addArtwork.process(addJob)
+updateArtwork.process(updateJob)
+
+addArtwork.on('drained', () => console.log(`${queues.add}: Complete`))
+updateArtwork.on('drained', () => console.log(`${queues.update}: Complete`))
+
+addArtwork.empty()
+updateArtwork.empty()
+
+async function addJob(job, done) {
   const { locationId, objectId } = job.data
 
   if (!locationId || !objectId) {
-    console.error('Not found', locationId, objectId)
-    done()
+    console.error('Invalid Job', locationId, objectId)
+    return done()
   }
 
   try {
-    setTimeout(async () => {
-      console.log(`Adding => Room: ${locationId} Object: ${objectId}`)
+    console.log(`Adding => Room: ${locationId} Object: ${objectId}`)
 
-      const artwork = await museumApi.getArtwork(objectId)
+    const artwork = await museumApi.getArtwork(objectId)
 
-      if (artwork) {
-        cache.setJson(objectId, artwork)
+    if (artwork) {
+      cache.setJson(objectId, artwork)
+    }
+
+    setTimeout(async () => done(), config.addDelay)
+  } catch (error) {
+    console.error(error)
+    done()
+  }
+}
+
+async function updateJob(job, done) {
+  const { locationId, artworkIds } = job.data
+
+  if (!locationId || !artworkIds) {
+    console.error('Missing Params', locationId)
+    return done()
+  }
+
+  console.log(`Validating => Room: ${locationId}`)
+
+  try {
+    artworkIds.forEach(async objectId => {
+      const artwork = await cache.getJson(objectId)
+
+      if (!artwork) {
+        addArtwork.add({ locationId, objectId })
       }
+    })
 
-      done(null)
-    }, bufferTime)
+    setTimeout(() => done(), config.updateDelay)
   } catch (error) {
     console.error(error)
     done()
@@ -36,5 +77,7 @@ async function job(job, done) {
 export default {
   addArtwork: (artwork = []) => {
     artwork.forEach(art => addArtwork.add(art))
-  }
+  },
+  updateArtwork: ({ locationId, artworkIds }) =>
+    updateArtwork.add({ locationId, artworkIds })
 }
