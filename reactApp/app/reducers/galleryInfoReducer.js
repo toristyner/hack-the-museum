@@ -18,6 +18,7 @@ const initialState = {
   },
   history: [],
   isLoading: true,
+  hasError: false,
   loadingMessage: 'Launching HTM',
 }
 
@@ -39,6 +40,7 @@ export default function galleryInfo(state = initialState, action) {
         ...action.data,
       },
       isLoading: true,
+      hasError: false,
     }
   }
   case actions.RECEIVE_ART_LIST: {
@@ -48,6 +50,7 @@ export default function galleryInfo(state = initialState, action) {
         ...action.payload,
       },
       isLoading: false,
+      hasError: false,
     }
   }
   case actions.RECEIVE_ART_DETAIL: {
@@ -128,6 +131,13 @@ export default function galleryInfo(state = initialState, action) {
     return {
       ...state,
       isLoading: false,
+    }
+  }
+  case actions.API_ERROR: {
+    return {
+      ...state,
+      isLoading: false,
+      hasError: true,
     }
   }
   default:
