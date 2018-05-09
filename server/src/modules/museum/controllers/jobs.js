@@ -1,8 +1,11 @@
 import express from 'express'
-import locationJob from '../jobs/location'
+import locationJobs from '../jobs/location'
 import museumApi from '../services/api'
 
-const LOC_REGEX = /(^\d{3}\w)$|(^\d{3})$/
+const router = express.Router()
+
+const LOC_REGEX = /(^\d{2})$|(^\d{3}\w)$|(^\d{3})$/
+const ingnoreGalleries = ['50']
 const galleries = [
   '111',
   '116',
@@ -15,27 +18,47 @@ const galleries = [
   '265'
 ]
 
-const router = express.Router()
+const jobs = {
+  seed: 'addLocation',
+  validate: 'updateLocation'
+}
 
-router.get('/jobs/seed-cache', seedCache)
+router.get('/jobs/cache/:type', startCacheJob)
 
-async function seedCache(req, res) {
+async function startCacheJob(req, res) {
+  const { type } = req.params
+  const { all } = req.query
+
+  const allLocations = all === 'true'
+  const job = jobs[type]
+
+  if (!locationJobs[job]) {
+    return res.status(404).send('Job type not found')
+  }
+
   try {
     const locations = await museumApi.getAllLocations()
 
     if (locations) {
-      locations
-        .filter(loc => galleries.indexOf(loc.Name) > -1) // remove for all galleries
-        .filter(loc => LOC_REGEX.test(loc.Name))
-        .forEach(
-          loc => loc.Name && locationJob.addLocation({ locationId: loc.Name })
-        )
+      getValidLocations(locations, allLocations).forEach(
+        loc => loc.Name && locationJobs[job]({ locationId: loc.Name })
+      )
     }
 
-    return res.status(200).send('Seeding Started')
+    return res.status(200).send(`${type} started`)
   } catch (error) {
     return res.status(404).json(error)
   }
+}
+
+function getValidLocations(locations, allLocations = false) {
+  const validLocations = locations.filter(
+    loc => LOC_REGEX.test(loc.Name) && !ingnoreGalleries.includes(loc.Name)
+  )
+
+  return allLocations
+    ? validLocations
+    : validLocations.filter(loc => galleries.includes(loc.Name))
 }
 
 export default router
