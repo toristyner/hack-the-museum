@@ -42,9 +42,15 @@ const ArtImage = props => (
       <Text
         style={styles.boldItalic}
         numberOfLines={1}
-      >{`${props.title}`}
+      >
+        {props.title}
       </Text>
-      <Text style={myStyle.date}>{`${props.style}, ${props.year}`}</Text>
+      <Text
+        numberOfLines={1}
+        style={myStyle.date}
+      >
+        {`${props.style}, ${props.year}`}
+      </Text>
     </View>
   </View>
 )
@@ -62,12 +68,11 @@ const myStyle = {
   overlayContainer: {
     flex: 1,
     backgroundColor: '#cecece',
-    opacity: 0.5,
+    opacity: 0.7,
     padding: 10,
   },
   date: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 12,
   },
   indicator: {
     top: -28,

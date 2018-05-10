@@ -73,6 +73,7 @@ class Profile extends Component {
           keyExtractor={(item, index) => `${item.name}${index}`}
           horizontal={false}
           renderItem={({ item }) => this.renderGenre(item)}
+          numColumns={3}
         />
 
         <TouchableOpacity
