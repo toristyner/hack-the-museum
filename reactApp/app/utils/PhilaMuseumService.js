@@ -1,6 +1,8 @@
 import * as actions from '../actionTypes'
 
 const baseUrl = 'http://167.99.5.121:3000/'
+const publicUrl = 'http://artbeats.info'
+const twitterUrl = 'https://twitter.com/intent/tweet'
 
 export const getArtList = (galleryId) => {
   const url = `${baseUrl}api/museum/locations/${galleryId}`
@@ -85,7 +87,7 @@ export const search = (searchTerm) => {
 
 export const getRecommendations = (genres) => {
   const url = `${baseUrl}api/museum/artwork/recommendations/genres`
-  console.log(url)
+
   return fetch(url, {
     method: 'POST',
     headers: {
@@ -108,6 +110,12 @@ export const getPopularGenres = () => {
     })
 }
 
+export const getShareUrl = ({ artworkId, songId }) =>
+  `${publicUrl}/museum/share?songId=${songId}&artworkId=${artworkId}`
+
+export const getTwitterUrl = ({ artworkId, songId }) =>
+  `${twitterUrl}?url=${encodeURIComponent(getShareUrl({ artworkId, songId }))}`
+
 export default {
   addSong,
   getArtList,
@@ -116,4 +124,6 @@ export default {
   getRecommendations,
   updateSong,
   search,
+  getTwitterUrl,
+  getShareUrl,
 }

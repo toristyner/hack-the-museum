@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Linking, Dimensions, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
-import { ArtImage, GenreSlider, SongList, SongSearch } from '../components/'
+import { ArtImage, GenreSlider, SongList, SongSearch, Modal, SongModal } from '../components'
 import MusicPlacholder from '../components/MusicPlacholder'
 import { styles, galleryBottomNavHeight, headerPadding } from '../styles'
 import * as actions from '../actionTypes'
@@ -32,6 +32,7 @@ class Detail extends Component {
 
   state = {
     showSearch: false,
+    selectedSongId: null,
   }
 
   componentDidMount() {
@@ -43,6 +44,8 @@ class Detail extends Component {
   }
 
   toggleSearch = () => this.setState({ showSearch: !this.state.showSearch })
+
+  selectSong = selectedSongId => this.setState({ selectedSongId })
 
   addSong = (song) => {
     this.toggleSearch()
@@ -78,6 +81,7 @@ class Detail extends Component {
           songs={music.songs}
           addSong={this.toggleSearch}
           songAction={this.props.songAction}
+          onSongMenu={this.selectSong}
           playSong={this.playSong}
         />
       </React.Fragment>
@@ -86,6 +90,7 @@ class Detail extends Component {
 
   render() {
     const {
+      id,
       Title,
       Artist,
       photoUrl,
@@ -127,6 +132,17 @@ class Detail extends Component {
             songs={this.props.songResults}
           />
         )}
+        <Modal
+          isVisible={!!this.state.selectedSongId}
+        >
+          {() => (
+            <SongModal
+              closeModal={() => this.selectSong(null)}
+              songId={this.state.selectedSongId}
+              artworkId={id}
+            />
+          )}
+        </Modal>
       </View>
     )
   }
