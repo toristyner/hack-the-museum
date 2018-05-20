@@ -4,10 +4,13 @@ services:
     image: htm-api
     container_name: "htm-api"
     command: npm run start
+    environment:
+      - NODE_ENV=production
     volumes:
       - ./src:/app/src
     ports:
       - "3000:3000"
+      - "8080:3000"
     links:
       - redis
       - mongo

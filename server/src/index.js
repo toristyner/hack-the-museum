@@ -1,7 +1,9 @@
 import 'babel-polyfill'
+import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import hbs from 'express-handlebars'
 
 /* Configs */
 import appConfig from './configs/app'
@@ -16,16 +18,27 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
 app.use(cors())
+app.use(express.static(path.join(__dirname, 'public')))
+
+
+/* Template */
+app.engine('.hbs', hbs({
+  extname: '.hbs',
+  defaultLayout: 'main',
+  partialsDir: path.join(__dirname, 'views/partials'),
+  layoutsDir: path.join(__dirname, 'views/layouts')
+}))
+
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', '.hbs')
 
 /* Register Routes */
-moduleRoutes.forEach(ctrl => {
-  const url = [appConfig.apiUrl, ctrl.url].join('')
+moduleRoutes.forEach(({ url, apiRoutes = [], webRoutes = [] }) => {
+  const { apiUrl } = appConfig
 
-  ctrl.routes.forEach(route => {
-    app.use(url, route)
-  })
+  apiRoutes.forEach(route => app.use(apiUrl + url, route))
+  webRoutes.forEach(route => app.use(url, route))
 })
 
 app.listen(appConfig.port, function() {
