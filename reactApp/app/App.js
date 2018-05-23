@@ -12,7 +12,8 @@ import reducer from './reducers/index'
 import { GalleryBottomNav } from './components'
 import sagas from './sagas'
 import * as actions from './actionTypes'
-import { Home, Detail, Profile, ArtImageViewer } from './screens/'
+import { Home, Detail, Profile, ArtImageViewer } from './screens'
+import { GalleryLocationService, TestingUtils } from './utils'
 
 class App extends Component {
   constructor(props) {
@@ -33,10 +34,20 @@ class App extends Component {
 
   componentDidMount = () => {
     this.initNativeServices()
+    GalleryLocationService.listenToGalleryLocationChange(this.handleGalleryLocationChange)
+    // TestingUtils.simulateGalleryChanges(this.handleGalleryLocationChange, 30000)
     SplashScreen.hide()
   }
 
   initNativeServices = () => this.appStore.dispatch({ type: actions.INIT_GALLERY_SERVICES })
+
+  handleGalleryLocationChange = galleryId =>
+    this.appStore.dispatch({
+      type: actions.GALLERY_LOCATION_CHANGED,
+      payload: {
+        galleryId,
+      },
+    })
 
   render() {
     const store = this.props.store !== undefined ? this.props.store : this.appStore

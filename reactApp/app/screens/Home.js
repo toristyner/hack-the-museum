@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FlatList, Text, View, Image, Dimensions } from 'react-native'
+import { FlatList, Text, View, Image, Dimensions, ActivityIndicator } from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/Ionicons'
 import isNil from 'lodash/isNil'
-import { withLoader, GalleryTile, BackButton } from '../components/'
-import { GalleryLocationService, TestingUtils } from '../utils'
+import { GalleryTile, BackButton } from '../components/'
 import {
   styles,
   numOfGalleryTilesPerRow,
@@ -23,7 +22,6 @@ class Home extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
-    handleGalleryLocationChange: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     getGalleryArtwork: PropTypes.func.isRequired,
     getArtworkForGenre: PropTypes.func.isRequired,
@@ -39,12 +37,6 @@ class Home extends Component {
 
   static galleryItemKeyExtractor(item) {
     return `art${item.ObjectID}`
-  }
-
-  componentWillMount = () => {
-    GalleryLocationService.listenToGalleryLocationChange(this.props.handleGalleryLocationChange)
-    // TestingUtils.simulateGalleryChanges(this.props.handleGalleryLocationChange, 30000)
-    // this.props.handleGalleryLocationChange(111)
   }
 
   componentDidMount = () => {
@@ -151,9 +143,13 @@ class Home extends Component {
 
   render() {
     return (
-      <View style={{ position: 'relative' }}>
+      <View style={myStyles.container}>
         <FlatList
           ListHeaderComponent={this.renderHeader}
+          ListEmptyComponent={
+            this.props.isLoading &&
+              <ActivityIndicator style={myStyles.indicator} />
+          }
           contentContainerStyle={{
             paddingHorizontal: 10,
             paddingBottom: headerPadding, // adding some extra padding for the header at the top
@@ -174,6 +170,10 @@ class Home extends Component {
 
 const headerHeight = (height / 5)
 const myStyles = {
+  container: {
+    flex: 1,
+    position: 'relative',
+  },
   imageContainer: {
     position: 'relative',
     height: height / 5,
@@ -219,6 +219,9 @@ const myStyles = {
     color: 'white',
     fontSize: 13,
   },
+  indicator: {
+    marginTop: (height - headerHeight) / 2.5,
+  },
 }
 
 export const mapStateToProps = ({ galleryInfo }) => ({
@@ -229,13 +232,6 @@ export const mapStateToProps = ({ galleryInfo }) => ({
 })
 
 export const mapDispatchToProps = dispatch => ({
-  handleGalleryLocationChange: galleryId =>
-    dispatch({
-      type: actions.GALLERY_LOCATION_CHANGED,
-      payload: {
-        galleryId,
-      },
-    }),
   getGalleryArtwork: galleryId => dispatch({
     type: actions.REQUEST_ART_LIST,
     payload: { galleryId },
@@ -251,4 +247,4 @@ export const mapDispatchToProps = dispatch => ({
   }),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withLoader(Home))
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
