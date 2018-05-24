@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
 import { styles, lightGray, white, likedColor, transparentWhite, darkGray } from '../styles'
-import { IconButton } from '.'
+import { IconButton } from './'
 
 const SongListItem = props => (
   <View
@@ -51,6 +51,16 @@ const SongListItem = props => (
         size={30}
       />
     </View>
+    <TouchableOpacity
+      style={myStyle.moreButton}
+      onPress={props.onSongMenu}
+    >
+      <Icon
+        name="md-more"
+        size={30}
+        color={darkGray}
+      />
+    </TouchableOpacity>
   </View>
 )
 
@@ -100,6 +110,12 @@ const myStyle = {
     alignItems: 'center',
     textAlign: 'center',
   },
+  moreButton: {
+    width: 25,
+    height: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   rightIcon: {
     width: 45,
     height: 45,
@@ -107,6 +123,7 @@ const myStyle = {
     justifyContent: 'center',
     alignItems: 'center',
     borderLeftWidth: 1,
+    borderRightWidth: 1,
     borderColor: lightGray,
   },
 }
@@ -118,6 +135,7 @@ SongListItem.propTypes = {
   image: PropTypes.string.isRequired,
   isLiked: PropTypes.bool.isRequired,
   onSongAction: PropTypes.func.isRequired,
+  onSongMenu: PropTypes.func.isRequired,
   onPlay: PropTypes.func.isRequired,
 
 }

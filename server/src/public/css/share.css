@@ -1,0 +1,50 @@
+.nav-main {
+  padding: 10px 15px;
+  background: #b5b5b582;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 1px rgba(245, 245, 245, 0.16), 0 1px 1px rgba(23, 23, 23, 0.23);
+  color: #ffffff;
+}
+
+.nav-main > img {
+  height: 52px;
+}
+
+.nav-main > h1 {
+  color: #ffffff;
+  display: inline-block;
+  font-size: 30px;
+  padding: 3px 10px 0 10px;
+  margin: 0;
+}
+
+main.share-main {
+  max-width: 52vh;
+  margin: 0 auto;
+  padding: 20px 20px 5px 20px;
+  text-align: center;
+}
+
+.artwork-details {
+  color: #ffffff;
+}
+
+.artwork-details h2 {
+  margin-bottom: 0;
+}
+
+.artwork-details h3 {
+  margin-top: 5px;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+img.artwork-image {
+  width: 98.9%;
+  border: solid 2px rgba(255, 255, 255, 0.67);
+}
+
+.spotify-player {
+  margin: 25px auto 0 auto;
+}

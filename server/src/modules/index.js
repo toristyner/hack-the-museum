@@ -5,14 +5,16 @@ import genres from './spotify/controllers/genres'
 import museumLocations from './museum/controllers/locations'
 import museumJobs from './museum/controllers/jobs'
 import museumArtwork from './museum/controllers/artwork'
+import share from './museum/controllers/share'
 
 export default [
   {
     url: '/spotify',
-    routes: [auth, search, artist, genres]
+    apiRoutes: [auth, search, artist, genres]
   },
   {
     url: '/museum',
-    routes: [museumLocations, museumArtwork, museumJobs]
+    apiRoutes: [museumLocations, museumArtwork, museumJobs],
+    webRoutes: [share]
   }
 ]

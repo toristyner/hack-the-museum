@@ -27,6 +27,7 @@ const SongList = props => (
           artist={item.artist.name}
           image={item.images && item.images.length ? item.images[0].url : null}
           onSongAction={() => props.songAction(item.isLiked, item)}
+          onSongMenu={() => props.onSongMenu(item.id)}
           onPlay={() => props.playSong(item.uri)}
           isLiked={item.isLiked}
           addedByUser={item.addedByUser}
@@ -52,17 +53,17 @@ const myStyle = {
     margin: 10,
   },
   addButton: {
-    paddingRight: 7,
+    paddingRight: 11,
   },
 }
 
 SongList.propTypes = {
   addSong: PropTypes.func.isRequired,
   songAction: PropTypes.func.isRequired,
+  onSongMenu: PropTypes.func.isRequired,
   playSong: PropTypes.func.isRequired,
   songs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  height: PropTypes.number.isRequired,
 }
-
-SongList.defaultProps = {}
 
 export default SongList
