@@ -38,6 +38,7 @@ function* updateSong({ type, payload }) {
     yield put({
       type: actions.USER_PROFILE_UPDATE_SONG,
       payload: {
+        type,
         artId,
         song,
       },
@@ -74,6 +75,7 @@ function* addSong({ payload }) {
     yield put({
       type: actions.USER_PROFILE_UPDATE_SONG,
       payload: {
+        type: actions.LIKE_SONG,
         artId,
         song: {
           ...song,
