@@ -23,6 +23,7 @@ class SearchBar extends Component {
     return (
       <TextInput
         ref={ref => this.inputRef = ref}
+        autoCorrect={false}
         onChangeText={this.onChangeTextDelayed}
         placeholder={this.props.placeholder}
         placeholderTextColor={this.props.placeholderTextColor}
