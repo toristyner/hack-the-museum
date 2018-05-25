@@ -41,6 +41,11 @@ class ArtworkService {
 
   async addSong(artworkId, data) {
     const { id, uri, url, name, images, artist } = data
+    const { songs } = await this.getSavedById(artworkId)
+
+    if (songs.find(song => song.id === id)) {
+      return this.likeSong(artworkId, data)
+    }
 
     const artistDetail = await artistService.detail(artist.id)
     const genres = await Promise.all(
@@ -60,10 +65,10 @@ class ArtworkService {
       genres
     })
 
-    music.genres = genreFormatter.sort(Object.values(music.genres))
+    music.genres = genreFormatter.sort(Object.values(music.genres || {}))
     music.songs = artworkFormatter.sortSongs(music.songs)
 
-    return { music, updatedGenres: artistDetail.genres }
+    return { music, updatedGenres: artistDetail.genres || [] }
   }
 
   async likeSong(artworkId, data) {
@@ -80,10 +85,10 @@ class ArtworkService {
       genres
     })
 
-    music.genres = genreFormatter.sort(Object.values(music.genres))
+    music.genres = genreFormatter.sort(Object.values(music.genres || {}))
     music.songs = artworkFormatter.sortSongs(music.songs)
 
-    return { music, updatedGenres: artistDetail.genres }
+    return { music, updatedGenres: artistDetail.genres || [] }
   }
 
   async dislikeSong(artworkId, data) {

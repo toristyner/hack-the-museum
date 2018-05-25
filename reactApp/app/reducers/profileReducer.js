@@ -51,11 +51,10 @@ export default function profileReducer(state = initialState, action) {
     }
   }
   case actions.USER_PROFILE_UPDATE_SONG: {
-    const { artId, song } = action.payload
-    const {
-      [song.id]: selectedSong,
-      ...likedSongs
-    } = { ...state.likedSongs[artId] }
+    const { artId, song, type } = action.payload
+    const likedSongs = { ...state.likedSongs[artId] }
+
+    delete likedSongs[song.id]
 
     return {
       ...state,
@@ -63,7 +62,7 @@ export default function profileReducer(state = initialState, action) {
         ...state.likedSongs,
         [artId]: {
           ...likedSongs,
-          ...(!selectedSong ? { [song.id]: song } : {}),
+          ...(type === actions.LIKE_SONG ? { [song.id]: song } : {}),
         },
       },
     }
