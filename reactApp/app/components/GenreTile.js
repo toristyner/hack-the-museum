@@ -20,7 +20,7 @@ const GenreTile = (props) => {
     }
     textStyle = {
       ...textStyle,
-      fontSize: 12,
+      fontSize: 14,
     }
   }
   return (
@@ -28,14 +28,18 @@ const GenreTile = (props) => {
       onPress={props.onPress}
       style={style}
     >
-      <View style={{ flex: 2 }}>
-        <Icon
-          size={props.size === 'small' ? 40 : 60}
-          color={white}
-          name="ios-musical-notes"
-        />
+      <View style={myStyle.inner}>
+        <View style={myStyle.note}>
+          <Icon
+            size={props.size === 'small' ? 80 : 90}
+            color={white}
+            name="ios-musical-notes"
+          />
+        </View>
+        <View style={myStyle.labelContainer}>
+          <Text style={textStyle}>{props.name}</Text>
+        </View>
       </View>
-      <Text style={textStyle}>{props.name}</Text>
     </TouchableOpacity>
   )
 }
@@ -45,19 +49,31 @@ const myStyle = {
     width: 110,
     height: 110,
     margin: 5,
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
+    padding: 5,
     shadowOffset: { width: 2, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.3,
   },
+  inner: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  note: {
+    opacity: 0.3,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  labelContainer: {
+    position: 'absolute',
+
+  },
   label: {
     color: 'white',
     textAlign: 'center',
-    fontWeight: 'bold',
-    flexDirection: 'column',
+    fontWeight: '900',
+    fontSize: 18,
   },
 }
 
@@ -65,10 +81,12 @@ const myStyle = {
 GenreTile.propTypes = {
   onPress: PropTypes.func.isRequired,
   size: PropTypes.oneOf(['small', 'large']),
+  color: PropTypes.string,
 }
 
 GenreTile.defaultProps = {
   size: 'large',
+  color: 'purple',
 }
 
 export default GenreTile

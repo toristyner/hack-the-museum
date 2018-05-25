@@ -6,7 +6,7 @@ import { styles } from '../styles'
 
 const GenreSlider = props => (
   <View style={myStyle.container}>
-    <Text style={styles.bold}>Genres</Text>
+    <Text style={myStyle.title}>Genres</Text>
     <ScrollView horizontal>
       <View style={myStyle.scroller}>
         {
@@ -28,6 +28,10 @@ const GenreSlider = props => (
 const myStyle = {
   container: {
     paddingTop: 10,
+    paddingLeft: 5,
+  },
+  title: {
+    ...styles.bold,
     paddingLeft: 5,
   },
   scroller: {
